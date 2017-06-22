@@ -9,6 +9,7 @@ CREATE TABLE [dbo].[Runners]
 [Startnumber] [int] NULL,
 [Firstname] [nvarchar] (50) NOT NULL,
 [Lastname] [nvarchar] (50) NOT NULL,
+[SportsClub] [nvarchar] (200) NULL,
 [YearOfBirth] [int] NOT NULL,
 [ChipId] [nchar] (10) NULL,
 [TimeAtDestination] [datetime2] NULL,

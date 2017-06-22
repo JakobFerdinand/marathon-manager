@@ -55,8 +55,6 @@ namespace SampleData
 
         private static IEnumerable<Runner> GenerateRunners()
         {
-
-
             var runnerFiller = new Filler<Runner>();
             runnerFiller.Setup()
                 .OnProperty(r => r.Id).IgnoreIt()
@@ -68,7 +66,9 @@ namespace SampleData
                 .OnProperty(r => r.Startnumber).Use(new IntRange(1, 500))
                 .OnProperty(r => r.YearOfBirth).Use(new IntRange(DateTime.Now.Year - 70, DateTime.Now.Year - 3))
                 .OnProperty(r => r.Firstname).Use(new RealNames(NameStyle.FirstName))
-                .OnProperty(r => r.Lastname).Use(new RealNames(NameStyle.LastName));
+                .OnProperty(r => r.Lastname).Use(new RealNames(NameStyle.LastName))
+                .OnProperty(r => r.SportsClub).Use(new RandomListItem<string>(
+                    "SC Mining", null, "SV Ried", "SV Altheim"));
 
             return runnerFiller.Create(200);
         }

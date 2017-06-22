@@ -207,12 +207,12 @@
     <None Include="Post-Deployment\01_Finalize_Deployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Migrations\0001_20170622-1134_jw2.sql" />
+    <None Include="Migrations\0001_20170622-CreateCategoriesTable.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Migrations\0002_20170622-1135_jw2.sql" />
+    <None Include="Migrations\0002_20170622-CreateRunnersTable.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Migrations\0003_20170622-1136_jw2.sql" />
+    <None Include="Migrations\0003_20170622-AddRunnersCategoriesForeignKey.sql" />
   </ItemGroup>
 </Project>

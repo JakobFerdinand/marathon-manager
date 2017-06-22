@@ -39,11 +39,12 @@
                 <DataGridTextColumn Header="Vorname" Binding="{Binding Firstname}" />
                 <DataGridTextColumn Header="Nachname" Binding="{Binding Lastname}" />
                 <DataGridTextColumn Header="Geburtsjahr" Binding="{Binding YearOfBirth}" />
-                <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId}" />
                 <DataGridComboBoxColumn Header="Kategorie" 
                                         SelectedItemBinding="{Binding Category}"
                                         ItemsSource="{Binding Source={StaticResource Locator}, Path=RunnersViewModel.Categories}"
                                         DisplayMemberPath="Name"/>
+                <DataGridTextColumn Header="Verein" Binding="{Binding SportsClub}" />
+                <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId}" />
             </DataGrid.Columns>
         </DataGrid>
 
