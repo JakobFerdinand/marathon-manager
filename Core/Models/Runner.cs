@@ -7,6 +7,7 @@ namespace Core.Models
         public int? Startnumber { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
+        public string SportsClub { get; set; }
         public int YearOfBirth { get; set; }
         public string ChipId { get; set; }
 

@@ -36,6 +36,11 @@ namespace Data
                 .IsRequired(false)
                 .HasMaxLength(10)
                 .IsUnicode(false);
+            builder.Property(c => c.SportsClub)
+                .ForSqlServerHasColumnName("SportsClub")
+                .IsRequired(false)
+                .HasMaxLength(200)
+                .IsUnicode();
 
             builder.HasOne(r => r.Category)
                 .WithMany(c => c.Runners)
