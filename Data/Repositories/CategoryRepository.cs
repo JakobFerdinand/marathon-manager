@@ -1,5 +1,8 @@
-﻿using Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using Core.Models;
 using Core.Repositories;
+using System.Linq;
 
 namespace Data.Repositories
 {
@@ -8,5 +11,10 @@ namespace Data.Repositories
         public CategoryRepository(RunnersContext context)
             : base(context)
         { }
+
+        public IEnumerable<Category> GetNotStarted()
+        {
+            return Entries.Where(c => c.Starttime == null).ToList();
+        }
     }
 }
