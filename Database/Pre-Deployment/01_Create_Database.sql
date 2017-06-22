@@ -1,9 +1,0 @@
-﻿IF (N'MarathonManager') IS NULL
-BEGIN
-	PRINT N'Creating MarathonManager...';
-END
-GO
-IF (DB_ID(N'MarathonManager') IS NULL)
-BEGIN
-	CREATE DATABASE MarathonManager; -- MODIFY THIS STATEMENT TO SPECIFY A COLLATION FOR YOUR DATABASE
-END
