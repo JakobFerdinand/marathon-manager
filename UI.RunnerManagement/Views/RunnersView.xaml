@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:validationRules="clr-namespace:UI.RunnerManagement.ValidationRules"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              DataContext="{Binding Source={StaticResource Locator}, Path=RunnersViewModel}"
              mc:Ignorable="d" 
@@ -36,13 +37,49 @@
             </i:Interaction.Triggers>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Startnummer" Binding="{Binding Startnumber}" />
-                <DataGridTextColumn Header="Vorname" Binding="{Binding Firstname}" />
-                <DataGridTextColumn Header="Nachname" Binding="{Binding Lastname}" />
-                <DataGridTextColumn Header="Geburtsjahr" Binding="{Binding YearOfBirth}" />
+                
+                <DataGridTextColumn Header="Vorname">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Firstname" >
+                            <Binding.ValidationRules>
+                                <validationRules:IsRequiredValidationRule Fieldname="Vorname" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                
+                <DataGridTextColumn Header="Nachname" >
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Lastname" >
+                            <Binding.ValidationRules>
+                                <validationRules:IsRequiredValidationRule Fieldname="Nachname" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Geburtsjahr" >
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="YearOfBirth" >
+                            <Binding.ValidationRules>
+                                <validationRules:IsRequiredValidationRule Fieldname="Geburtsjahr" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+
                 <DataGridComboBoxColumn Header="Kategorie" 
-                                        SelectedItemBinding="{Binding Category}"
                                         ItemsSource="{Binding Source={StaticResource Locator}, Path=RunnersViewModel.Categories}"
-                                        DisplayMemberPath="Name"/>
+                                        DisplayMemberPath="Name">
+                    <DataGridComboBoxColumn.SelectedItemBinding>
+                        <Binding Path="Category" >
+                            <Binding.ValidationRules>
+                                <validationRules:IsRequiredValidationRule Fieldname="Kategorie" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridComboBoxColumn.SelectedItemBinding>
+                </DataGridComboBoxColumn>
+                
                 <DataGridTextColumn Header="Verein" Binding="{Binding SportsClub}" />
                 <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId}" />
             </DataGrid.Columns>
