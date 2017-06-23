@@ -193,7 +193,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ValidationRules\IsRequiredValidationRule.cs" />
+    <Compile Include="Validation\IsRequiredValidationRule.cs" />
+    <Compile Include="Validation\Validator.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="ViewModels\RunnersViewModel.cs" />

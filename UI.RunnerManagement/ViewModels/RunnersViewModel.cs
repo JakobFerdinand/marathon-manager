@@ -2,7 +2,9 @@
 using Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
+using UI.RunnerManagement.Validation;
 
 namespace UI.RunnerManagement.ViewModels
 {
@@ -46,7 +48,9 @@ namespace UI.RunnerManagement.ViewModels
             LoadRunners();
             LoadCategories();
         }));
-        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(SaveRunners));
+        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand<DependencyObject>(
+            _ =>SaveRunners(),
+            grid => Validator.IsValid(grid)));
 
         internal void LoadRunners()
         {

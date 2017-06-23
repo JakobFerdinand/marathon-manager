@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:validationRules="clr-namespace:UI.RunnerManagement.ValidationRules"
+             xmlns:validationRules="clr-namespace:UI.RunnerManagement.Validation"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              DataContext="{Binding Source={StaticResource Locator}, Path=RunnersViewModel}"
              mc:Ignorable="d" 
@@ -14,7 +14,9 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.InputBindings>
-        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="S" 
+                    Command="{Binding SaveCommand}" 
+                    CommandParameter="{Binding ElementName=runnersDataGrid}"/>
     </UserControl.InputBindings>
     
     <Grid>
@@ -24,6 +26,7 @@
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="0"
+                  Name="runnersDataGrid"
                   ItemsSource="{Binding Runners}"
                   CanUserAddRows="True"
                   CanUserDeleteRows="False"
@@ -35,10 +38,34 @@
                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <DataGrid.Resources>
+                <Style x:Key="errorTextBoxStyle" TargetType="{x:Type TextBox}">
+                    <Setter Property="Padding" Value="-2"/>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="Background" Value="#FFFB8888"/>
+                            <Setter Property="ToolTip" 
+                                    Value="{Binding RelativeSource={RelativeSource Self},
+                                                    Path=(Validation.Errors)[0].ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style x:Key="errorComboBoxStyle" TargetType="{x:Type ComboBox}">
+                    <Setter Property="Padding" Value="-2"/>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="Background" Value="#FFFB8888"/>
+                            <Setter Property="ToolTip" 
+                                    Value="{Binding RelativeSource={RelativeSource Self},
+                                                    Path=(Validation.Errors)[0].ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Startnummer" Binding="{Binding Startnumber}" />
-                
-                <DataGridTextColumn Header="Vorname">
+
+                <DataGridTextColumn Header="Vorname" EditingElementStyle="{StaticResource errorTextBoxStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Firstname" >
                             <Binding.ValidationRules>
@@ -47,8 +74,8 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                
-                <DataGridTextColumn Header="Nachname" >
+
+                <DataGridTextColumn Header="Nachname" EditingElementStyle="{StaticResource errorTextBoxStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Lastname" >
                             <Binding.ValidationRules>
@@ -58,7 +85,7 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Geburtsjahr" >
+                <DataGridTextColumn Header="Geburtsjahr" EditingElementStyle="{StaticResource errorTextBoxStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="YearOfBirth" >
                             <Binding.ValidationRules>
@@ -68,7 +95,8 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridComboBoxColumn Header="Kategorie" 
+                <DataGridComboBoxColumn Header="Kategorie"
+                                        EditingElementStyle="{StaticResource errorComboBoxStyle}"
                                         ItemsSource="{Binding Source={StaticResource Locator}, Path=RunnersViewModel.Categories}"
                                         DisplayMemberPath="Name">
                     <DataGridComboBoxColumn.SelectedItemBinding>
@@ -79,7 +107,7 @@
                         </Binding>
                     </DataGridComboBoxColumn.SelectedItemBinding>
                 </DataGridComboBoxColumn>
-                
+
                 <DataGridTextColumn Header="Verein" Binding="{Binding SportsClub}" />
                 <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId}" />
             </DataGrid.Columns>
@@ -89,6 +117,7 @@
                 Content="Speichern"
                 HorizontalAlignment="Right"
                 Command="{Binding SaveCommand}"
+                CommandParameter="{Binding ElementName=runnersDataGrid}"
                 Margin="0 8 0 0" />
     </Grid>
 </UserControl>
