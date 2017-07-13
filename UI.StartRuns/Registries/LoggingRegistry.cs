@@ -16,7 +16,7 @@ namespace UI.StartRuns.Registries
                 .Is(configuration.GetLoggingPath("HtmlFilePath"))
                 .Singleton();
 
-            For<IChangesLogger>()
+            For<ILogger>()
                 .Use<ChangesLogger>()
                 .Singleton();
         }

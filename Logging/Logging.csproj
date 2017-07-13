@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Core">
       <HintPath>..\Core\bin\Debug\netstandard1.4\Core.dll</HintPath>
     </Reference>

@@ -32,7 +32,7 @@ namespace UI.TimeRecord.Registries
                     c.GetInstance<ILogger>("HtmlLogger")
                 });
 
-            For<IChangesLogger>()
+            For<ILogger>()
                 .Use<ChangesLogger>()
                 .Ctor<ILogger>()
                 .Is(c => c.GetInstance<ILogger>("HtmlLogger"))

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SampleData
 {
-    public class EmptyChangesLogger : IChangesLogger
+    public class EmptyChangesLogger : ILogger
     {
         public void LogChanges(IEnumerable<ChangeLog> changes)
         {
