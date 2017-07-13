@@ -218,4 +218,7 @@
   <ItemGroup>
     <None Include="Migrations\0004_20170713-1646_jw2.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrations\0005_20170713-2133_jw2.sql" />
+  </ItemGroup>
 </Project>

@@ -20,23 +20,23 @@ namespace UI.RunnerManagement.Registries
 
             For<IChangesLogger>()
                 .Use<ChangesLogger>()
-                .Named("ChangesLogger")
+                //.Named("ChangesLogger")
                 .Singleton();
 
             For<IChangesLogger>()
                 .Use<DbChangesLogger>()
-                .Named("DbChangesLogger")
+                //.Named("DbChangesLogger")
                 .AlwaysUnique();
 
-            For<IChangesLogger>()
-                .Use<MultiChangesLogger>()
-                .Ctor<IEnumerable<IChangesLogger>>()
-                .Is(c => new List<IChangesLogger>
-                {
-                    c.GetInstance<IChangesLogger>("ChangesLogger"),
-                    c.GetInstance<IChangesLogger>("DbChangesLogger")
-                })
-                .AlwaysUnique();
+            //    For<IChangesLogger>()
+            //        .Use<MultiChangesLogger>()
+            //        .Ctor<IEnumerable<IChangesLogger>>()
+            //        .Is(c => new List<IChangesLogger>
+            //        {
+            //            c.GetInstance<IChangesLogger>("ChangesLogger"),
+            //            c.GetInstance<IChangesLogger>("DbChangesLogger")
+            //        })
+            //        .AlwaysUnique();
         }
     }
 }

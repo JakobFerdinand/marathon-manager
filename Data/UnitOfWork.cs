@@ -29,14 +29,26 @@ namespace Data
             Categories = categories;
             Runners = runners;
         }
+        public UnitOfWork(
+           RunnersContext context,
+           ICategoryRepository categories,
+           IRunnerRepository runners)
+        {
+            _context = context;
+            _changesFinder = null;
+            _changesLogger = null;
+
+            Categories = categories;
+            Runners = runners;
+        }
 
         public void Complete()
         {
             if (!_context.ChangeTracker.HasChanges())
                 return;
-            var changes = _changesFinder.GetChanges(_context).ToList();
+            var changes = _changesFinder?.GetChanges(_context).ToList();
             _context.SaveChanges();
-            _changesLogger.LogChanges(changes);
+            _changesLogger?.LogChanges(changes);
         }
 
         public void Dispose()
