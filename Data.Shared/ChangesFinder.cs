@@ -34,12 +34,12 @@ namespace Data.Shared
                     if (property.IsModified)
                         yield return new ChangeLog
                         {
-                            Id = key.OriginalValue,
+                            EntityId = key.OriginalValue.ToString(),
                             ChangeTime = changeTime,
                             TypeName = entry.Entity.GetType().Name,
                             PropertyName = propertyName,
-                            OldValue = property.OriginalValue,
-                            NewValue = property.CurrentValue
+                            OldValue = property.OriginalValue.ToString(),
+                            NewValue = property.CurrentValue.ToString()
                         };
                 }
             }

@@ -4,11 +4,12 @@ namespace Core.Models
 {
     public class ChangeLog
     {
-        public object Id { get; set; }
+        public int Id { get; set; }
+        public string EntityId { get; set; }
         public DateTime ChangeTime { get; set; }
         public string TypeName { get; set; }
         public string PropertyName { get; set; }
-        public object OldValue { get; set; }
-        public object NewValue { get; set; }
+        public string OldValue { get; set; }
+        public string NewValue { get; set; }
     }
 }
