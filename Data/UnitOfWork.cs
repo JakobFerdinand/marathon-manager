@@ -8,7 +8,7 @@ namespace Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly RunnersContext _context;
+        private readonly RunnerDbContext _context;
         private readonly IChangesFinder _changesFinder;
         private readonly IChangesLogger _changesLogger;
 
@@ -16,7 +16,7 @@ namespace Data
         public IRunnerRepository Runners { get; }
 
         public UnitOfWork(
-            RunnersContext context,
+            RunnerDbContext context,
             ICategoryRepository categories,
             IRunnerRepository runners,
             IChangesFinder changesFinder,
@@ -30,7 +30,7 @@ namespace Data
             Runners = runners;
         }
         public UnitOfWork(
-           RunnersContext context,
+           RunnerDbContext context,
            ICategoryRepository categories,
            IRunnerRepository runners)
         {

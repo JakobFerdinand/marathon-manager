@@ -28,10 +28,10 @@ namespace SampleData
 
         private static void SaveData(IEnumerable<Runner> runners, IEnumerable<Category> categories)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<RunnersContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<RunnerDbContext>();
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True");
 
-            using (var context = new RunnersContext(optionsBuilder.Options))
+            using (var context = new RunnerDbContext(optionsBuilder.Options))
             using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 unitOfWork.Categories.AddRange(categories);

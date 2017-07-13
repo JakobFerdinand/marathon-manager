@@ -36,7 +36,7 @@ namespace UI.StartRuns
 
         public static void ConfigureServices()
         {
-            _container.AddDbContext<RunnersContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            _container.AddDbContext<RunnerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             _container.Configure(c =>
             {
                 c.AddRegistry(new CommonRegistry());
