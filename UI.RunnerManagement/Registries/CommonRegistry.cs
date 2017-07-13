@@ -2,16 +2,12 @@
 using Logic.Common.Services;
 using StructureMap;
 
-namespace Logic.DIConfiguration
+namespace UI.RunnerManagement.Registries
 {
     internal class CommonRegistry : Registry
     {
         public CommonRegistry()
         {
-            For<IContainer>()
-                .Use<Container>()
-                .Singleton();
-
             For<IReader>()
                 .Use<ConsoleReader>()
                 .Singleton();

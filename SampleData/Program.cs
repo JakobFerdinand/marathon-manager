@@ -1,6 +1,7 @@
 ﻿using Core.Models;
 using Data;
 using Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,11 @@ namespace SampleData
 
         private static void SaveData(IEnumerable<Runner> runners, IEnumerable<Category> categories)
         {
+            var optionsBuilder = new DbContextOptionsBuilder<RunnersContext>();
+            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True");
 
-            using (var context = new RunnersContext(SqlOptionsBuilder.GetOptions()))
-            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context)))
+            using (var context = new RunnersContext(optionsBuilder.Options))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 unitOfWork.Categories.AddRange(categories);
                 unitOfWork.Complete();
