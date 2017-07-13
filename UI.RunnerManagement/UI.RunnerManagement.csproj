@@ -193,6 +193,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ChipIdNotUnicErrorMessageConverter.cs" />
+    <Compile Include="Converters\StartnumberNotUnicErrorMessageConverter.cs" />
     <Compile Include="Validation\IsRequiredValidationRule.cs" />
     <Compile Include="Validation\Validator.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />

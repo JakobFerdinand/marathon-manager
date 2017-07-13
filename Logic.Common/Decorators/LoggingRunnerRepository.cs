@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using Core.Models;
+﻿using Core.Models;
 using Core.Repositories;
 using Logging.Interfaces;
 using Logic.Common.Interfaces;
-using System.Globalization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 
 namespace Logic.Common.Decorators
 {
@@ -42,13 +43,25 @@ namespace Logic.Common.Decorators
             }
             catch (InvalidOperationException)
             {
-                _logger.LogError($"{_dateTimeManager.Now.ToString("HH:mm:ss.fff")} | There where more than one runner with the chipId {chipId}.");
+                var invalidRunners = BaseRepository.Find(r => r.ChipId == chipId);
+                _logger.LogError($"{_dateTimeManager.Now.ToString("HH:mm:ss.fff")} | There where {invalidRunners.Count()} runners with the chipId {chipId}.");
+
+                foreach (var runner in invalidRunners)
+                    _logger.LogError($" - Id: {runner.Id, 3} | Startnumber: {runner.Startnumber} | {runner.Firstname} {runner.Lastname}");
             }
             return null;
+        }
+        public override IEnumerable<Runner> Find(Expression<Func<Runner, bool>> predicate)
+        {
+            return BaseRepository.Find(predicate);
         }
         public override IEnumerable<Runner> GetAll()
         {
             return BaseRepository.GetAll();
+        }
+        public override int Count(Expression<Func<Runner, bool>> predicate)
+        {
+            return BaseRepository.Count(predicate);
         }
         public override Runner FirstOrDefault(Expression<Func<Runner, bool>> predicate)
         {

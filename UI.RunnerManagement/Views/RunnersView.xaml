@@ -5,6 +5,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:validationRules="clr-namespace:UI.RunnerManagement.Validation"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:UI.RunnerManagement.Converters"
              DataContext="{Binding Source={StaticResource Locator}, Path=RunnersViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
@@ -18,6 +19,10 @@
                     Command="{Binding SaveCommand}" 
                     CommandParameter="{Binding ElementName=runnersDataGrid}"/>
     </UserControl.InputBindings>
+    <UserControl.Resources>
+        <converters:StartnumberNotUnicErrorMessageConverter x:Key="startnumberNotUnicErrorMessageConverter" />
+        <converters:ChipIdNotUnicErrorMessageConverter x:Key="chipIdNotUnicErrorMessageConverter" />
+    </UserControl.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -26,7 +31,6 @@
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="0"
-                  Name="runnersDataGrid"
                   ItemsSource="{Binding Runners}"
                   CanUserAddRows="True"
                   CanUserDeleteRows="False"
@@ -37,19 +41,11 @@
                     <i:InvokeCommandAction Command="{Binding EditCommand}" 
                                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=SelectedItem}"/>
                 </i:EventTrigger>
+                <i:EventTrigger EventName="CurrentCellChanged">
+                    <i:InvokeCommandAction Command="{Binding CurrentCellChangedCommand}" />
+                </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Resources>
-                <Style x:Key="errorTextBoxStyle" TargetType="{x:Type TextBox}">
-                    <Setter Property="Padding" Value="-2"/>
-                    <Style.Triggers>
-                        <Trigger Property="Validation.HasError" Value="True">
-                            <Setter Property="Background" Value="#FFFB8888"/>
-                            <Setter Property="ToolTip" 
-                                    Value="{Binding RelativeSource={RelativeSource Self},
-                                                    Path=(Validation.Errors)[0].ErrorContent}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
                 <Style x:Key="errorComboBoxStyle" TargetType="{x:Type ComboBox}">
                     <Setter Property="Padding" Value="-2"/>
                     <Style.Triggers>
@@ -61,11 +57,17 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
+                <Style x:Key="errorTextBoxStyle" TargetType="TextBox">
+                    <Setter Property="Background" Value="#FFFB8888"/>
+                    <Setter Property="ToolTip" 
+                                    Value="{Binding RelativeSource={RelativeSource Self},
+                                                    Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Startnummer" Binding="{Binding Startnumber}" />
 
-                <DataGridTextColumn Header="Vorname" EditingElementStyle="{StaticResource errorTextBoxStyle}">
+                <DataGridTextColumn Header="Vorname">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Firstname" >
                             <Binding.ValidationRules>
@@ -108,16 +110,73 @@
                     </DataGridComboBoxColumn.SelectedItemBinding>
                 </DataGridComboBoxColumn>
 
-                <DataGridTextColumn Header="Verein" Binding="{Binding SportsClub}" />
+                <DataGridTemplateColumn Header="Verein">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox IsEditable="True"
+                                      IsTextSearchEnabled="True"
+                                      IsReadOnly="False"
+                                      Text="{Binding SportsClub, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext.SportClubs}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId}" />
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button Grid.Row="1"
+        <Grid Grid.Row="1" 
+              Margin="0 8 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Foreground="Red">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource startnumberNotUnicErrorMessageConverter}" UpdateSourceTrigger="PropertyChanged">
+                            <Binding Path="AreStartnumbersUnic" UpdateSourceTrigger="PropertyChanged" />
+                            <Binding Path="Runners" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AreStartnumbersUnic}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock Foreground="Red">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource chipIdNotUnicErrorMessageConverter}" UpdateSourceTrigger="PropertyChanged">
+                            <Binding Path="AreChipIdsUnic" UpdateSourceTrigger="PropertyChanged" />
+                            <Binding Path="Runners" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AreChipIdsUnic}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+
+            <Button Grid.Column="2"
                 Content="Speichern"
-                HorizontalAlignment="Right"
-                Command="{Binding SaveCommand}"
-                CommandParameter="{Binding ElementName=runnersDataGrid}"
-                Margin="0 8 0 0" />
+                Command="{Binding SaveCommand}" />
+        </Grid>
     </Grid>
 </UserControl>

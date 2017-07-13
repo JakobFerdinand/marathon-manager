@@ -26,5 +26,16 @@ namespace UI.RunnerManagement.Validation
 
             return ValidationResult.ValidResult;
         }
+
+        private bool IsEmpty(Runner runner)
+        {
+            return string.IsNullOrWhiteSpace(runner.Firstname) &&
+                   string.IsNullOrWhiteSpace(runner.Lastname) &&
+                   string.IsNullOrWhiteSpace(runner.SportsClub) &&
+                   string.IsNullOrWhiteSpace(runner.ChipId) &&
+                   runner.Category == null &&
+                   runner.YearOfBirth == 0 &&
+                   runner.Startnumber == 0;
+        }
     }
 }

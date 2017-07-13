@@ -23,7 +23,7 @@ namespace Logging.Loggers
 
             var fileName = Path.GetFileNameWithoutExtension(path);
 
-            path = Path.Combine(directoryPath, $"{fileName}_{DateTime.Now.ToString("HH_mm_ss")}.html");
+            path = Path.Combine(directoryPath, $"{fileName}_{DateTime.Now.ToString("HH_mm_ss_fff")}.html");
 
             using (var fs = new FileStream(path, FileMode.CreateNew))
             using (var sw = new StreamWriter(fs))

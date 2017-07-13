@@ -31,6 +31,16 @@ namespace Data.Repositories
             return Entries.ToList();
         }
 
+        public int Count(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Entries.Count(predicate);
+        }
+
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Entries.Where(predicate).ToList();
+        }
+
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return Entries.FirstOrDefault(predicate);
