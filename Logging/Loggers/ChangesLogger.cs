@@ -17,7 +17,7 @@ namespace Logging.Loggers
         public void LogChanges(IEnumerable<ChangeLog> changes)
         {
             foreach (var c in changes)
-                _logger.LogMessage($"{c.ChangeTime.ToString("yyyy.MM.dd - HH.mm.ss.fff")} | {c.TypeName} | Id: {c.Id} | {c.PropertyName} | OldValue: {c.OldValue} | NewValue: {c.NewValue}");
+                _logger.LogMessage($"{c.ChangeTime.ToString("yyyy.MM.dd - HH.mm.ss.fff")} | {c.TypeName} | Id: {c.EntityId} | {c.PropertyName} | OldValue: {c.OldValue} | NewValue: {c.NewValue}");
         }
     }
 }

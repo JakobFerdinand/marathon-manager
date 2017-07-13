@@ -215,4 +215,7 @@
   <ItemGroup>
     <None Include="Migrations\0003_20170622-AddRunnersCategoriesForeignKey.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrations\0004_20170713-1646_jw2.sql" />
+  </ItemGroup>
 </Project>
