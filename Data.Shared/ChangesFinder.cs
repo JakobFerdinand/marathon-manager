@@ -19,6 +19,7 @@ namespace Data.Shared
         {
             var changeTime = _dateTimeManager.Now;
 
+            var changes = new List<ChangeLog>();
             foreach (var entry in context.ChangeTracker.Entries())
             {
 
@@ -32,17 +33,18 @@ namespace Data.Shared
                 {
                     var property = entry.Property(propertyName);
                     if (property.IsModified)
-                        yield return new ChangeLog
+                        changes.Add(new ChangeLog
                         {
-                            EntityId = key.OriginalValue.ToString(),
+                            EntityId = key.OriginalValue?.ToString(),
                             ChangeTime = changeTime,
                             TypeName = entry.Entity.GetType().Name,
                             PropertyName = propertyName,
-                            OldValue = property.OriginalValue.ToString(),
-                            NewValue = property.CurrentValue.ToString()
-                        };
+                            OldValue = property.OriginalValue?.ToString(),
+                            NewValue = property.CurrentValue?.ToString()
+                        });
                 }
             }
+            return changes;
         }
     }
 }

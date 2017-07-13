@@ -13,6 +13,11 @@ namespace SampleData
     {
         static void Main(string[] args)
         {
+            
+        }
+
+        private static void GenerateSampleData()
+        {
             Console.WriteLine("Generate Sample Data.");
             var runners = GenerateRunners();
             var categories = GenerateCategories();
