@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Data
 {
-    public class RunnersContext : DbContext
+    public class RunnerDbContext : DbContext
     {
-        public RunnersContext(DbContextOptions<RunnersContext> options) 
+        public RunnerDbContext(DbContextOptions<RunnerDbContext> options) 
             : base(options)
         { }
 
@@ -25,7 +25,8 @@ namespace Data
         {
             builder.ForSqlServerToTable("Runners");
             builder.HasKey(r => r.Id);
-            builder.Property(r => r.Id).ForSqlServerHasColumnName("RunnerId");
+            builder.Property(r => r.Id)
+                .ForSqlServerHasColumnName("RunnerId");
             builder.Property(c => c.Firstname)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -40,6 +41,12 @@ namespace Data
                 .ForSqlServerHasColumnName("SportsClub")
                 .IsRequired(false)
                 .HasMaxLength(200)
+                .IsUnicode();
+            builder.Property(r => r.City)
+                .HasMaxLength(50)
+                .IsUnicode();
+            builder.Property(r => r.Email)
+                .HasMaxLength(50)
                 .IsUnicode();
 
             builder.HasOne(r => r.Category)

@@ -3,7 +3,6 @@ using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 
 namespace UI.RunnerManagement.ViewModels
@@ -106,6 +105,7 @@ namespace UI.RunnerManagement.ViewModels
             ValidateChipIds();
 
             RaisePropertyChanged(nameof(SportClubs));
+            SaveRunners();
         }
         internal void ValidateStartnumbers()
         {

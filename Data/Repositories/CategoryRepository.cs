@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Data.Repositories
 {
-    public class CategoryRepository : Repository<RunnersContext, Category>, ICategoryRepository
+    public class CategoryRepository : Repository<RunnerDbContext, Category>, ICategoryRepository
     {
-        public CategoryRepository(RunnersContext context)
+        public CategoryRepository(RunnerDbContext context)
             : base(context)
         { }
 

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Data.Repositories
 {
-    public class RunnerRepository : Repository<RunnersContext, Runner>, IRunnerRepository
+    public class RunnerRepository : Repository<RunnerDbContext, Runner>, IRunnerRepository
     {
-        public RunnerRepository(RunnersContext context)
+        public RunnerRepository(RunnerDbContext context)
             : base(context)
         { }
 

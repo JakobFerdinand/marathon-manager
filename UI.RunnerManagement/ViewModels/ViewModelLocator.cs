@@ -36,7 +36,7 @@ namespace UI.RunnerManagement.ViewModels
 
         public void ConfigureServices()
         {
-            _container.AddDbContext<RunnersContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            _container.AddDbContext<RunnerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             _container.AddDbContext<LoggingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Logging")));
             _container.Configure(c =>
             {
