@@ -2,21 +2,16 @@
 using Core.Repositories;
 using Data;
 using Data.Repositories;
+using Data.Shared;
 using Logic.Common.Decorators;
-using Microsoft.EntityFrameworkCore;
 using StructureMap;
 
-namespace Logic.DIConfiguration
+namespace UI.RunnerManagement.Registries
 {
     internal class DataRegistry : Registry
     {
         public DataRegistry()
         {
-            ForConcreteType<RunnersContext>()
-                .Configure
-                .Ctor<DbContextOptions<RunnersContext>>()
-                .Is(SqlOptionsBuilder.GetOptions());
-
             For<ICategoryRepository>()
                 .Use<CategoryRepository>()
                 .AlwaysUnique();
@@ -27,6 +22,10 @@ namespace Logic.DIConfiguration
             For<IRunnerRepository>()
                 .Use<RunnerRepository>()
                 .AlwaysUnique();
+
+            For<IChangesFinder>()
+                .Use<ChangesFinder>()
+                .Singleton();
 
             For<IUnitOfWork>()
                 .Use<UnitOfWork>()

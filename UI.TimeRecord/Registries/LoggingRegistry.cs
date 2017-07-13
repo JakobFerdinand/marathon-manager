@@ -1,13 +1,15 @@
 ﻿using Logging.Interfaces;
 using Logging.Loggers;
+using Logic.Common.Extensions;
+using Microsoft.Extensions.Configuration;
 using StructureMap;
 using System.Collections.Generic;
 
-namespace Logic.DIConfiguration
+namespace UI.TimeRecord.Registries
 {
     internal class LoggingRegistry : Registry
     {
-        public LoggingRegistry()
+        public LoggingRegistry(IConfigurationRoot configuration)
         {
             For<ILogger>()
                 .Use<ConsoleLogger>()
@@ -16,19 +18,24 @@ namespace Logic.DIConfiguration
 
             For<ILogger>()
                 .Use<HtmlFileLogger>()
-                .Named("HtmlFileLogger")
+                .Named("HtmlLogger")
                 .Ctor<string>()
-                .Is(@"C:\Logs\MarathonManagerTimeRecordLog.html")
+                .Is(configuration.GetLoggingPath("HtmlFilePath"))
                 .Singleton();
 
             For<ILogger>()
                 .Use<MultiLogger>()
                 .Ctor<IEnumerable<ILogger>>()
-                .Is(c => new [] 
+                .Is(c => new List<ILogger>
                 {
                     c.GetInstance<ILogger>("ConsoleLogger"),
-                    c.GetInstance<ILogger>("HtmlFileLogger")
-                })
+                    c.GetInstance<ILogger>("HtmlLogger")
+                });
+
+            For<IChangesLogger>()
+                .Use<ChangesLogger>()
+                .Ctor<ILogger>()
+                .Is(c => c.GetInstance<ILogger>("HtmlLogger"))
                 .Singleton();
         }
     }
