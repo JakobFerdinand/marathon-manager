@@ -1,7 +1,6 @@
 ﻿using Core.Models;
 using Logging.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Logging.Loggers
 {
