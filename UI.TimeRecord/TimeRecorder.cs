@@ -41,7 +41,7 @@ namespace UI.TimeRecord
                 runner.TimeAtDestination = timeAtDestination;
                 runner.RunningTime = timeAtDestination - runner.Category.Starttime;
 
-                _logger.LogMessage($"{timeAtDestination.ToString("hh:mm:ss.fff")} | {$"{runner.Firstname} {runner.Lastname}",25} | {runner.Startnumber} | {runner.RunningTime}");
+                _logger.LogMessage($"{timeAtDestination.ToString("HH:mm:ss.fff")} | {$"{runner.Firstname} {runner.Lastname}",25} | {runner.Startnumber,3} | {runner.RunningTime}");
 
                 _unitOfWork.Complete();
             }

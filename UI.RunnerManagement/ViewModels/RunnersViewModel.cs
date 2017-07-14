@@ -43,10 +43,8 @@ namespace UI.RunnerManagement.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public List<string> SportClubs
-        {
-            get => Runners.Where(r => r.SportsClub != null).Select(r => r.SportsClub).OrderBy(s => s).Distinct().ToList();
-        }
+        public List<string> SportClubs => Runners.Where(r => r.SportsClub != null).Select(r => r.SportsClub).Distinct().OrderBy(s => s).ToList();
+        public List<string> Cities => Runners.Where(r => r.City != null).Select(r => r.City).Distinct().OrderBy(r => r).ToList();
         public bool AreStartnumbersUnic
         {
             get => _areStartnumbersUnic;
@@ -104,8 +102,13 @@ namespace UI.RunnerManagement.ViewModels
             ValidateStartnumbers();
             ValidateChipIds();
 
-            RaisePropertyChanged(nameof(SportClubs));
+            NotifySportsClubAndCities();
             SaveRunners();
+        }
+        internal void NotifySportsClubAndCities()
+        {
+            RaisePropertyChanged(nameof(SportClubs));
+            RaisePropertyChanged(nameof(Cities));
         }
         internal void ValidateStartnumbers()
         {
