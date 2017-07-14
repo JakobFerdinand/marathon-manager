@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Core.Models;
+﻿using Core.Models;
 using Core.Repositories;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Data.Repositories
