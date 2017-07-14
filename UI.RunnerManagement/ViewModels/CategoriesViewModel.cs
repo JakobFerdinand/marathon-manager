@@ -40,7 +40,7 @@ namespace UI.RunnerManagement.ViewModels
 
         internal void LoadCategories()
         {
-            Categories = _unitOfWork.Categories.GetAll(withTracking: false);
+            Categories = _unitOfWork.Categories.GetAll(asNotTracking: true);
         }
         internal void InitializeTimer()
         {

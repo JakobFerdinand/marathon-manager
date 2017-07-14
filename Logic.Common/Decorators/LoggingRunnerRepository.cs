@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic.Common.Decorators
 {
@@ -55,9 +55,13 @@ namespace Logic.Common.Decorators
         {
             return BaseRepository.Find(predicate);
         }
-        public override IEnumerable<Runner> GetAll(bool withTracking = true)
+        public override IEnumerable<Runner> GetAll(bool asNoTracking = false)
         {
-            return BaseRepository.GetAll(withTracking);
+            return BaseRepository.GetAll(asNoTracking);
+        }
+        public override Task<IEnumerable<Runner>> GetAllWithRelated(bool asNoTracking = false)
+        {
+            return BaseRepository.GetAllWithRelated(asNoTracking);
         }
         public override int Count(Expression<Func<Runner, bool>> predicate)
         {
