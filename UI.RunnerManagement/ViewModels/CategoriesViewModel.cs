@@ -2,6 +2,7 @@
 using Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Input;
 
 namespace UI.RunnerManagement.ViewModels
@@ -13,9 +14,11 @@ namespace UI.RunnerManagement.ViewModels
         private IEnumerable<Category> _categories;
         private ICommand _initializeCommand;
 
+        private Timer _timer;
+
         public CategoriesViewModel(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null."); 
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
         }
 
         public IEnumerable<Category> Categories
@@ -28,11 +31,20 @@ namespace UI.RunnerManagement.ViewModels
             }
         }
 
-        public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new RelayCommand(LoadCategories));
+        public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new RelayCommand(
+            () =>
+            {
+                LoadCategories();
+                InitializeTimer();
+            }));
 
         internal void LoadCategories()
         {
-            Categories = _unitOfWork.Categories.GetAll();
+            Categories = _unitOfWork.Categories.GetAll(withTracking: false);
+        }
+        internal void InitializeTimer()
+        {
+            _timer = new Timer(_ => LoadCategories(), null, dueTime: 0, period: 10000);
         }
     }
 }

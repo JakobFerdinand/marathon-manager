@@ -26,9 +26,12 @@ namespace Data.Repositories
             return Entries.Find(id);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public IEnumerable<TEntity> GetAll(bool withTracking = true)
         {
-            return Entries.ToList();
+            if (withTracking)
+                return Entries.ToList();
+
+            return Entries.AsNoTracking().ToList();
         }
 
         public int Count(Expression<Func<TEntity, bool>> predicate)

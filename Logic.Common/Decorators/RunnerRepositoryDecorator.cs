@@ -14,7 +14,7 @@ namespace Logic.Common.Decorators
 
         public abstract Runner Get(int id);
         public abstract Runner GetIfHasNoTimeWithCategory(string chipId);
-        public abstract IEnumerable<Runner> GetAll();
+        public abstract IEnumerable<Runner> GetAll(bool withTracking = true);
         public abstract int Count(Expression<Func<Runner, bool>> predicate);
         public abstract IEnumerable<Runner> Find(Expression<Func<Runner, bool>> predicate);
         public abstract Runner FirstOrDefault(Expression<Func<Runner, bool>> predicate);
