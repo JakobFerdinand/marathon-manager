@@ -1,6 +1,12 @@
+using AutoMapper;
+using Core;
+using Core.Repositories;
+using Data;
+using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,6 +30,13 @@ namespace WebApplicationBasic
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddAutoMapper();
+
+            services.AddDbContext<RunnerDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IRunnerRepository, RunnerRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             // Add framework services.
             services.AddMvc();
         }
