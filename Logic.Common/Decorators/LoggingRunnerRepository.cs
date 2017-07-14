@@ -55,9 +55,9 @@ namespace Logic.Common.Decorators
         {
             return BaseRepository.Find(predicate);
         }
-        public override IEnumerable<Runner> GetAll()
+        public override IEnumerable<Runner> GetAll(bool withTracking = true)
         {
-            return BaseRepository.GetAll();
+            return BaseRepository.GetAll(withTracking);
         }
         public override int Count(Expression<Func<Runner, bool>> predicate)
         {

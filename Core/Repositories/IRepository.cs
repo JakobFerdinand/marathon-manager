@@ -8,7 +8,7 @@ namespace Core.Repositories
     public interface IRepository<TEntity> where TEntity : Entity
     {
         TEntity Get(int id);
-        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> GetAll(bool withTracking = true);
         int Count(Expression<Func<TEntity, bool>> predicate);
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
