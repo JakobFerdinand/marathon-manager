@@ -13,13 +13,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
-        <TextBlock Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" 
-                   HorizontalAlignment="Center"
-                   Margin="4"
-                   FontSize="24"
-                   Foreground="Blue"
-                   FontFamily="Yu Gothic UI Semilight"  />
-
         <ListView Grid.Row="1"
                   ItemsSource="{x:Bind ViewModel.Runners}">
             <ListView.ItemTemplate>

@@ -95,7 +95,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\IContainerExtensions.cs" />
     <Compile Include="Interfaces\IRunnerService.cs" />
+    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\Runner.cs" />
     <Compile Include="Registries\CommonRegistry.cs" />
     <Compile Include="Services\RunnerService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -141,22 +144,15 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>5.3.3</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>10.0.3</Version>
+    </PackageReference>
     <PackageReference Include="StructureMap">
       <Version>4.5.1</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.3.1</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{1E5DA1FC-A8C6-4110-93A8-9EBF624F1C9B}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logic.Common\Logic.Common.csproj">
-      <Project>{26afe6e2-d9de-44bc-bf0e-c60f01e0e536}</Project>
-      <Name>Logic.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
