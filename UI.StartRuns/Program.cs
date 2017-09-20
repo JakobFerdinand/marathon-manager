@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using StructureMap;
+﻿using Data;
 using Logic.Common.Extensions;
-using System.Reflection;
-using Data;
 using Microsoft.EntityFrameworkCore;
-using UI.StartRuns.Registries;
+using Microsoft.Extensions.Configuration;
+using StructureMap;
 using System.IO;
+using System.Reflection;
+using UI.StartRuns.Registries;
 
 namespace UI.StartRuns
 {
