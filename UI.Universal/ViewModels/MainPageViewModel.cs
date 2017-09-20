@@ -1,7 +1,7 @@
-﻿using Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UI.Universal.Interfaces;
+using UI.Universal.Models;
 
 namespace UI.Universal.ViewModels
 {

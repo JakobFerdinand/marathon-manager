@@ -1,5 +1,5 @@
-﻿using Logic.Common.Extensions;
-using StructureMap;
+﻿using StructureMap;
+using UI.Universal.Extensions;
 using UI.Universal.Registries;
 using UI.Universal.ViewModels;
 using Windows.UI.Xaml.Controls;

@@ -1,6 +1,6 @@
-﻿using Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using UI.Universal.Models;
 
 namespace UI.Universal.Interfaces
 {
