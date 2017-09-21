@@ -81,8 +81,8 @@ namespace UI.RunnerManagement.ViewModels
         public ICommand CurrentCellChangedCommand => _currentCellChangedCommand ?? (_currentCellChangedCommand = new RelayCommand(CurrentCellChanged));
         public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new RelayCommand(() =>
         {
-            LoadRunners();
             LoadCategories();
+            LoadRunners();
         }));
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(
             () => SaveRunners(),
@@ -94,7 +94,7 @@ namespace UI.RunnerManagement.ViewModels
             ValidateStartnumbers();
             ValidateChipIds();
         }
-        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll();
+        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNotTracking: false);
         internal void SaveRunners() => _unitOfWork.Complete();
         internal void EditRunner(Runner selectedRunner)
         {
@@ -110,7 +110,7 @@ namespace UI.RunnerManagement.ViewModels
             ValidateChipIds();
 
             NotifySportsClubAndCities();
-            SaveRunners();
+            //SaveRunners();
         }
         internal void NotifySportsClubAndCities()
         {

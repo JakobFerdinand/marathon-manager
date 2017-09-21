@@ -32,6 +32,7 @@
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="0"
+                  Name="myDataGrid"
                   ItemsSource="{Binding Runners}"
                   CanUserAddRows="True"
                   CanUserDeleteRows="False"
@@ -88,7 +89,7 @@
 
                 <DataGridTextColumn Header="Vorname">
                     <DataGridTextColumn.Binding>
-                        <Binding Path="Firstname" >
+                        <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
                                 <validationRules:IsRequiredValidationRule Fieldname="Vorname" />
                             </Binding.ValidationRules>
@@ -98,7 +99,7 @@
 
                 <DataGridTextColumn Header="Nachname" EditingElementStyle="{StaticResource errorTextBoxStyle}">
                     <DataGridTextColumn.Binding>
-                        <Binding Path="Lastname" >
+                        <Binding Path="Lastname" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <validationRules:IsRequiredValidationRule Fieldname="Nachname" />
                             </Binding.ValidationRules>
@@ -108,7 +109,7 @@
 
                 <DataGridTextColumn Header="Geburtsjahr" EditingElementStyle="{StaticResource errorTextBoxStyle}">
                     <DataGridTextColumn.Binding>
-                        <Binding Path="YearOfBirth" >
+                        <Binding Path="YearOfBirth" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
                                 <validationRules:IsRequiredValidationRule Fieldname="Geburtsjahr" />
                             </Binding.ValidationRules>
@@ -121,7 +122,7 @@
                                         ItemsSource="{Binding Source={StaticResource Locator}, Path=RunnersViewModel.Categories}"
                                         DisplayMemberPath="Name">
                     <DataGridComboBoxColumn.SelectedItemBinding>
-                        <Binding Path="Category" >
+                        <Binding Path="Category" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
                                 <validationRules:IsRequiredValidationRule Fieldname="Kategorie" />
                             </Binding.ValidationRules>
@@ -129,7 +130,7 @@
                     </DataGridComboBoxColumn.SelectedItemBinding>
                 </DataGridComboBoxColumn>
 
-                <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId}" />
+                <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId, UpdateSourceTrigger=PropertyChanged}" />
 
                 <DataGridTemplateColumn Header="Verein">
                     <DataGridTemplateColumn.CellTemplate>
@@ -159,6 +160,43 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <!-- Just for Debugging -->
+        <Grid Grid.Row="1" DataContext="{Binding ElementName=myDataGrid, Path=SelectedItem}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Id" />
+            <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Id}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Gender" />
+            <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Gender}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Firstname" />
+            <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding Firstname}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Lastname" />
+            <TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding Lastname}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="YearOfBirth" />
+            <TextBlock Grid.Column="2" Grid.Row="4" Text="{Binding YearOfBirth}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="5" Text="Category" />
+            <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Category.Name}" />
+
+
+        </Grid>
+        
         <Grid Grid.Row="1" 
               Margin="0 8 0 0">
             <Grid.ColumnDefinitions>

@@ -47,6 +47,7 @@ namespace Data
             if (!_context.ChangeTracker.HasChanges())
                 return;
             var changes = _changesFinder?.GetChanges(_context).ToList();
+
             _context.SaveChanges();
             _changesLogger?.LogChanges(changes);
         }
