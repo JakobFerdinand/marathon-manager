@@ -9,10 +9,7 @@ namespace Logging.Loggers
     {
         private readonly string _filepath;
 
-        public HtmlFileLogger(string filepath)
-        {
-            _filepath = EnsureFileExists(filepath);
-        }
+        public HtmlFileLogger(string filepath) => _filepath = EnsureFileExists(filepath);
 
         private string EnsureFileExists(string path)
         {
@@ -42,20 +39,9 @@ namespace Logging.Loggers
             return path;
         }
 
-        public void LogError(string message)
-        {
-            Log(message, "red");
-        }
-
-        public void LogMessage(string message)
-        {
-            Log(message);
-        }
-
-        public void LogSuccess(string message)
-        {
-            Log(message, "green");
-        }
+        public void LogError(string message) => Log(message, "red");
+        public void LogMessage(string message) => Log(message);
+        public void LogSuccess(string message) => Log(message, "green");
 
         private void Log(string message, string color = "black")
         {

@@ -3,7 +3,7 @@ using Core.Repositories;
 using Data;
 using Data.Repositories;
 using Data.Shared;
-using Logic.Common.Decorators;
+using Logging;
 using StructureMap;
 
 namespace UI.TimeRecord.Registries

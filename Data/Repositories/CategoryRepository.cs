@@ -11,9 +11,6 @@ namespace Data.Repositories
             : base(context)
         { }
 
-        public IEnumerable<Category> GetNotStarted()
-        {
-            return Entries.Where(c => c.Starttime == null).ToList();
-        }
+        public IEnumerable<Category> GetNotStarted() => Entries.Where(c => c.Starttime == null).ToList();
     }
 }

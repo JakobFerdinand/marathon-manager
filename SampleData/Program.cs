@@ -50,16 +50,13 @@ namespace SampleData
             }
         }
 
-        private static IEnumerable<Category> GenerateCategories()
+        private static IEnumerable<Category> GenerateCategories() => new List<Category>
         {
-            return new List<Category>
-            {
-                new Category { Name = "Walken 3000", PlannedStartTime = DateTime.Now },
-                new Category { Name = "Walken 10000", PlannedStartTime = DateTime.Now },
-                new Category { Name = "Laufen 3000", PlannedStartTime = DateTime.Now },
-                new Category { Name = "Laufen 10000", PlannedStartTime = DateTime.Now }
-            };
-        }
+            new Category { Name = "Walken 3000", PlannedStartTime = DateTime.Now },
+            new Category { Name = "Walken 10000", PlannedStartTime = DateTime.Now },
+            new Category { Name = "Laufen 3000", PlannedStartTime = DateTime.Now },
+            new Category { Name = "Laufen 10000", PlannedStartTime = DateTime.Now }
+        };
 
         private static IEnumerable<Runner> GenerateRunners()
         {

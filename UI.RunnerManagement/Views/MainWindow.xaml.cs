@@ -4,9 +4,6 @@ namespace UI.RunnerManagement.Views
 {
     public partial class MainWindow : MetroWindow
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        public MainWindow() => InitializeComponent();
     }
 }

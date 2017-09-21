@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Extensions;
+using Core.Models;
 using Logging.Interfaces;
 using System.Collections.Generic;
 
@@ -8,15 +9,8 @@ namespace Logging.Loggers
     {
         private readonly IEnumerable<IChangesLogger> _loggers;
 
-        public MultiChangesLogger(IEnumerable<IChangesLogger> loggers)
-        {
-            _loggers = loggers;
-        }
+        public MultiChangesLogger(IEnumerable<IChangesLogger> loggers) => _loggers = loggers;
 
-        public void LogChanges(IEnumerable<ChangeLog> changes)
-        {
-            foreach (var logger in _loggers)
-                logger.LogChanges(changes);
-        }
+        public void LogChanges(IEnumerable<ChangeLog> changes) => _loggers.ForEach(l => l.LogChanges(changes));
     }
 }

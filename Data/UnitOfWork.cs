@@ -52,9 +52,6 @@ namespace Data
             _changesLogger?.LogChanges(changes);
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+        public void Dispose() => _context.Dispose();
     }
 }

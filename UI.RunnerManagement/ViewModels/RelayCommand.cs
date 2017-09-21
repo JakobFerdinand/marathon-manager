@@ -14,28 +14,12 @@ namespace UI.RunnerManagement.ViewModels
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public RelayCommand(Action execute)
-        {
-            executeHandler = execute ?? throw new ArgumentException("Execute must not be null!");
-        }
+        public RelayCommand(Action execute) => executeHandler = execute ?? throw new ArgumentException("Execute must not be null!");
         public RelayCommand(Action execute, Func<bool> canExecute)
-            : this(execute)
-        {
-            canExecuteHandler = canExecute;
-        }
+            : this(execute) => canExecuteHandler = canExecute;
 
-        public bool CanExecute(object parameter)
-        {
-            if (canExecuteHandler == null)
-                return true;
-
-            return canExecuteHandler();
-        }
-
-        public void Execute(object parameter)
-        {
-            executeHandler();
-        }
+        public bool CanExecute(object parameter) => canExecuteHandler == null ? true : canExecuteHandler();
+        public void Execute(object parameter) => executeHandler();
     }
     public class RelayCommand<T> : ICommand
     {
@@ -48,27 +32,11 @@ namespace UI.RunnerManagement.ViewModels
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public RelayCommand(Action<T> execute)
-        {
-            executeHandler = execute ?? throw new ArgumentException("Execute must not be null!");
-        }
+        public RelayCommand(Action<T> execute) => executeHandler = execute ?? throw new ArgumentException("Execute must not be null!");
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
-            : this(execute)
-        {
-            canExecuteHandler = canExecute;
-        }
+            : this(execute) => canExecuteHandler = canExecute;
 
-        public bool CanExecute(object parameter)
-        {
-            if (canExecuteHandler == null)
-                return true;
-
-            return canExecuteHandler((T)parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            executeHandler((T)parameter);
-        }
+        public bool CanExecute(object parameter) => canExecuteHandler == null ? true : canExecuteHandler((T)parameter);
+        public void Execute(object parameter) => executeHandler((T)parameter);
     }
 }

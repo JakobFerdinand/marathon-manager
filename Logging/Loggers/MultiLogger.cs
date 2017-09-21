@@ -1,4 +1,5 @@
-﻿using Logging.Interfaces;
+﻿using Core.Extensions;
+using Logging.Interfaces;
 using System.Collections.Generic;
 
 namespace Logging.Loggers
@@ -9,22 +10,8 @@ namespace Logging.Loggers
 
         public MultiLogger(IEnumerable<ILogger> loggers) => _loggers = loggers;
 
-        public void LogError(string message)
-        {
-            foreach (var logger in _loggers)
-                logger.LogError(message);
-        }
-
-        public void LogMessage(string message)
-        {
-            foreach (var logger in _loggers)
-                logger.LogMessage(message);
-        }
-
-        public void LogSuccess(string message)
-        {
-            foreach (var logger in _loggers)
-                logger.LogSuccess(message);
-        }
+        public void LogError(string message) => _loggers.ForEach(l => l.LogError(message));
+        public void LogMessage(string message) => _loggers.ForEach(l => l.LogMessage(message));
+        public void LogSuccess(string message) => _loggers.ForEach(l => l.LogSuccess(message));
     }
 }

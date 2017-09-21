@@ -1,9 +1,9 @@
 ﻿using Xunit;
-using Logic.Common.Extensions;
+using Core.Extensions;
 using System.Collections.Generic;
 using System;
 
-namespace Logic.Common.Tests.Extensions
+namespace Core.Tests.Models.Extensions
 {
     public class IEnumerableExtensionsTests
     {

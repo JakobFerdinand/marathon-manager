@@ -5,9 +5,6 @@ namespace Logic.Common.Services
 {
     public class ConsoleReader : IReader
     {
-        public string Read()
-        {
-            return Console.ReadLine();
-        }
+        public string Read() => Console.ReadLine();
     }
 }

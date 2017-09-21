@@ -3,7 +3,6 @@ using Core.Repositories;
 using Data;
 using Data.Repositories;
 using Data.Shared;
-using Logic.Common.Decorators;
 using StructureMap;
 
 namespace UI.RunnerManagement.Registries

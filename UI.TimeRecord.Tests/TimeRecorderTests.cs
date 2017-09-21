@@ -10,10 +10,7 @@ namespace UI.TimeRecord.Tests
     public class TimeRecorderTests
     {
         [Fact]
-        public void Constructor_all_parameter_null_ArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new TimeRecorder(null, null, null, null));
-        }
+        public void Constructor_all_parameter_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new TimeRecorder(null, null, null, null));
         [Fact]
         public void Constructor_dateTimeManager_null_ArgumentNullException()
         {

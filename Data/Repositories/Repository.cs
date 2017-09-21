@@ -21,51 +21,15 @@ namespace Data.Repositories
         protected TContext Context { get; set; }
         public DbSet<TEntity> Entries { get; set; }
 
-        public TEntity Get(int id)
-        {
-            return Entries.Find(id);
-        }
-
+        public TEntity Get(int id) => Entries.Find(id);
         public IEnumerable<TEntity> GetAll(bool asNotTracking = false) => asNotTracking ? Entries.AsNoTracking().ToList() : Entries.ToList();
-
-        public int Count(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Entries.Count(predicate);
-        }
-
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Entries.Where(predicate).ToList();
-        }
-
-        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Entries.FirstOrDefault(predicate);
-        }
-
-        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Entries.SingleOrDefault(predicate);
-        }
-
-        public void Add(TEntity entity)
-        {
-            Entries.Add(entity);
-        }
-
-        public void AddRange(IEnumerable<TEntity> entities)
-        {
-            Entries.AddRange(entities);
-        }
-
-        public void Remove(TEntity entity)
-        {
-            Entries.Remove(entity);
-        }
-
-        public void RemoveRange(IEnumerable<TEntity> entities)
-        {
-            Entries.RemoveRange(entities);
-        }
+        public int Count(Expression<Func<TEntity, bool>> predicate) => Entries.Count(predicate);
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) => Entries.Where(predicate).ToList();
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate) => Entries.FirstOrDefault(predicate);
+        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate) => Entries.SingleOrDefault(predicate);
+        public void Add(TEntity entity) => Entries.Add(entity);
+        public void AddRange(IEnumerable<TEntity> entities) => Entries.AddRange(entities);
+        public void Remove(TEntity entity) => Entries.Remove(entity);
+        public void RemoveRange(IEnumerable<TEntity> entities) => Entries.RemoveRange(entities);
     }
 }

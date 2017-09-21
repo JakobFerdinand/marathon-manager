@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Extensions;
+using Core.Models;
 using Logging.Interfaces;
 using System.Collections.Generic;
 
@@ -8,15 +9,9 @@ namespace Logging.Loggers
     {
         private readonly ILogger _logger;
 
-        public ChangesLogger(ILogger logger)
-        {
-            _logger = logger;
-        }
+        public ChangesLogger(ILogger logger) => _logger = logger;
 
-        public void LogChanges(IEnumerable<ChangeLog> changes)
-        {
-            foreach (var c in changes)
-                _logger.LogMessage($"{c.ChangeTime.ToString("yyyy.MM.dd - HH.mm.ss.fff")} | {c.TypeName} | Id: {c.EntityId} | {c.PropertyName} | OldValue: {c.OldValue} | NewValue: {c.NewValue}");
-        }
+        public void LogChanges(IEnumerable<ChangeLog> changes) => changes.ForEach(c => 
+                _logger.LogMessage($"{c.ChangeTime.ToString("yyyy.MM.dd - HH.mm.ss.fff")} | {c.TypeName} | Id: {c.EntityId} | {c.PropertyName} | OldValue: {c.OldValue} | NewValue: {c.NewValue}"));
     }
 }

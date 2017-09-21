@@ -13,15 +13,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
     public class CategoriesViewModelTests
     {
         [Fact]
-        public void Constructor_all_parameters_null_ArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
-        }
+        public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
         [Fact]
-        public void Constructor_unitOfWork_null_ArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
-        }
+        public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
         [Fact]
         public void CanCreateInstance()
         {
