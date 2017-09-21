@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Models;
+using Logic.Common.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,8 +44,20 @@ namespace UI.RunnerManagement.ViewModels
                 RaisePropertyChanged();
             }
         }
-        public List<string> SportClubs => Runners.Where(r => r.SportsClub != null).Select(r => r.SportsClub).Distinct().OrderBy(s => s).ToList();
-        public List<string> Cities => Runners.Where(r => r.City != null).Select(r => r.City).Distinct().OrderBy(r => r).ToList();
+        public List<string> SportClubs => 
+            Runners
+            .Where(r => r.SportsClub != null)
+            .Select(r => r.SportsClub)
+            .Distinct()
+            .OrderBy(s => s)
+            .ToList();
+        public List<string> Cities => 
+            Runners
+            .Where(r => r.City != null)
+            .Select(r => r.City)
+            .Distinct()
+            .OrderBy(r => r)
+            .ToList();
         public bool AreStartnumbersUnic
         {
             get => _areStartnumbersUnic;
@@ -81,14 +94,8 @@ namespace UI.RunnerManagement.ViewModels
             ValidateStartnumbers();
             ValidateChipIds();
         }
-        internal void LoadCategories()
-        {
-            Categories = _unitOfWork.Categories.GetAll();
-        }
-        internal void SaveRunners()
-        {
-            _unitOfWork.Complete();
-        }
+        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll();
+        internal void SaveRunners() => _unitOfWork.Complete();
         internal void EditRunner(Runner selectedRunner)
         {
             if (selectedRunner.Id == 0)
@@ -115,20 +122,22 @@ namespace UI.RunnerManagement.ViewModels
             if (Runners is null)
                 return;
 
-            AreStartnumbersUnic = true;
-            var startNumbers = Runners.Where(r => r.Startnumber.HasValue && r.Startnumber != 0).Select(r => r.Startnumber.Value);
-            if (startNumbers.Count() != startNumbers.Distinct().Count())
-                AreStartnumbersUnic = false;
+            var startNumbers = Runners
+                .Where(r => r.Startnumber.HasValue && r.Startnumber != 0)
+                .Select(r => r.Startnumber.Value);
+
+            AreStartnumbersUnic = !startNumbers.ConaintsEqual();
         }
         internal void ValidateChipIds()
         {
             if (Runners is null)
                 return;
 
-            AreChipIdsUnic = true;
-            var chipIds = Runners.Where(r => r.ChipId != null).Select(r => r.ChipId);
-            if (chipIds.Count() != chipIds.Distinct().Count())
-                AreChipIdsUnic = false;
+            var chipIds = Runners
+                .Where(r => r.ChipId != null)
+                .Select(r => r.ChipId);
+
+            AreChipIdsUnic = !chipIds.ConaintsEqual();
         }
     }
 }
