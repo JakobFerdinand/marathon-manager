@@ -13,15 +13,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
     public class RunnersViewModelTests
     {
         [Fact]
-        public void Constructor_all_parameters_null_ArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
-        }
+        public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
         [Fact]
-        public void Constructor_unitOfWork_null_ArgumentNullException()
-        {
-            Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
-        }
+        public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
         [Fact]
         public void CanCreateInstance()
         {

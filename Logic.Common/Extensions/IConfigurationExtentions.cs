@@ -7,9 +7,6 @@ namespace Logic.Common.Extensions
         /// <summary>
         /// Short for Configuration.GetSection("Logging")[name];
         /// </summary>
-        public static string GetLoggingPath(this IConfiguration configuration, string name)
-        {
-            return configuration.GetSection("Logging")[name];
-        }
+        public static string GetLoggingPath(this IConfiguration configuration, string name) => configuration.GetSection("Logging")[name];
     }
 }

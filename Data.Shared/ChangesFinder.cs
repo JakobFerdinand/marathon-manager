@@ -10,10 +10,7 @@ namespace Data.Shared
     {
         private readonly IDateTimeManager _dateTimeManager;
 
-        public ChangesFinder(IDateTimeManager dateTimeManager)
-        {
-            _dateTimeManager = dateTimeManager;
-        }
+        public ChangesFinder(IDateTimeManager dateTimeManager) => _dateTimeManager = dateTimeManager;
 
         public IEnumerable<ChangeLog> GetChanges(DbContext context)
         {

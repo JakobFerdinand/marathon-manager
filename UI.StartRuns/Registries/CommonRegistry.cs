@@ -6,11 +6,8 @@ namespace UI.StartRuns.Registries
 {
     internal class CommonRegistry : Registry
     {
-        public CommonRegistry()
-        {
-            For<IDateTimeManager>()
+        public CommonRegistry() => For<IDateTimeManager>()
                 .Use<DateTimeManager>()
                 .Singleton();
-        }
     }
 }

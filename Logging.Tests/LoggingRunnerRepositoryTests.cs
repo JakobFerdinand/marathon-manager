@@ -1,13 +1,12 @@
 ﻿using Core.Models;
 using Core.Repositories;
 using Logging.Interfaces;
-using Logic.Common.Decorators;
 using Logic.Common.Interfaces;
 using NSubstitute;
 using System;
 using Xunit;
 
-namespace Logic.Common.Tests.Decorators
+namespace Logging.Tests
 {
     public class LoggingRunnerRepositoryTests
     {

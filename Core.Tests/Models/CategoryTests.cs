@@ -1,7 +1,7 @@
 using Core.Models;
 using Xunit;
 
-namespace MarathonManager.Core.Tests
+namespace Core.Tests.Models
 {
     public class CategoryTests
     {

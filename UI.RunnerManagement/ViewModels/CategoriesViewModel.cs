@@ -16,10 +16,7 @@ namespace UI.RunnerManagement.ViewModels
 
         private Timer _timer;
 
-        public CategoriesViewModel(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
-        }
+        public CategoriesViewModel(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
 
         public IEnumerable<Category> Categories
         {
@@ -38,13 +35,7 @@ namespace UI.RunnerManagement.ViewModels
                 InitializeTimer();
             }));
 
-        internal void LoadCategories()
-        {
-            Categories = _unitOfWork.Categories.GetAll(asNotTracking: true);
-        }
-        internal void InitializeTimer()
-        {
-            _timer = new Timer(_ => LoadCategories(), null, dueTime: 0, period: 10000);
-        }
+        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNotTracking: true);
+        internal void InitializeTimer() => _timer = new Timer(_ => LoadCategories(), null, dueTime: 0, period: 10000);
     }
 }

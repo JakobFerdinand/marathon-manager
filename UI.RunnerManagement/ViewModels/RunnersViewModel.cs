@@ -21,10 +21,7 @@ namespace UI.RunnerManagement.ViewModels
         private bool _areStartnumbersUnic = true;
         private bool _areChipIdsUnic = true;
 
-        public RunnersViewModel(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
-        }
+        public RunnersViewModel(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
 
         public IEnumerable<Category> Categories
         {
@@ -110,7 +107,6 @@ namespace UI.RunnerManagement.ViewModels
             ValidateChipIds();
 
             NotifySportsClubAndCities();
-            //SaveRunners();
         }
         internal void NotifySportsClubAndCities()
         {
