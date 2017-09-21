@@ -7,10 +7,7 @@ namespace Logging.Loggers
     {
         private readonly IEnumerable<ILogger> _loggers;
 
-        public MultiLogger(IEnumerable<ILogger> loggers)
-        {
-            _loggers = loggers;
-        }
+        public MultiLogger(IEnumerable<ILogger> loggers) => _loggers = loggers;
 
         public void LogError(string message)
         {
