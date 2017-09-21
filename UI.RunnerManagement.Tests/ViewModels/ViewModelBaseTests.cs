@@ -1,4 +1,4 @@
-﻿using UI.RunnerManagement.ViewModels;
+﻿using UI.RunnerManagement.Common;
 using Xunit;
 
 namespace UI.RunnerManagement.Tests.ViewModels

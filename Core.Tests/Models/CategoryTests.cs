@@ -1,4 +1,5 @@
 using Core.Models;
+using System;
 using Xunit;
 
 namespace Core.Tests.Models
@@ -10,6 +11,10 @@ namespace Core.Tests.Models
         {
             var category = new Category();
             Assert.NotNull(category);
+            Assert.NotNull(category.Runners);
+            Assert.Null(category.Starttime);
+            Assert.Equal(default(DateTime), category.PlannedStartTime);
+            Assert.Null(category.Name);
         }
     }
 }
