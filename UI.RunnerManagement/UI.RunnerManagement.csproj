@@ -226,7 +226,7 @@
     <Compile Include="Validation\IsRequiredValidationRule.cs" />
     <Compile Include="Validation\Validator.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
-    <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="ViewModels\RunnersViewModel.cs" />
     <Compile Include="Views\CategoriesView.xaml.cs">
       <DependentUpon>CategoriesView.xaml</DependentUpon>
@@ -247,8 +247,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
+    <Compile Include="ViewModelLocator.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace UI.RunnerManagement.ViewModels
+namespace UI.RunnerManagement.Common
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
