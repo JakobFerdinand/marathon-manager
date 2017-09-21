@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.Models;
-using Core.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Core.Repositories;
 
 namespace Data.Repositories
 {
@@ -26,13 +26,7 @@ namespace Data.Repositories
             return Entries.Find(id);
         }
 
-        public IEnumerable<TEntity> GetAll(bool withTracking = true)
-        {
-            if (withTracking)
-                return Entries.ToList();
-
-            return Entries.AsNoTracking().ToList();
-        }
+        public IEnumerable<TEntity> GetAll(bool asNotTracking = false) => asNotTracking ? Entries.AsNoTracking().ToList() : Entries.ToList();
 
         public int Count(Expression<Func<TEntity, bool>> predicate)
         {
