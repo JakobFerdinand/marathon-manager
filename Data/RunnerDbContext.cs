@@ -1,6 +1,5 @@
 ﻿using Core.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Data
 {
@@ -17,53 +16,8 @@ namespace Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Category>(ConfigureCategory);
-            modelBuilder.Entity<Runner>(RunnerConfiguration);
-        }
-
-        private void RunnerConfiguration(EntityTypeBuilder<Runner> builder)
-        {
-            builder.ForSqlServerToTable("Runners");
-            builder.HasKey(r => r.Id);
-            builder.Property(r => r.Id)
-                .ForSqlServerHasColumnName("RunnerId");
-            builder.Property(c => c.Firstname)
-                .IsRequired()
-                .HasMaxLength(50);
-            builder.Property(c => c.Lastname)
-                .IsRequired()
-                .HasMaxLength(50);
-            builder.Property(c => c.ChipId)
-                .IsRequired(false)
-                .HasMaxLength(10)
-                .IsUnicode(false);
-            builder.Property(c => c.SportsClub)
-                .ForSqlServerHasColumnName("SportsClub")
-                .IsRequired(false)
-                .HasMaxLength(200)
-                .IsUnicode();
-            builder.Property(r => r.City)
-                .HasMaxLength(50)
-                .IsUnicode();
-            builder.Property(r => r.Email)
-                .HasMaxLength(50)
-                .IsUnicode();
-
-            builder.HasOne(r => r.Category)
-                .WithMany(c => c.Runners)
-                .HasForeignKey(r => r.CategoryId)
-                .HasConstraintName("FK_Category_Runners");
-        }
-
-        private void ConfigureCategory(EntityTypeBuilder<Category> builder)
-        {
-            builder.ForSqlServerToTable("Categories");
-            builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id).ForSqlServerHasColumnName("CategoryId");
-            builder.Property(c => c.Name)
-                .ForSqlServerHasColumnName("Name")
-                .HasMaxLength(50)
-                .IsRequired();
+            modelBuilder.ApplyConfiguration(new Configurations.RunnerConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.CategoryConfiguration());
         }
     }
 }

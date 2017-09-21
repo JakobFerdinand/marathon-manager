@@ -8,10 +8,7 @@ namespace Data.Logging
     {
         private readonly LoggingDbContext _context;
 
-        public DbChangesLogger(LoggingDbContext context)
-        {
-            _context = context;
-        }
+        public DbChangesLogger(LoggingDbContext context) => _context = context;
 
         public void LogChanges(IEnumerable<ChangeLog> changes)
         {
