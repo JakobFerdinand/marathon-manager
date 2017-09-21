@@ -1,5 +1,6 @@
 ﻿using Core.Extensions;
 using Logging.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace Logging.Loggers
@@ -8,7 +9,7 @@ namespace Logging.Loggers
     {
         private readonly IEnumerable<ILogger> _loggers;
 
-        public MultiLogger(IEnumerable<ILogger> loggers) => _loggers = loggers;
+        public MultiLogger(IEnumerable<ILogger> loggers) => _loggers = loggers ?? throw new ArgumentNullException(nameof(loggers), $"{nameof(loggers)} must not be null.");
 
         public void LogError(string message) => _loggers.ForEach(l => l.LogError(message));
         public void LogMessage(string message) => _loggers.ForEach(l => l.LogMessage(message));
