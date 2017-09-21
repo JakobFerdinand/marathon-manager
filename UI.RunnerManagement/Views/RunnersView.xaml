@@ -160,43 +160,6 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Just for Debugging -->
-        <Grid Grid.Row="1" DataContext="{Binding ElementName=myDataGrid, Path=SelectedItem}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Column="0" Grid.Row="0" Text="Id" />
-            <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Id}" />
-
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="Gender" />
-            <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Gender}" />
-
-            <TextBlock Grid.Column="0" Grid.Row="2" Text="Firstname" />
-            <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding Firstname}" />
-
-            <TextBlock Grid.Column="0" Grid.Row="3" Text="Lastname" />
-            <TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding Lastname}" />
-
-            <TextBlock Grid.Column="0" Grid.Row="4" Text="YearOfBirth" />
-            <TextBlock Grid.Column="2" Grid.Row="4" Text="{Binding YearOfBirth}" />
-
-            <TextBlock Grid.Column="0" Grid.Row="5" Text="Category" />
-            <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Category.Name}" />
-
-
-        </Grid>
-        
         <Grid Grid.Row="1" 
               Margin="0 8 0 0">
             <Grid.ColumnDefinitions>

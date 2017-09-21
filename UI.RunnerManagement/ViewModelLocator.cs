@@ -1,5 +1,6 @@
 ﻿using Data;
 using Data.Logging;
+using Logic.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
