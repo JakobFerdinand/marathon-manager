@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
 
                 <ResourceDictionary>
-                    <vm:ViewModelLocator x:Key="Locator" xmlns:vm="clr-namespace:UI.RunnerManagement.ViewModels" />
+                    <local:ViewModelLocator x:Key="Locator" xmlns:local="clr-namespace:UI.RunnerManagement" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

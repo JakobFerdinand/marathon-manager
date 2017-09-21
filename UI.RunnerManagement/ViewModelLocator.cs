@@ -1,13 +1,13 @@
 ﻿using Data;
 using Data.Logging;
-using Logic.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
 using System;
 using UI.RunnerManagement.Registries;
+using UI.RunnerManagement.ViewModels;
 
-namespace UI.RunnerManagement.ViewModels
+namespace UI.RunnerManagement
 {
     internal class ViewModelLocator
     {
