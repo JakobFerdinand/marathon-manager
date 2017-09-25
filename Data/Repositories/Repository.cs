@@ -14,7 +14,7 @@ namespace Data.Repositories
     {
         public Repository(TContext context)
         {
-            Context = context;
+            Context = context ?? throw new ArgumentNullException(nameof(context), $"{nameof(context)} can not be null.");
             Entries = context.Set<TEntity>();
         }
 

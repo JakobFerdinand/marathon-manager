@@ -160,5 +160,114 @@ namespace Data.Tests
                 Assert.Equal(0, countCategories);
             }
         }
+        [Fact]
+        public void CRUD_Operations_for_Runners()
+        {
+            var options = new DbContextOptionsBuilder<RunnerDbContext>()
+                .UseInMemoryDatabase("CRUD_Operations_for_Runners")
+                .Options;
+            using (var context = new RunnerDbContext(options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
+                var categories = new[]
+                {
+                    new Category { Name = "Category1", PlannedStartTime = new DateTime(2017, 09, 22, 18, 05, 00)},
+                    new Category { Name = "Category2", PlannedStartTime = new DateTime(2000, 01, 01, 10, 55, 00)},
+                    new Category { Name = "Category3", PlannedStartTime = new DateTime(2012, 12, 31, 00, 00, 00)},
+                };
+
+                context.Categories.AddRange(categories);
+                context.SaveChanges();
+            }
+            using (var context = new RunnerDbContext(options))
+            {
+                var categories = context.Categories.ToList();
+
+                var runners = new[]
+                {
+                    new Runner { Firstname = "Ein Vorname", Lastname = "Ein Nachname", Gender = Gender.Mann, YearOfBirth = 1980, Category = categories[0] },
+                    new Runner { Firstname = "Ein anderer Vorname", Lastname = "Ein anderer Nachname", Gender = Gender.Frau, YearOfBirth = 1990, Category = categories[1] },
+                    new Runner { Firstname = "Noch ein anderer Vorname", Lastname = "noch ein anderer Nachname", Gender = Gender.Mann, YearOfBirth = 2000, Category = categories[2] }
+                };
+
+                context.Runners.AddRange(runners);
+                context.SaveChanges();
+            }
+            using (var context = new RunnerDbContext(options))
+            {
+                var runners = context.Runners.ToList();
+
+                Assert.Equal(3, runners.Count);
+                Assert.Equal(1980, runners[0].YearOfBirth);
+                Assert.Equal("Ein anderer Vorname", runners[1].Firstname);
+                Assert.Equal(Gender.Mann, runners[2].Gender);
+            }
+            using (var context = new RunnerDbContext(options))
+            {
+                var runners = context.Runners.ToList();
+                context.Runners.RemoveRange(runners);
+                context.SaveChanges();
+            }
+            using (var context = new RunnerDbContext(options))
+            {
+                var countRunners = context.Runners.Count();
+                Assert.Equal(0, countRunners);
+            }
+        }
+        [Fact]
+        public async Task CRUD_Operations_for_Runners_Async()
+        {
+            var options = new DbContextOptionsBuilder<RunnerDbContext>()
+                .UseInMemoryDatabase("CRUD_Operations_for_Runners")
+                .Options;
+            using (var context = new RunnerDbContext(options))
+            {
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
+
+                var categories = new[]
+                {
+                    new Category { Name = "Category1", PlannedStartTime = new DateTime(2017, 09, 22, 18, 05, 00)},
+                    new Category { Name = "Category2", PlannedStartTime = new DateTime(2000, 01, 01, 10, 55, 00)},
+                    new Category { Name = "Category3", PlannedStartTime = new DateTime(2012, 12, 31, 00, 00, 00)},
+                };
+
+                await context.Categories.AddRangeAsync(categories);
+                await context.SaveChangesAsync();
+            }
+            using (var context = new RunnerDbContext(options))
+            {
+                var categories = await context.Categories.ToListAsync();
+
+                var runners = new[]
+                {
+                    new Runner { Firstname = "Ein Vorname", Lastname = "Ein Nachname", Gender = Gender.Mann, YearOfBirth = 1980, Category = categories[0] },
+                    new Runner { Firstname = "Ein anderer Vorname", Lastname = "Ein anderer Nachname", Gender = Gender.Frau, YearOfBirth = 1990, Category = categories[1] },
+                    new Runner { Firstname = "Noch ein anderer Vorname", Lastname = "noch ein anderer Nachname", Gender = Gender.Mann, YearOfBirth = 2000, Category = categories[2] }
+                };
+
+                await context.Runners.AddRangeAsync(runners);
+                await context.SaveChangesAsync();
+            }
+            using (var context = new RunnerDbContext(options))
+            {
+                var runners = await context.Runners.ToListAsync();
+
+                Assert.Equal(3, runners.Count);
+                Assert.Equal(1980, runners[0].YearOfBirth);
+                Assert.Equal("Ein anderer Vorname", runners[1].Firstname);
+                Assert.Equal(Gender.Mann, runners[2].Gender);
+
+                context.Runners.RemoveRange(runners);
+                await context.SaveChangesAsync();
+            }
+            using (var context = new RunnerDbContext(options))
+            {
+                var countRunners = await context.Runners.CountAsync();
+                Assert.Equal(0, countRunners);
+            }
+        }
     }
 }
