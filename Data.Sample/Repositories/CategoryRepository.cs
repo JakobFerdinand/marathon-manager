@@ -23,7 +23,19 @@ namespace Data.Sample.Repositories
         public IEnumerable<Category> Find(Expression<Func<Category, bool>> predicate) => _categories.Where(predicate.Compile()).ToList();
         public Category FirstOrDefault(Expression<Func<Category, bool>> predicate) => _categories.FirstOrDefault();
         public Category Get(int id) => _categories.SingleOrDefault(c => c.Id == id);
-        public IEnumerable<Category> GetAll(bool asNotTracking = false) => _categories;
+        public IEnumerable<Category> GetAll(bool asNotTracking = false)
+        {
+            if (!asNotTracking)
+                return _categories;
+
+            return _categories.Select(c => new Category
+            {
+                Id = c.Id,
+                Name = c.Name,
+                PlannedStartTime = c.PlannedStartTime,
+                Starttime = c.Starttime
+            }).ToList();
+        }
         public IEnumerable<Category> GetNotStarted() => _categories.Where(c => c.Starttime == null).ToList();
         public void Remove(Category entity) => _categories.Remove(entity);
         public void RemoveRange(IEnumerable<Category> entities)

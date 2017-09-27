@@ -209,6 +209,9 @@
     <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
+    <Reference Include="Tynamix.ObjectFiller, Version=1.5.4.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tynamix.ObjectFiller.1.5.4.1\lib\net452\Tynamix.ObjectFiller.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -296,6 +299,10 @@
     <ProjectReference Include="..\Data.Logging\Data.Logging.csproj">
       <Project>{1F8D1899-6631-442C-BF10-D63165CD0AFD}</Project>
       <Name>Data.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data.Sample\Data.Sample.csproj">
+      <Project>{95d91337-782a-4587-80cb-0074d9b2031d}</Project>
+      <Name>Data.Sample</Name>
     </ProjectReference>
     <ProjectReference Include="..\Data.Shared\Data.Shared.csproj">
       <Project>{29d2bb85-f452-4d88-8de8-524daf1ef265}</Project>

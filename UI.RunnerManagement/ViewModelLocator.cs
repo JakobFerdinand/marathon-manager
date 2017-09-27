@@ -43,7 +43,7 @@ namespace UI.RunnerManagement
             {
                 c.AddRegistry(new CommonRegistry());
                 c.AddRegistry(new LoggingRegistry(Configuration));
-                c.AddRegistry(new DataRegistry());
+                c.AddRegistry(new DataRegistry(bool.Parse(Configuration.GetSection("UseSampleData").Value)));
             });
             _container.RegisterConcreteTypeAsSingelton<MainWindowViewModel>();
             _container.RegisterConcreteTypeAsSingelton<RunnersViewModel>();
