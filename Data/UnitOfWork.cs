@@ -18,28 +18,23 @@ namespace Data
         public UnitOfWork(
             RunnerDbContext context,
             ICategoryRepository categories,
-            IRunnerRepository runners,
-            IChangesFinder changesFinder,
-            IChangesLogger changesLogger)
+            IRunnerRepository runners)
         {
             _context = context;
-            _changesFinder = changesFinder;
-            _changesLogger = changesLogger;
 
             Categories = categories;
             Runners = runners;
         }
         public UnitOfWork(
-           RunnerDbContext context,
-           ICategoryRepository categories,
-           IRunnerRepository runners)
+            RunnerDbContext context,
+            ICategoryRepository categories,
+            IRunnerRepository runners,
+            IChangesFinder changesFinder,
+            IChangesLogger changesLogger)
+            : this(context, categories, runners)
         {
-            _context = context;
-            _changesFinder = null;
-            _changesLogger = null;
-
-            Categories = categories;
-            Runners = runners;
+            _changesFinder = changesFinder;
+            _changesLogger = changesLogger;
         }
 
         public void Complete()
