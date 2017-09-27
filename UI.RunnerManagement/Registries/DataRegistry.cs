@@ -10,26 +10,43 @@ namespace UI.RunnerManagement.Registries
 {
     internal class DataRegistry : Registry
     {
-        public DataRegistry()
+        public DataRegistry(bool useSampleData)
         {
-            For<ICategoryRepository>()
-                .Use<CategoryRepository>()
-                .AlwaysUnique();
+            if (useSampleData)
+            {
+                For<ICategoryRepository>()
+                    .Use<Data.Sample.Repositories.CategoryRepository>()
+                    .AlwaysUnique();
 
-            For<IRunnerRepository>()
-                .DecorateAllWith<LoggingRunnerRepository>();
+                For<IRunnerRepository>()
+                    .Use<Data.Sample.Repositories.RunnerRepository>()
+                    .AlwaysUnique();
 
-            For<IRunnerRepository>()
-                .Use<RunnerRepository>()
-                .AlwaysUnique();
+                For<IUnitOfWork>()
+                    .Use<Data.Sample.UnitOfWork>()
+                    .AlwaysUnique();
+            }
+            else
+            {
+                For<ICategoryRepository>()
+                    .Use<CategoryRepository>()
+                    .AlwaysUnique();
 
-            For<IChangesFinder>()
-                .Use<ChangesFinder>()
-                .Singleton();
+                For<IRunnerRepository>()
+                    .DecorateAllWith<LoggingRunnerRepository>();
 
-            For<IUnitOfWork>()
-                .Use<UnitOfWork>()
-                .AlwaysUnique();
+                For<IRunnerRepository>()
+                    .Use<RunnerRepository>()
+                    .AlwaysUnique();
+
+                For<IChangesFinder>()
+                    .Use<ChangesFinder>()
+                    .Singleton();
+
+                For<IUnitOfWork>()
+                    .Use<UnitOfWork>()
+                    .AlwaysUnique();
+            }
         }
     }
 }

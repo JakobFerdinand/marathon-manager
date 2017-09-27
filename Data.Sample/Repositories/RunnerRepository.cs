@@ -38,7 +38,7 @@ namespace Data.Sample.Repositories
                 r.Category = categories[random.Next(0, categories.Count)];
                 r.CategoryId = r.Category.Id;
             }
-            _runners = runners;
+            _runners = runners.ToList();
         }
 
         public void Add(Runner entity) => _runners.Add(entity);
