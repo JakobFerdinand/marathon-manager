@@ -1,7 +1,7 @@
 ﻿using Core.Models;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using NSubstitue;
+using NSubstitute;
 using System;
 using Xunit;
 
@@ -14,7 +14,7 @@ namespace Data.Tests.Repositories
         [Fact]
         public void CanCreateInstance()
         {
-            var context = Substitue.For<RunnerDbContext>();
+            var context = Substitute.For<RunnerDbContext>();
             var repository = new EmptyRepositorySubClass(context);
             Assert.NotNull(repository);
         }

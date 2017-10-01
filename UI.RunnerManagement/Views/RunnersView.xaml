@@ -19,9 +19,11 @@
         <KeyBinding Modifiers="Ctrl" Key="S" 
                     Command="{Binding SaveCommand}" 
                     CommandParameter="{Binding ElementName=runnersDataGrid}"/>
+        <KeyBinding Key="F5" Command="{Binding InitializeCommand}" />
     </UserControl.InputBindings>
     <UserControl.Resources>
         <converters:StartnumberNotUnicErrorMessageConverter x:Key="startnumberNotUnicErrorMessageConverter" />
+        <converters:InvalidRunnersErrorMessageConverter x:Key="invalidRunnersErrorMessageConverter" />
         <converters:ChipIdNotUnicErrorMessageConverter x:Key="chipIdNotUnicErrorMessageConverter" />
     </UserControl.Resources>
     
@@ -32,8 +34,9 @@
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="0"
-                  Name="myDataGrid"
+                  Name="runnerDataGrid"
                   ItemsSource="{Binding Runners}"
+                  SelectedItem="{Binding SelectedRunner}"
                   CanUserAddRows="True"
                   CanUserDeleteRows="False"
                   CanUserSortColumns="True"
@@ -158,8 +161,14 @@
 
                 <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Löschen" Command="{Binding RemoveRunnerCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
 
+        <!-- Error Messages -->
         <Grid Grid.Row="1" 
               Margin="0 8 0 0">
             <Grid.ColumnDefinitions>
@@ -202,6 +211,20 @@
                                 <DataTrigger Binding="{Binding AreChipIdsUnic}" Value="False">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock Foreground="Red"
+                           Text="{Binding InvalidRunners, Converter={StaticResource invalidRunnersErrorMessageConverter}}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
