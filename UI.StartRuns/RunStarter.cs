@@ -24,7 +24,7 @@ namespace UI.StartRuns
 
             Console.WriteLine($"Noch nicht gestartete Läufe ({categories.Count()}):");
             foreach (var c in categories)
-                Console.WriteLine($"Id: {c.Id, 3} | {c.Name,15} | geplant: {c.PlannedStartTime.ToString("HH:mm:ss")}");
+                Console.WriteLine($"Id: {c.Id, 3} | {c.Name,-30} | geplant: {c.PlannedStartTime.ToString("HH:mm:ss")}");
 
             Console.WriteLine("\nWelche Läufe sollen gestartet werden?");
             Console.WriteLine("Id eingeben und mit Return bestätigen. Zum Starten 'start' eingeben.");
