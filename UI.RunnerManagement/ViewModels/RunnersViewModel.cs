@@ -15,9 +15,11 @@ namespace UI.RunnerManagement.ViewModels
 
         private IEnumerable<Category> _categories;
         private IEnumerable<Runner> _runners;
+        private Runner _selectedRunner;
         private ICommand _editCommand;
         private ICommand _currentCellChangedCommand;
         private ICommand _initializeCommand;
+        private ICommand _removeRunnerCommand;
         private ICommand _saveCommand;
         private bool _areStartnumbersUnic = true;
         private bool _areChipIdsUnic = true;
@@ -39,6 +41,15 @@ namespace UI.RunnerManagement.ViewModels
             set
             {
                 _runners = value;
+                RaisePropertyChanged();
+            }
+        }
+        public Runner SelectedRunner
+        {
+            get => _selectedRunner;
+            set
+            {
+                _selectedRunner = value;
                 RaisePropertyChanged();
             }
         }
@@ -74,6 +85,10 @@ namespace UI.RunnerManagement.ViewModels
                 RaisePropertyChanged();
             }
         }
+        public IEnumerable<Runner> InvalidRunners => Runners?.Where(r =>
+            string.IsNullOrWhiteSpace(r.Firstname) ||
+            string.IsNullOrWhiteSpace(r.Lastname) ||
+            (r.CategoryId == 0 && r.Category == null)) ?? new List<Runner>();
 
         public ICommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand<Runner>(EditRunner));
         public ICommand CurrentCellChangedCommand => _currentCellChangedCommand ?? (_currentCellChangedCommand = new RelayCommand(CurrentCellChanged));
@@ -82,9 +97,12 @@ namespace UI.RunnerManagement.ViewModels
             LoadCategories();
             LoadRunners();
         }));
+        public ICommand RemoveRunnerCommand => _removeRunnerCommand ?? (_removeRunnerCommand = new RelayCommand(RemoveRunner));
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(
             () => SaveRunners(),
-            () => AreStartnumbersUnic && AreChipIdsUnic));
+            () => AreStartnumbersUnic && 
+                  AreChipIdsUnic &&
+                  !InvalidRunners.Any()));
 
         internal void LoadRunners()
         {
@@ -102,17 +120,24 @@ namespace UI.RunnerManagement.ViewModels
             ValidateStartnumbers();
             ValidateChipIds();
         }
+        internal void RemoveRunner()
+        {
+            _unitOfWork.Runners.Remove(SelectedRunner);
+            SelectedRunner = null;
+            Runners = _unitOfWork.Runners.GetAll();
+        }
         internal void CurrentCellChanged()
         {
             ValidateStartnumbers();
             ValidateChipIds();
 
-            NotifySportsClubAndCities();
+            NotifySportsClubAndCitiesAndInvalidRunners();
         }
-        internal void NotifySportsClubAndCities()
+        internal void NotifySportsClubAndCitiesAndInvalidRunners()
         {
             RaisePropertyChanged(nameof(SportClubs));
             RaisePropertyChanged(nameof(Cities));
+            RaisePropertyChanged(nameof(InvalidRunners));
         }
         internal void ValidateStartnumbers()
         {

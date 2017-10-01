@@ -222,12 +222,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ChipIdNotUnicErrorMessageConverter.cs" />
+    <Compile Include="Converters\InvalidRunnersErrorMessageConverter.cs" />
     <Compile Include="Converters\StartnumberNotUnicErrorMessageConverter.cs" />
     <Compile Include="Registries\CommonRegistry.cs" />
     <Compile Include="Registries\DataRegistry.cs" />
     <Compile Include="Registries\LoggingRegistry.cs" />
     <Compile Include="Validation\IsRequiredValidationRule.cs" />
-    <Compile Include="Validation\Validator.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="ViewModels\RunnersViewModel.cs" />
