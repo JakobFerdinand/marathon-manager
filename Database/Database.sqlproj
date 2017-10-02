@@ -232,4 +232,7 @@ User=[marathonManager];
   <ItemGroup>
     <None Include="Migrations\0007_20171002-AddStoredProceduresForRunnerEvaluation.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrations\0008_20171002-UpdateEvaluationProcedures.sql" />
+  </ItemGroup>
 </Project>
