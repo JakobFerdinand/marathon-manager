@@ -13,8 +13,30 @@ namespace SampleData
     {
         static void Main(string[] args)
         {
-            
+            //GenerateSampleRunningTimes();
         }
+
+        private static void GenerateSampleRunningTimes()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<RunnerDbContext>();
+            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True");
+
+            using (var context = new RunnerDbContext(optionsBuilder.Options))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
+            {
+                var runners = unitOfWork.Runners.GetAll().ToList();
+
+                var random = new Random();
+                for (int i = 0; i < runners.Count; i++)
+                {
+                    runners[i].Startnumber = i+1;
+                    runners[i].RunningTime = new TimeSpan(0, random.Next(15, 59), random.Next(0, 59));
+                }
+
+                unitOfWork.Complete();
+            }
+        }
+
 
         private static void GenerateSampleData()
         {
