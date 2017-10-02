@@ -31,10 +31,15 @@
     <PreDeploymentSubFolder>Pre-Deployment</PreDeploymentSubFolder>
     <PostDeploymentSubFolder>Post-Deployment</PostDeploymentSubFolder>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <ExcludeObjectsFromSync />
+    <ExcludeObjectsFromSync>
+Role=[dbo].[db_datareader];
+Role=[dbo].[db_datawriter];
+User=[marathonManager];
+</ExcludeObjectsFromSync>
     <IncludeObjectsInDataSync />
     <DeployChangesInitialImportDone>False</DeployChangesInitialImportDone>
     <DeployChangesExecutionOrder />
+    <DeployChangesForProgrammableObjects>False</DeployChangesForProgrammableObjects>
   </PropertyGroup>
   <!-- READYROLL OFFLINE SCHEMA MODEL OPTIONS -->
   <PropertyGroup>
@@ -223,5 +228,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrations\0006_20170713-2254_jw2.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrations\0007_20171002-AddStoredProceduresForRunnerEvaluation.sql" />
   </ItemGroup>
 </Project>
