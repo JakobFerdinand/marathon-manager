@@ -27,6 +27,7 @@ namespace Data.Sample.Repositories
                 .OnProperty(r => r.YearOfBirth).Use(new IntRange(DateTime.Now.Year - 70, DateTime.Now.Year - 3))
                 .OnProperty(r => r.Firstname).Use(new RealNames(NameStyle.FirstName))
                 .OnProperty(r => r.Lastname).Use(new RealNames(NameStyle.LastName))
+                .OnProperty(r => r.Email).Use(new EmailAddresses())
                 .OnProperty(r => r.SportsClub).Use(new RandomListItem<string>(
                     "SC Mining", null, "SV Ried", "SV Altheim"));
 
