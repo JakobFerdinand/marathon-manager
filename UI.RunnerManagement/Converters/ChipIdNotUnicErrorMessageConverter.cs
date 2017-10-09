@@ -12,12 +12,10 @@ namespace UI.RunnerManagement.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is bool isValid && isValid)
+            if(!IsErrorMessageNeeded(values))
                 return string.Empty;
 
             var runners = values[1] as IEnumerable<Runner>;
-            if (runners is null)
-                return string.Empty;
 
             var errorMessageStringBuilder = new StringBuilder();
             errorMessageStringBuilder.AppendLine("Die Chip Ids müssen eindeutig sein!");
@@ -34,6 +32,18 @@ namespace UI.RunnerManagement.Converters
             }
 
             return errorMessageStringBuilder.ToString();
+        }
+
+        internal bool IsErrorMessageNeeded(object[] values)
+        {
+            if (values[0] is bool isValid && isValid)
+                return false;
+
+            var runners = values[1] as IEnumerable<Runner>;
+            if (runners is null || runners.Count() == 0)
+                return false;
+
+            return true;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
