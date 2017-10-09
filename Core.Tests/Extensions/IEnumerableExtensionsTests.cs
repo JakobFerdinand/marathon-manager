@@ -2,6 +2,7 @@
 using Core.Extensions;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Core.Tests.Models.Extensions
 {
@@ -28,7 +29,6 @@ namespace Core.Tests.Models.Extensions
             IEnumerable<int> source = null;
             Assert.Throws<ArgumentNullException>(() => source.ConaintsEqual());
         }
-
         [Fact]
         public void ConaintsEqual_intArray_3different_returns_false()
         {
@@ -38,7 +38,6 @@ namespace Core.Tests.Models.Extensions
 
             Assert.False(result);
         }
-
         [Fact]
         public void ConaintsEqual_intArray_2_of_3different_returns_true()
         {
@@ -48,7 +47,6 @@ namespace Core.Tests.Models.Extensions
 
             Assert.True(result);
         }
-
         [Fact]
         public void ConaintsEqual_intArray_3equal_returns_true()
         {
@@ -58,7 +56,6 @@ namespace Core.Tests.Models.Extensions
 
             Assert.True(result);
         }
-
         [Fact]
         public void ContainsEqual_emptyIntList_returns_false()
         {
@@ -69,7 +66,6 @@ namespace Core.Tests.Models.Extensions
 
             Assert.False(result);
         }
-
         [Fact]
         public void ConaintsEqual_doubleArray_3different_returns_false()
         {
@@ -79,7 +75,6 @@ namespace Core.Tests.Models.Extensions
 
             Assert.False(result);
         }
-
         [Fact]
         public void ConaintsEqual_doubleArray_2_of_3different_returns_true()
         {
@@ -89,7 +84,6 @@ namespace Core.Tests.Models.Extensions
 
             Assert.True(result);
         }
-
         [Fact]
         public void ConaintsEqual_doubleArray_3equal_returns_true()
         {
@@ -99,7 +93,6 @@ namespace Core.Tests.Models.Extensions
 
             Assert.True(result);
         }
-
         [Fact]
         public void ContainsEqual_emptyDoubleList_returns_false()
         {
@@ -109,6 +102,34 @@ namespace Core.Tests.Models.Extensions
             var result = source.ConaintsEqual();
 
             Assert.False(result);
+        }
+        [Fact]
+        public void Foreach_source_null_NullReferenceException()
+        {
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<short>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<int>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<long>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<bool>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<byte>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<DateTime>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<TimeSpan>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<float>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<double>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<string>(null, _ => { }));
+            Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<List<int>>(null, _ => { }));
+        }
+        [Fact]
+        public void Foreach_performs_action_on_every_Element_in_source()
+        {
+            var source = new int[] { 96, 96, 980 };
+            var results = new List<int>();
+
+            source.ForEach(i => results.Add(i));
+
+            Assert.Equal(3, results.Count);
+            Assert.Equal(96, results[0]);
+            Assert.Equal(96, results[1]);
+            Assert.Equal(980, results[2]);
         }
     }
 }
