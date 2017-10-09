@@ -204,6 +204,7 @@ User=[marathonManager];
     <Folder Include="Pre-Deployment\" />
     <Folder Include="Migrations\" />
     <Folder Include="Post-Deployment\" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Pre-Deployment\01_Create_Database.sql" />
@@ -234,5 +235,8 @@ User=[marathonManager];
   </ItemGroup>
   <ItemGroup>
     <None Include="Migrations\0008_20171002-UpdateEvaluationProcedures.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\TestSqlScripts.sql" />
   </ItemGroup>
 </Project>
