@@ -150,6 +150,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ChipIdNotUnicErrorMessageConverterTests.cs" />
     <Compile Include="ViewModels\CategoriesViewModelTests.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTests.cs" />
     <Compile Include="ViewModels\RunnersViewModelTests.cs" />
