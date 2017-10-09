@@ -35,7 +35,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
 
             vm.LoadCategories();
 
-            categoryRepository.Received().GetAll();
+            categoryRepository.Received().GetAll(asNotTracking: true);
         }
         [Fact]
         public void LoadCategories_calles_categoryRepository_GetAll2()
@@ -43,7 +43,8 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll().Returns(new List<Category>
+            categoryRepository.GetAll(asNotTracking: true)
+                .Returns(new List<Category>
             {
                 new Category { Id = 1 },
                 new Category { Id = 2 },
@@ -70,7 +71,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
 
             vm.InitializeCommand.Execute(null);
 
-            categoryRepository.Received().GetAll();
+            categoryRepository.Received().GetAll(asNotTracking: true);
         }
         [Fact]
         public void InitializeCommand_Execute_calles_RunnersRepository_GetAll2()
@@ -78,7 +79,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll().Returns(new List<Category>
+            categoryRepository.GetAll(asNotTracking: true).Returns(new List<Category>
             {
                 new Category { Id = 1 },
                 new Category { Id = 2 },
