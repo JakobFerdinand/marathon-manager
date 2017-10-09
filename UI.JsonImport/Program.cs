@@ -14,7 +14,7 @@ namespace UI.JsonImport
     {
         static void Main(string[] args)
         {
-            var path = "runnerdata.json";
+            var path = @"C:\Users\jw2\Desktop\runnerdata.json";
 
             var filereader = new StreamReader(path);
             var json = filereader.ReadToEnd();
