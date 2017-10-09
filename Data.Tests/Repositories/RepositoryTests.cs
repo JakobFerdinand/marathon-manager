@@ -14,7 +14,8 @@ namespace Data.Tests.Repositories
         [Fact]
         public void CanCreateInstance()
         {
-            var context = Substitute.For<RunnerDbContext>();
+            var options = new DbContextOptionsBuilder<RunnerDbContext>().UseInMemoryDatabase(nameof(CanCreateInstance)).Options;
+            var context = new RunnerDbContext(options);
             var repository = new EmptyRepositorySubClass(context);
             Assert.NotNull(repository);
         }
