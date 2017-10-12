@@ -14,7 +14,7 @@ namespace UI.RunnerManagement.Common
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public RelayCommand(Action execute) => executeHandler = execute ?? throw new ArgumentException("Execute must not be null!");
+        public RelayCommand(Action execute) => executeHandler = execute ?? throw new ArgumentNullException(nameof(execute), "Execute must not be null!");
         public RelayCommand(Action execute, Func<bool> canExecute)
             : this(execute) => canExecuteHandler = canExecute;
 
@@ -32,7 +32,7 @@ namespace UI.RunnerManagement.Common
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public RelayCommand(Action<T> execute) => executeHandler = execute ?? throw new ArgumentException("Execute must not be null!");
+        public RelayCommand(Action<T> execute) => executeHandler = execute ?? throw new ArgumentNullException(nameof(execute), "Execute must not be null!");
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
             : this(execute) => canExecuteHandler = canExecute;
 
