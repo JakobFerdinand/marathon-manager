@@ -7,6 +7,7 @@ namespace Core.Tests.Models
     public class CategoryTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var category = new Category();

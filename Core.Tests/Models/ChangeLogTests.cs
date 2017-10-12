@@ -7,6 +7,7 @@ namespace Core.Tests.Models
     public class ChangeLogTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var changeLog = new ChangeLog();

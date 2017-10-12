@@ -10,6 +10,7 @@ namespace Logic.Common.Tests.Extensions
     public class IContainerExtensionsTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void RegisterConcreteTypeAsSingelton_registers_a_Type_as_Singelton()
         {
             var container = Substitute.For<IContainer>();
@@ -20,6 +21,7 @@ namespace Logic.Common.Tests.Extensions
             container.ReceivedWithAnyArgs().Configure(null);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void AddDbContext_registers_the_Context_with_options()
         {
             var container = Substitute.For<IContainer>();

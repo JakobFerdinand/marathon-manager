@@ -13,10 +13,13 @@ namespace UI.RunnerManagement.Tests.ViewModels
     public class RunnersViewModelTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -27,6 +30,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.NotNull(vm.SaveCommand);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LoadRunners_calles_RunnersRepository_GetAll()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -40,6 +44,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             runnerRepository.Received().GetAll();
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LoadRunners_calles_RunnersRepository_GetAll2()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -63,6 +68,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
         }
 
         [Fact]
+        [Trait("Unit", "")]
         public void InitializeCommand_Execute_calles_RunnersRepository_GetAll()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -76,6 +82,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             runnerRepository.Received().GetAll();
         }
         [Fact]
+        [Trait("Unit", "")]
         public void InitializeCommand_Execute_calles_RunnersRepository_GetAll2()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -98,6 +105,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.Equal(1, vm.Runners.First().Id);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Runners_setter_raises_propertyChanged_Event()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -115,6 +123,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.True(eventWasRaised);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Runners_setter_sets_collection()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -127,6 +136,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.Same(runners, vm.Runners);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void SaveRunners_calles_unitOfWork_Complete()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -137,6 +147,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             unitOfWork.Received().Complete();
         }
         [Fact]
+        [Trait("Unit", "")]
         public void SaveCommand_execute_calles_unitOfWork_Complete()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -147,6 +158,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             unitOfWork.Received().Complete();
         }
         [Fact]
+        [Trait("Unit", "")]
         public void EditRunner_SelectedRunner_is_new_object_calles_runnerRepository_Add()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -167,6 +179,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
         [InlineData(100)]
         [InlineData(4577)]
         [InlineData(int.MaxValue)]
+        [Trait("Unit", "")]
         public void EditRunner_SelectedRunner_is_existing_object_does_not_call_runnerRepository_Add(int runnerId)
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -181,6 +194,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             runnerRepository.DidNotReceive().Add(Arg.Any<Runner>());
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LoadCategories_calles_categoryRepository_GetAll()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -194,6 +208,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             categoryRepository.Received().GetAll();
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LoadCategories_calles_categoryRepository_GetAll2()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -216,6 +231,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.Equal(1, vm.Categories.First().Id);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void InitializeCommand_Execute_calles_categoryRepository_GetAll()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -229,6 +245,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             categoryRepository.Received().GetAll();
         }
         [Fact]
+        [Trait("Unit", "")]
         public void InitializeCommand_Execute_calles_categoryRepository_GetAll2()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();

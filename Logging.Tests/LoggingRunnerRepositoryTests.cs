@@ -11,11 +11,13 @@ namespace Logging.Tests
     public class LoggingRunnerRepositoryTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_all_parameters_null_ArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => new LoggingRunnerRepository(null, null, null));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_dateTimeManager_null_ArgumentNullException()
         {
             var logger = Substitute.For<ILogger>();
@@ -24,6 +26,7 @@ namespace Logging.Tests
             Assert.Throws<ArgumentNullException>(() => new LoggingRunnerRepository(null, logger, repository));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_logger_null_ArgumentNullException()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -32,6 +35,7 @@ namespace Logging.Tests
             Assert.Throws<ArgumentNullException>(() => new LoggingRunnerRepository(dateTimeManager, null, repository));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_repository_null_ArgumentNullException()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -41,7 +45,8 @@ namespace Logging.Tests
             Assert.Throws<ArgumentNullException>(() => new LoggingRunnerRepository(dateTimeManager, logger, null));
         }
         [Fact]
-        public  void CanCreateInstance()
+        [Trait("Unit", "")]
+        public void CanCreateInstance()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
             var logger = Substitute.For<ILogger>();
@@ -52,6 +57,7 @@ namespace Logging.Tests
             Assert.NotNull(decorator);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Get_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -65,6 +71,7 @@ namespace Logging.Tests
             repository.Received().Get(4567);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetIfHasNoTimeWithCategory_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -78,6 +85,7 @@ namespace Logging.Tests
             repository.Received().GetIfHasNoTimeWithCategory("1234567890");
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetIfHasNoTimeWithCategory_repository_throws_InvalidOperationException_calles_logger_LogError()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -93,6 +101,7 @@ namespace Logging.Tests
             logger.ReceivedWithAnyArgs().LogError(null);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetIfHasNoTimeWithCategory_repository_throws_InvalidOperationException_calles_logger_LogError2()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -109,6 +118,7 @@ namespace Logging.Tests
             logger.Received().LogError(Arg.Any<string>());
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetAll_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -122,6 +132,7 @@ namespace Logging.Tests
             repository.Received().GetAll();
         }
         [Fact]
+        [Trait("Unit", "")]
         public void FirstOrDefault_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -135,6 +146,7 @@ namespace Logging.Tests
             repository.ReceivedWithAnyArgs().FirstOrDefault(_ => true);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void SingleOrDefault_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -148,6 +160,7 @@ namespace Logging.Tests
             repository.ReceivedWithAnyArgs().SingleOrDefault(_ => true);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Add_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -162,6 +175,7 @@ namespace Logging.Tests
             repository.Received().Add(runner);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void AddRange_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -176,6 +190,7 @@ namespace Logging.Tests
             repository.Received().AddRange(runners);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Romove_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -190,6 +205,7 @@ namespace Logging.Tests
             repository.Received().Remove(runner);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void RemoveRange_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();

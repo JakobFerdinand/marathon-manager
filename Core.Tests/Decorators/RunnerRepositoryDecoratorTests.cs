@@ -11,8 +11,10 @@ namespace Core.Tests.Decorators
     public class RunnerRepositoryDecoratorTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_BaseRepository_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new EmptyRunnerRepositoryDecoratorSubClass(null));
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -20,6 +22,7 @@ namespace Core.Tests.Decorators
             Assert.NotNull(dec);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Get8_Calles_BaseRepository_Get8()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -30,6 +33,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().Get(8);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetMAX_Calles_BaseRepository_GetMAX()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -40,6 +44,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().Get(int.MaxValue);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetAlltrue_Calles_BaseRepository_GetAlltrue()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -50,6 +55,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().GetAll(true);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetAllfalse_Calles_BaseRepository_GetAllfalse()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -60,6 +66,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().GetAll(false);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void GetAllWithRelatedtrue_Calles_BaseRepository_GetAllWithRelatedtrue()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -70,6 +77,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().GetAllWithRelated(true);
         }
         [Fact]
+        [Trait("Unit", "")]
         public async void GetAllWithRelatedfalse_Calles_BaseRepository_GetAllWithRelatedfalse()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -80,6 +88,7 @@ namespace Core.Tests.Decorators
             await baseRepository.Received().GetAllWithRelated(false);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Count_Calles_BaseRepository_Count()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -93,6 +102,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().Count(predicate);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Find_Calles_BaseRepository_Find()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -106,6 +116,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().Find(predicate);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void FirstOrDefault_Calles_BaseRepository_FirstOrDefault()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -119,6 +130,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().FirstOrDefault(predicate);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void SingleOrDefault_Calles_BaseRepository_SingleOrDefault()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -132,6 +144,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().SingleOrDefault(predicate);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Add_Calles_BaseRepository_Add()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -145,6 +158,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().Add(runner);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void AddRange_Calles_BaseRepository_AddRange()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -162,6 +176,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().AddRange(runners);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Remove_Calles_BaseRepository_Remove()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
@@ -175,6 +190,7 @@ namespace Core.Tests.Decorators
             baseRepository.Received().Remove(runner);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void RemoveRange_Calles_BaseRepository_RemoveRange()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();

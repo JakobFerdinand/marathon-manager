@@ -8,6 +8,7 @@ namespace Logic.Common.Tests
     public class IConfigurationExtentionsTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void GetLoggingPath_calles_GetSection_for_Logging_with_given_Name()
         {
             var configuration = Substitute.For<IConfiguration>();
