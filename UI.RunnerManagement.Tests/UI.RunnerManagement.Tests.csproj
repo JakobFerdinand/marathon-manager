@@ -153,6 +153,7 @@
     <Compile Include="Common\RelayCommandTests.cs" />
     <Compile Include="Common\ViewModelBaseTests.cs" />
     <Compile Include="Converters\ChipIdNotUnicErrorMessageConverterTests.cs" />
+    <Compile Include="Validation\IsRequiredValidationRuleTests.cs" />
     <Compile Include="ViewModels\CategoriesViewModelTests.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTests.cs" />
     <Compile Include="ViewModels\RunnersViewModelTests.cs" />
