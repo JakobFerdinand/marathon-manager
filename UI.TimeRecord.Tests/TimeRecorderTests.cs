@@ -10,8 +10,10 @@ namespace UI.TimeRecord.Tests
     public class TimeRecorderTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_all_parameter_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new TimeRecorder(null, null, null, null));
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_dateTimeManager_null_ArgumentNullException()
         {
             var logger = Substitute.For<ILogger>();
@@ -20,6 +22,7 @@ namespace UI.TimeRecord.Tests
             Assert.Throws<ArgumentNullException>(() => new TimeRecorder(null, logger, reader, unitOfWork));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_logger_null_ArgumentNullException()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -28,6 +31,7 @@ namespace UI.TimeRecord.Tests
             Assert.Throws<ArgumentNullException>(() => new TimeRecorder(dateTimeManager, null, reader, unitOfWork));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_reader_null_ArgumentNullException()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -36,6 +40,7 @@ namespace UI.TimeRecord.Tests
             Assert.Throws<ArgumentNullException>(() => new TimeRecorder(dateTimeManager, logger, null, unitOfWork));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_unitOfWork_null_ArgumentNullException()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
@@ -44,6 +49,7 @@ namespace UI.TimeRecord.Tests
             Assert.Throws<ArgumentNullException>(() => new TimeRecorder(dateTimeManager, logger, reader, null));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();

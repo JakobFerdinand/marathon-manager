@@ -9,12 +9,14 @@ namespace UI.RunnerManagement.Tests.Converters
     public class ChipIdNotUnicErrorMessageConverterTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
             Assert.NotNull(converter);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ConvertBack_any_Arguments_NotImplementedException()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -24,6 +26,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.Throws<NotImplementedException>(() => converter.ConvertBack(null, new[] { GetType() }, null, null));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_valuesOf1_true_Returns_false()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -35,12 +38,14 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.False(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_values_null_NullReferenceException()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
             Assert.Throws<NullReferenceException>(() => converter.IsErrorMessageNeeded(null));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_values_emptyArray_IndexOutOfRangeException()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -48,6 +53,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.Throws<IndexOutOfRangeException>(() => converter.IsErrorMessageNeeded(values));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_values_ArrayOfSize1_withValue_false_IndexOutOfRangeException()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -55,6 +61,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.Throws<IndexOutOfRangeException>(() => converter.IsErrorMessageNeeded(values));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_values_false_and_null_returns_false()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -71,6 +78,7 @@ namespace UI.RunnerManagement.Tests.Converters
         [InlineData(true)]
         [InlineData(Math.PI)]
         [InlineData(Math.E)]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_values_false_and_anything_that_is_not_IenumerableOfRunner_returns_False(object value2)
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -79,6 +87,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.False(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_values_false_and_empty_IEnumerableOfRunner_returns_False()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -87,6 +96,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.False(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_values_false_IEnumerableOfRunner_returns_true()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -101,6 +111,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.True(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void IsErrorMessageNeeded_returns_false_Convert_returns_empty_string()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -111,6 +122,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.Equal(string.Empty, result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Convert_values_false_IEnumerableOfRunner_returns_ErrorMessage()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();
@@ -131,6 +143,7 @@ namespace UI.RunnerManagement.Tests.Converters
             Assert.Contains("0123456789", message);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Convert_values_null_NullReferenceException()
         {
             var converter = new ChipIdNotUnicErrorMessageConverter();

@@ -8,6 +8,7 @@ namespace Data.Tests.Configurations
     public class CategoryConfigurationTests
     {
         [Fact (Skip = "InMemory Databse does not validate the Entities saved to it.")]
+        [Trait("Unit", "")]
         public void Add_Category_with_name_longer_than_50_chars_AnyRandomDatabaseExeption()
         {
             var options = new DbContextOptionsBuilder<RunnerDbContext>()

@@ -10,8 +10,10 @@ namespace Logging.Tests.Loggers
     public class MultiLoggerTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_loggers_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new MultiLogger(null));
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var loggers = new ILogger[0];
@@ -19,6 +21,7 @@ namespace Logging.Tests.Loggers
             Assert.NotNull(multiLogger);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LogError_calles_LogError_on_each_logger()
         {
             var loggers = new[]
@@ -37,6 +40,7 @@ namespace Logging.Tests.Loggers
             loggers.ForEach(l => l.DidNotReceiveWithAnyArgs().LogSuccess(null));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LogMessage_calles_LogMessage_on_each_logger()
         {
             var loggers = new[]
@@ -55,6 +59,7 @@ namespace Logging.Tests.Loggers
             loggers.ForEach(l => l.DidNotReceiveWithAnyArgs().LogSuccess(null));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LogSuccess_calles_LogSuccess_on_each_logger()
         {
             var loggers = new[]

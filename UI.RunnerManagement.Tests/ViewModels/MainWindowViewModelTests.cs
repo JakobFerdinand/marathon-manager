@@ -6,6 +6,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
     public class MainWindowViewModelTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var vm = new MainWindowViewModel();

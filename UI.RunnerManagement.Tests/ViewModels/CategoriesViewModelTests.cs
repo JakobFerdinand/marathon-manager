@@ -13,10 +13,13 @@ namespace UI.RunnerManagement.Tests.ViewModels
     public class CategoriesViewModelTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -25,6 +28,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.NotNull(vm.InitializeCommand);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LoadCategories_calles_categoryRepository_GetAll()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -38,6 +42,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             categoryRepository.Received().GetAll(asNotTracking: true);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LoadCategories_calles_categoryRepository_GetAll2()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -61,6 +66,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.Equal(1, vm.Categories.First().Id);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void InitializeCommand_Execute_calles_RunnersRepository_GetAll()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -74,6 +80,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             categoryRepository.Received().GetAll(asNotTracking: true);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void InitializeCommand_Execute_calles_RunnersRepository_GetAll2()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -96,6 +103,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.Equal(1, vm.Categories.First().Id);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Categories_setter_raises_propertyChanged_Event()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -113,6 +121,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             Assert.True(eventWasRaised);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Categories_setter_sets_collection()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();

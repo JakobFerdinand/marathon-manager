@@ -6,6 +6,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
     public class ViewModelBaseTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var vm = new EmptyViewModelBaseSubClass();
@@ -13,6 +14,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
         }
 
         [Fact]
+        [Trait("Unit", "")]
         public void RaisePropertyChanged_Raises_PropertyChanged_Event()
         {
             var vm = new EmptyViewModelBaseSubClass();

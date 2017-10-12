@@ -13,8 +13,9 @@ namespace Data.Repositories
             : base(context)
         { }
 
-        public Runner GetIfHasNoTimeWithCategory(string chipId) =>Entries.Include(r => r.Category)
-                          .SingleOrDefault(r => r.ChipId == chipId && r.TimeAtDestination == null);
+        public Runner GetIfHasNoTimeWithCategory(string chipId) => Entries.AsNoTracking()
+                                                                          .Include(r => r.Category)
+                                                                          .SingleOrDefault(r => r.ChipId == chipId && r.TimeAtDestination == null);
 
         public async Task<IEnumerable<Runner>> GetAllWithRelated(bool asNoTracking = false)
         {

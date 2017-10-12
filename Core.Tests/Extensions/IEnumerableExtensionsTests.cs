@@ -9,6 +9,7 @@ namespace Core.Tests.Models.Extensions
     public class IEnumerableExtensionsTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void ContainsEqual_null_ArgumentNullException()
         {
             Assert.Throws<ArgumentNullException>(() => IEnumerableExtensions.ConaintsEqual<short>(null));
@@ -24,12 +25,14 @@ namespace Core.Tests.Models.Extensions
             Assert.Throws<ArgumentNullException>(() => IEnumerableExtensions.ConaintsEqual<List<int>>(null));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ContainsEqual_null_ArgumentNullException_AsExtension()
         {
             IEnumerable<int> source = null;
             Assert.Throws<ArgumentNullException>(() => source.ConaintsEqual());
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ConaintsEqual_intArray_3different_returns_false()
         {
             var soruce = new int[] { 4, 96, 980 };
@@ -39,6 +42,7 @@ namespace Core.Tests.Models.Extensions
             Assert.False(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ConaintsEqual_intArray_2_of_3different_returns_true()
         {
             var soruce = new int[] { 96, 96, 980 };
@@ -48,6 +52,7 @@ namespace Core.Tests.Models.Extensions
             Assert.True(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ConaintsEqual_intArray_3equal_returns_true()
         {
             var soruce = new int[] { 0, 0, 0 };
@@ -57,6 +62,7 @@ namespace Core.Tests.Models.Extensions
             Assert.True(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ContainsEqual_emptyIntList_returns_false()
         {
             var source = new List<int>();
@@ -67,6 +73,7 @@ namespace Core.Tests.Models.Extensions
             Assert.False(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ConaintsEqual_doubleArray_3different_returns_false()
         {
             var soruce = new double[] { 4.4, 96.0, 96.01 };
@@ -76,6 +83,7 @@ namespace Core.Tests.Models.Extensions
             Assert.False(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ConaintsEqual_doubleArray_2_of_3different_returns_true()
         {
             var soruce = new double[] { 96.7843, 96.7843, 980.0 };
@@ -85,6 +93,7 @@ namespace Core.Tests.Models.Extensions
             Assert.True(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ConaintsEqual_doubleArray_3equal_returns_true()
         {
             var soruce = new double[] { 1.21, 1.21, 1.21 };
@@ -94,6 +103,7 @@ namespace Core.Tests.Models.Extensions
             Assert.True(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void ContainsEqual_emptyDoubleList_returns_false()
         {
             var source = new List<double>();
@@ -104,6 +114,7 @@ namespace Core.Tests.Models.Extensions
             Assert.False(result);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Foreach_source_null_NullReferenceException()
         {
             Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<short>(null, _ => { }));
@@ -119,6 +130,7 @@ namespace Core.Tests.Models.Extensions
             Assert.Throws<NullReferenceException>(() => IEnumerableExtensions.ForEach<List<int>>(null, _ => { }));
         }
         [Fact]
+        [Trait("Unit", "")]
         public void Foreach_performs_action_on_every_Element_in_source()
         {
             var source = new int[] { 96, 96, 980 };

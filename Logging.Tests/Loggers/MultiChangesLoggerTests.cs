@@ -11,8 +11,10 @@ namespace Logging.Tests.Loggers
     public class MultiChangesLoggerTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_loggers_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new MultiChangesLogger(null));
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var loggers = new IChangesLogger[0];
@@ -20,6 +22,7 @@ namespace Logging.Tests.Loggers
             Assert.NotNull(multiChangesLogger);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void LogChanges_calles_LogChanges_on_each_logger()
         {
             var loggers = new []

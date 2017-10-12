@@ -10,8 +10,10 @@ namespace Data.Tests
     public class RunnerDbContextTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void Constructor_DbContextOptions_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnerDbContext(null));
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var options = new DbContextOptionsBuilder<RunnerDbContext>().Options;
@@ -23,6 +25,7 @@ namespace Data.Tests
             }
         }
         [Fact]
+        [Trait("Unit", "")]
         public void CRUD_Operations_for_Categories()
         {
             var options = new DbContextOptionsBuilder<RunnerDbContext>()
@@ -92,6 +95,7 @@ namespace Data.Tests
             }
         }
         [Fact]
+        [Trait("Unit", "")]
         public async Task CRUD_Operations_for_Categories_Async()
         {
             var options = new DbContextOptionsBuilder<RunnerDbContext>()
@@ -161,6 +165,7 @@ namespace Data.Tests
             }
         }
         [Fact]
+        [Trait("Unit", "")]
         public void CRUD_Operations_for_Runners()
         {
             var options = new DbContextOptionsBuilder<RunnerDbContext>()
@@ -217,6 +222,7 @@ namespace Data.Tests
             }
         }
         [Fact]
+        [Trait("Unit", "")]
         public async Task CRUD_Operations_for_Runners_Async()
         {
             var options = new DbContextOptionsBuilder<RunnerDbContext>()

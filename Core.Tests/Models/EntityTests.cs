@@ -6,6 +6,7 @@ namespace Core.Tests.Models
     public class EntityTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void NewEntity_Id_property_should_be_default()
         {
             var entity = new EmptyEntitySubClass();

@@ -6,6 +6,7 @@ namespace Core.Tests.Models
     public class RunnerTests
     {
         [Fact]
+        [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var runner = new Runner();

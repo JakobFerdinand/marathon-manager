@@ -6,6 +6,7 @@ namespace UI.RunnerManagement.Tests.Common
     public class ViewModelBaseTests
     {
         [Fact]  
+        [Trait("Unit", "")]
         public void RaiseProperyChanged_should_raise_PropertyChanged_event()
         {
             var vm = new EmptyViewModelBaseSubClass();
@@ -17,12 +18,14 @@ namespace UI.RunnerManagement.Tests.Common
             Assert.True(eventWasRaised);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void RaisePropertyChanged_without_any_subscriber_doese_not_throw_any_exeption()
         {
             var vm = new EmptyViewModelBaseSubClass();
             vm.RaisePropertyChanged(null);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void RaisePropertyChanged_should_raise_PropertyChanged_with_given_propertyName()
         {
             var vm = new EmptyViewModelBaseSubClass();
@@ -34,6 +37,7 @@ namespace UI.RunnerManagement.Tests.Common
             Assert.Equal("My Fancy Property Name", propertyName);
         }
         [Fact]
+        [Trait("Unit", "")]
         public void RaisePropertyChanged_called_in_setter_without_given_propertyName_should_raise_PropertyChanged_with_name_of_calling_Property()
         {
             var vm = new EmptyViewModelBaseSubClass();
