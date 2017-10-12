@@ -18,8 +18,8 @@ namespace Data.Repositories
             Entries = context.Set<TEntity>();
         }
 
-        protected TContext Context { get; set; }
-        public DbSet<TEntity> Entries { get; set; }
+        protected TContext Context { get; }
+        public DbSet<TEntity> Entries { get; }
 
         public TEntity Get(int id) => Entries.Find(id);
         public IEnumerable<TEntity> GetAll(bool asNotTracking = false) => asNotTracking ? Entries.AsNoTracking().ToList() : Entries.ToList();
