@@ -116,7 +116,8 @@ namespace UI.RunnerManagement.Tests.Converters
             var converter = new ChipIdNotUnicErrorMessageConverter();
             var runners = new List<Runner>
             {
-                new Runner { }
+                new Runner { ChipId = "0123456789"},
+                new Runner { ChipId = "0123456789"}
             };
             var values = new object[] { false, runners };
 
@@ -127,6 +128,7 @@ namespace UI.RunnerManagement.Tests.Converters
             var message = result as string;
             Assert.StartsWith("Die Chip Ids müssen eindeutig sein!", message);
             Assert.Contains("Folgende Läufer haben die gleiche Chip Id: ", message);
+            Assert.Contains("0123456789", message);
         }
         [Fact]
         public void Convert_values_null_NullReferenceException()
