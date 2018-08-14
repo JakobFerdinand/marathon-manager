@@ -31,6 +31,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <DataGrid Grid.Row="0"
@@ -70,9 +71,9 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Startnummer" Binding="{Binding Startnumber}" />
+                <DataGridTextColumn x:Name="startnummerColumn" Header="Startnummer" Binding="{Binding Startnumber}" />
 
-                <DataGridTemplateColumn Header="Geschlecht">
+                <DataGridTemplateColumn x:Name="genderColumn" Header="Geschlecht">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox IsEditable="False" >
@@ -90,7 +91,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Vorname">
+                <DataGridTextColumn x:Name="firstnameColumn" Header="Vorname">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
@@ -100,7 +101,7 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Nachname" EditingElementStyle="{StaticResource errorTextBoxStyle}">
+                <DataGridTextColumn x:Name="lastnameColumn" Header="Nachname" EditingElementStyle="{StaticResource errorTextBoxStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="Lastname" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
@@ -110,7 +111,7 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Geburtsjahr" EditingElementStyle="{StaticResource errorTextBoxStyle}">
+                <DataGridTextColumn x:Name="birthdayColumn" Header="Geburtsjahr" EditingElementStyle="{StaticResource errorTextBoxStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="YearOfBirth" UpdateSourceTrigger="PropertyChanged" >
                             <Binding.ValidationRules>
@@ -120,7 +121,7 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridComboBoxColumn Header="Kategorie"
+                <DataGridComboBoxColumn x:Name="categoryColumn" Header="Kategorie"
                                         EditingElementStyle="{StaticResource errorComboBoxStyle}"
                                         ItemsSource="{Binding Source={StaticResource Locator}, Path=RunnersViewModel.Categories}"
                                         DisplayMemberPath="Name">
@@ -133,9 +134,9 @@
                     </DataGridComboBoxColumn.SelectedItemBinding>
                 </DataGridComboBoxColumn>
 
-                <DataGridTextColumn Header="ChipId" Binding="{Binding ChipId, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn x:Name="chipIdColumn" Header="ChipId" Binding="{Binding ChipId, UpdateSourceTrigger=PropertyChanged}" />
 
-                <DataGridTemplateColumn Header="Verein">
+                <DataGridTemplateColumn x:Name="sportsclubColumn" Header="Verein">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox IsEditable="True"
@@ -147,7 +148,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Ort">
+                <DataGridTemplateColumn x:Name="cityColumn" Header="Ort">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox IsEditable="True"
@@ -159,7 +160,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                <DataGridTextColumn x:Name="emailColumn" Header="Email" Binding="{Binding Email}" />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
@@ -234,6 +235,74 @@
             <Button Grid.Column="2"
                 Content="Speichern"
                 Command="{Binding SaveCommand}" />
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Margin="0 8 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=startnummerColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=genderColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=firstnameColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=lastnameColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=birthdayColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=categoryColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=chipIdColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=sportsclubColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=cityColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=emailColumn, Path=Width}" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ElementName=startnummerColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding SelectedRunner.Startnumber}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=genderColumn, Path=Header}" />
+            <ComboBox Grid.Row="1" Grid.Column="1" IsEditable="False" >
+                <ComboBox.SelectedItem>
+                    <Binding Path="SelectedRunner.Gender" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <validationRules:IsRequiredValidationRule Fieldname="Geschlecht" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </ComboBox.SelectedItem>
+                <models:Gender>Mann</models:Gender>
+                <models:Gender>Frau</models:Gender>
+            </ComboBox>
+
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding ElementName=firstnameColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SelectedRunner.Firstname}" />
+
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding ElementName=lastnameColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedRunner.Lastname}" />
+
+            <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding ElementName=birthdayColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding SelectedRunner.YearOfBirth}" />
+
+            <TextBlock Grid.Row="0" Grid.Column="5" Text="{Binding ElementName=categoryColumn, Path=Header}" />
+            <ComboBox Grid.Row="1" Grid.Column="5"
+                      SelectedItem="{Binding SelectedRunner.Category}"
+                      ItemsSource="{Binding Categories}"
+                      DisplayMemberPath="Name" />
+
+            <TextBlock Grid.Row="0" Grid.Column="6" Text="{Binding ElementName=chipIdColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="6" Text="{Binding SelectedRunner.ChipId}" />
+
+            <TextBlock Grid.Row="0" Grid.Column="7" Text="{Binding ElementName=sportsclubColumn, Path=Header}" />
+            <ComboBox Grid.Row="1" Grid.Column="7" 
+                      IsEditable="True"
+                      IsTextSearchEnabled="True"
+                      IsReadOnly="False"
+                      Text="{Binding SelectedRunner.SportsClub, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding SportClubs}" />
+
+            <TextBlock Grid.Row="0" Grid.Column="8" Text="{Binding ElementName=cityColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="8" Text="{Binding SelectedRunner.City}" />
+
+            <TextBlock Grid.Row="0" Grid.Column="9" Text="{Binding ElementName=emailColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="9" Text="{Binding SelectedRunner.Email}" />
         </Grid>
     </Grid>
 </UserControl>
