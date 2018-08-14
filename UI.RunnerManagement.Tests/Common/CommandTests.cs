@@ -4,14 +4,14 @@ using Xunit;
 
 namespace UI.RunnerManagement.Tests.Common
 {
-    public class RelayCommandTests
+    public class CommandTests
     {
         [Fact]
         [Trait("Unit", "")]
         public void Constructor_execute_null_should_throw_ArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new RelayCommand(null));
-            Assert.Throws<ArgumentNullException>(() => new RelayCommand(null, null));
+            Assert.Throws<ArgumentNullException>(() => new Command(null));
+            Assert.Throws<ArgumentNullException>(() => new Command(null, null));
             Assert.Throws<ArgumentNullException>(() => new RelayCommand<string>(null));
             Assert.Throws<ArgumentNullException>(() => new RelayCommand<string>(null, null));
         }
@@ -19,7 +19,7 @@ namespace UI.RunnerManagement.Tests.Common
         [Trait("Unit", "")]
         public void CanCreateInstance_without_given_canExecute()
         {
-            var command = new RelayCommand(() => { });
+            var command = new Command(() => { });
             Assert.NotNull(command);
         }
         [Fact]
@@ -33,7 +33,7 @@ namespace UI.RunnerManagement.Tests.Common
         [Trait("Unit", "")]
         public void CanCreateInstance_with_given_canExecute()
         {
-            var command = new RelayCommand(() => { }, () => true);
+            var command = new Command(() => { }, () => true);
             Assert.NotNull(command);
         }
         [Fact]
@@ -48,7 +48,7 @@ namespace UI.RunnerManagement.Tests.Common
         public void Execute_should_call_given_execute_method()
         {
             var methodWasCalled = false;
-            var command = new RelayCommand(() => methodWasCalled = true);
+            var command = new Command(() => methodWasCalled = true);
 
             command.Execute(null);
 
@@ -80,7 +80,7 @@ namespace UI.RunnerManagement.Tests.Common
         [Trait("Unit", "")]
         public void CanExecute_should_return_true_when_given_canExecute_method_is_null()
         {
-            var command = new RelayCommand(() => { });
+            var command = new Command(() => { });
 
             var canExecute = command.CanExecute(null);
 
@@ -101,7 +101,7 @@ namespace UI.RunnerManagement.Tests.Common
         public void CanExecute_should_call_given_canExecute_method()
         {
             var methodWasCalled = false;
-            var command = new RelayCommand(
+            var command = new Command(
                 () => { },
                 () =>
                 {

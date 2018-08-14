@@ -29,7 +29,7 @@ namespace UI.RunnerManagement.ViewModels
             }
         }
 
-        public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new RelayCommand(
+        public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new Command(
             () =>
             {
                 LoadCategories();
