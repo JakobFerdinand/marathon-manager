@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using UI.RunnerManagement.Common;
+using System.Collections.Immutable;
 
 namespace UI.RunnerManagement.ViewModels
 {
@@ -24,71 +25,54 @@ namespace UI.RunnerManagement.ViewModels
         private bool _areStartnumbersUnic = true;
         private bool _areChipIdsUnic = true;
 
-        public RunnersViewModel(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
+        public RunnersViewModel(IUnitOfWork unitOfWork)
+            => _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
 
         public IEnumerable<Category> Categories
         {
             get => _categories;
-            set
-            {
-                _categories = value;
-                RaisePropertyChanged();
-            }
+            set => Set(ref _categories, value);
         }
         public IEnumerable<Runner> Runners
         {
             get => _runners;
-            set
-            {
-                _runners = value;
-                RaisePropertyChanged();
-            }
+            set => Set(ref _runners, value);
         }
         public Runner SelectedRunner
         {
             get => _selectedRunner;
-            set
-            {
-                _selectedRunner = value;
-                RaisePropertyChanged();
-            }
+            set => Set(ref _selectedRunner, value);
         }
-        public List<string> SportClubs => 
-            Runners
-            .Where(r => r.SportsClub != null)
-            .Select(r => r.SportsClub)
-            .Distinct()
-            .OrderBy(s => s)
-            .ToList();
-        public List<string> Cities => 
-            Runners
-            .Where(r => r.City != null)
-            .Select(r => r.City)
-            .Distinct()
-            .OrderBy(r => r)
-            .ToList();
+        public ImmutableList<string> SportClubs =>
+            Runners?.Where(r => r.SportsClub != null)
+                    .Select(r => r.SportsClub)
+                    .Distinct()
+                    .OrderBy(s => s)
+                    .ToImmutableList()
+            ?? ImmutableList<string>.Empty;
+
+        public ImmutableList<string> Cities => 
+            Runners?.Where(r => r.City != null)
+                    .Select(r => r.City)
+                    .Distinct()
+                    .OrderBy(r => r)
+                    .ToImmutableList()
+            ?? ImmutableList<string>.Empty;
         public bool AreStartnumbersUnic
         {
             get => _areStartnumbersUnic;
-            set
-            {
-                _areStartnumbersUnic = value;
-                RaisePropertyChanged();
-            }
+            set => Set(ref _areStartnumbersUnic, value);
         }
         public bool AreChipIdsUnic
         {
             get => _areChipIdsUnic;
-            set
-            {
-                _areChipIdsUnic = value;
-                RaisePropertyChanged();
-            }
+            set => Set(ref _areChipIdsUnic, value);
         }
-        public IEnumerable<Runner> InvalidRunners => Runners?.Where(r =>
-            string.IsNullOrWhiteSpace(r.Firstname) ||
-            string.IsNullOrWhiteSpace(r.Lastname) ||
-            (r.CategoryId == 0 && r.Category == null)) ?? new List<Runner>();
+        public ImmutableList<Runner> InvalidRunners => 
+            Runners?.Where(r => string.IsNullOrWhiteSpace(r.Firstname) 
+                || string.IsNullOrWhiteSpace(r.Lastname)
+                || (r.CategoryId == 0 && r.Category == null)).ToImmutableList()
+            ?? ImmutableList<Runner>.Empty;
 
         public ICommand EditCommand => _editCommand ?? (_editCommand = new Command<Runner>(EditRunner));
         public ICommand CurrentCellChangedCommand => _currentCellChangedCommand ?? (_currentCellChangedCommand = new Command(CurrentCellChanged));
@@ -107,7 +91,7 @@ namespace UI.RunnerManagement.ViewModels
         internal void LoadRunners()
         {
             Runners = _unitOfWork.Runners.GetAll();
-            ValidateStartnumbers();
+            //ValidateStartnumbers();
             ValidateChipIds();
         }
         internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNotTracking: false);
@@ -117,7 +101,7 @@ namespace UI.RunnerManagement.ViewModels
             if (selectedRunner.Id == 0)
                 _unitOfWork.Runners.Add(selectedRunner);
 
-            ValidateStartnumbers();
+            //ValidateStartnumbers();
             ValidateChipIds();
         }
         internal void RemoveRunner()
@@ -128,7 +112,7 @@ namespace UI.RunnerManagement.ViewModels
         }
         internal void CurrentCellChanged()
         {
-            ValidateStartnumbers();
+            //ValidateStartnumbers();
             ValidateChipIds();
 
             NotifySportsClubAndCitiesAndInvalidRunners();
