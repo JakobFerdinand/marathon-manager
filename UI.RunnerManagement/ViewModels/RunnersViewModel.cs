@@ -93,6 +93,7 @@ namespace UI.RunnerManagement.ViewModels
             Runners = _unitOfWork.Runners.GetAll();
             //ValidateStartnumbers();
             ValidateChipIds();
+            NotifySportsClubAndCitiesAndInvalidRunners();
         }
         internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNotTracking: false);
         internal void SaveRunners() => _unitOfWork.Complete();

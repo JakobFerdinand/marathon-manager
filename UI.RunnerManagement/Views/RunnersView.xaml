@@ -200,7 +200,12 @@
                       ItemsSource="{Binding SportClubs}" />
 
             <TextBlock Grid.Row="0" Grid.Column="8" Text="{Binding ElementName=cityColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="8" Text="{Binding SelectedRunner.City}" />
+            <ComboBox Grid.Row="1" Grid.Column="8" 
+                      IsEditable="True"
+                      IsTextSearchEnabled="True"
+                      IsReadOnly="False"
+                      SelectedItem="{Binding SelectedRunner.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding Cities}"/>
 
             <TextBlock Grid.Row="0" Grid.Column="9" Text="{Binding ElementName=emailColumn, Path=Header}" />
             <TextBox Grid.Row="1" Grid.Column="9" Text="{Binding SelectedRunner.Email}" />
