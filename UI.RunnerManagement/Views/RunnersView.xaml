@@ -42,125 +42,26 @@
                   CanUserDeleteRows="False"
                   CanUserSortColumns="True"
                   AutoGenerateColumns="False">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="BeginningEdit">
-                    <i:InvokeCommandAction Command="{Binding EditCommand}" 
-                                           CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=SelectedItem}"/>
-                </i:EventTrigger>
-                <i:EventTrigger EventName="CurrentCellChanged">
-                    <i:InvokeCommandAction Command="{Binding CurrentCellChangedCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <DataGrid.Resources>
-                <Style x:Key="errorComboBoxStyle" TargetType="{x:Type ComboBox}">
-                    <Setter Property="Padding" Value="-2"/>
-                    <Style.Triggers>
-                        <Trigger Property="Validation.HasError" Value="True">
-                            <Setter Property="Background" Value="#FFFB8888"/>
-                            <Setter Property="ToolTip" 
-                                    Value="{Binding RelativeSource={RelativeSource Self},
-                                                    Path=(Validation.Errors)[0].ErrorContent}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-                <Style x:Key="errorTextBoxStyle" TargetType="TextBox">
-                    <Setter Property="Background" Value="#FFFB8888"/>
-                    <Setter Property="ToolTip" 
-                                    Value="{Binding RelativeSource={RelativeSource Self},
-                                                    Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Style>
-            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="startnummerColumn" Header="Startnummer" Binding="{Binding Startnumber}" />
+                <DataGridTextColumn x:Name="startnummerColumn" Header="Startnummer" Binding="{Binding Startnumber}" IsReadOnly="True" />
 
-                <DataGridTemplateColumn x:Name="genderColumn" Header="Geschlecht">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox IsEditable="False" >
-                                <ComboBox.SelectedItem>
-                                    <Binding Path="Gender" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
-                                        <Binding.ValidationRules>
-                                            <validationRules:IsRequiredValidationRule Fieldname="Geschlecht" />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </ComboBox.SelectedItem>
-                                <models:Gender>Mann</models:Gender>
-                                <models:Gender>Frau</models:Gender>
-                            </ComboBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="genderColumn" Header="Geschlecht" Binding="{Binding Gender}" IsReadOnly="True" />
 
-                <DataGridTextColumn x:Name="firstnameColumn" Header="Vorname">
-                    <DataGridTextColumn.Binding>
-                        <Binding Path="Firstname" UpdateSourceTrigger="PropertyChanged" >
-                            <Binding.ValidationRules>
-                                <validationRules:IsRequiredValidationRule Fieldname="Vorname" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="firstnameColumn" Header="Vorname" Binding="{Binding Firstname}" IsReadOnly="True"/>
 
-                <DataGridTextColumn x:Name="lastnameColumn" Header="Nachname" EditingElementStyle="{StaticResource errorTextBoxStyle}">
-                    <DataGridTextColumn.Binding>
-                        <Binding Path="Lastname" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <validationRules:IsRequiredValidationRule Fieldname="Nachname" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="lastnameColumn" Header="Nachname" Binding="{Binding Lastname}" IsReadOnly="True" />
 
-                <DataGridTextColumn x:Name="birthdayColumn" Header="Geburtsjahr" EditingElementStyle="{StaticResource errorTextBoxStyle}">
-                    <DataGridTextColumn.Binding>
-                        <Binding Path="YearOfBirth" UpdateSourceTrigger="PropertyChanged" >
-                            <Binding.ValidationRules>
-                                <validationRules:IsRequiredValidationRule Fieldname="Geburtsjahr" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="birthdayColumn" Header="Geburtsjahr" Binding="{Binding YearOfBirth}" IsReadOnly="True" />
 
-                <DataGridComboBoxColumn x:Name="categoryColumn" Header="Kategorie"
-                                        EditingElementStyle="{StaticResource errorComboBoxStyle}"
-                                        ItemsSource="{Binding Source={StaticResource Locator}, Path=RunnersViewModel.Categories}"
-                                        DisplayMemberPath="Name">
-                    <DataGridComboBoxColumn.SelectedItemBinding>
-                        <Binding Path="Category" UpdateSourceTrigger="PropertyChanged" >
-                            <Binding.ValidationRules>
-                                <validationRules:IsRequiredValidationRule Fieldname="Kategorie" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </DataGridComboBoxColumn.SelectedItemBinding>
-                </DataGridComboBoxColumn>
+                <DataGridTextColumn x:Name="categoryColumn" Header="Kategorie" Binding="{Binding Category.Name}" IsReadOnly="True" />
 
-                <DataGridTextColumn x:Name="chipIdColumn" Header="ChipId" Binding="{Binding ChipId, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn x:Name="chipIdColumn" Header="ChipId" Binding="{Binding ChipId}" IsReadOnly="True" />
 
-                <DataGridTemplateColumn x:Name="sportsclubColumn" Header="Verein">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox IsEditable="True"
-                                      IsTextSearchEnabled="True"
-                                      IsReadOnly="False"
-                                      Text="{Binding SportsClub, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext.SportClubs}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="sportsclubColumn" Header="Verein" Binding="{Binding SportsClub}" IsReadOnly="True" />
 
-                <DataGridTemplateColumn x:Name="cityColumn" Header="Ort">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox IsEditable="True"
-                                      IsTextSearchEnabled="True"
-                                      IsReadOnly="False"
-                                      Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}, Path=DataContext.Cities}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="cityColumn" Header="Ort" Binding="{Binding City}" IsReadOnly="True" />
 
-                <DataGridTextColumn x:Name="emailColumn" Header="Email" Binding="{Binding Email}" />
+                <DataGridTextColumn x:Name="emailColumn" Header="Email" Binding="{Binding Email}" IsReadOnly="True" />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
