@@ -13,7 +13,7 @@ namespace UI.RunnerManagement.Common
 
         protected bool Set<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
-            if (EqualityComparer<T>.Default.Equals(field, value))
+            if (!EqualityComparer<T>.Default.Equals(field, value))
             {
                 field = value;
                 RaisePropertyChanged(propertyName);
