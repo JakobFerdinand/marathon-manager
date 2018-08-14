@@ -21,9 +21,9 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            var runners = await _unitOfWork.Runners.GetAllWithRelated(asNoTracking: true);
+            var runners = _unitOfWork.Runners.GetAllWithCategories(asNoTracking: true);
 
             var runnerResources = _mapper.Map<IEnumerable<Runner>, IEnumerable<RunnerResource>>(runners);
 

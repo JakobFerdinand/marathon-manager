@@ -17,7 +17,7 @@ namespace Core.Decorators
         public virtual Runner Get(int id) => baseRepository.Get(id);
         public virtual Runner GetIfHasNoTimeWithCategory(string chipId) => baseRepository.GetIfHasNoTimeWithCategory(chipId);
         public virtual ImmutableList<Runner> GetAll(bool asNoTracking = true) => baseRepository.GetAll(asNoTracking);
-        public virtual Task<ImmutableList<Runner>> GetAllWithRelated(bool asNoTracking = false) => baseRepository.GetAllWithRelated(asNoTracking);
+        public virtual ImmutableList<Runner> GetAllWithCategories(bool asNoTracking = false) => baseRepository.GetAllWithCategories(asNoTracking);
         public virtual int Count(Expression<Func<Runner, bool>> predicate) => baseRepository.Count(predicate);
         public virtual ImmutableList<Runner> Find(Expression<Func<Runner, bool>> predicate) => baseRepository.Find(predicate);
         public virtual Runner FirstOrDefault(Expression<Func<Runner, bool>> predicate) => baseRepository.FirstOrDefault(predicate);
