@@ -13,7 +13,7 @@ namespace SampleData
     {
         static void Main(string[] args)
         {
-            CalculateTimes();
+            GenerateSampleData();
         }
 
         private static void CalculateTimes()
@@ -38,7 +38,7 @@ namespace SampleData
         private static void GenerateSampleRunningTimes()
         {
             var optionsBuilder = new DbContextOptionsBuilder<RunnerDbContext>();
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
             using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
@@ -70,7 +70,7 @@ namespace SampleData
         private static void SaveData(IEnumerable<Runner> runners, IEnumerable<Category> categories)
         {
             var optionsBuilder = new DbContextOptionsBuilder<RunnerDbContext>();
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
             using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
