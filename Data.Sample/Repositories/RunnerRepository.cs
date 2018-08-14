@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Tynamix.ObjectFiller;
 
 namespace Data.Sample.Repositories
@@ -42,7 +41,7 @@ namespace Data.Sample.Repositories
             }
             _runners = runners.ToImmutableList();
         }
-
+        
         public void Add(Runner entity) => _runners.Add(entity);
         public void AddRange(IEnumerable<Runner> entities) => _runners.AddRange(entities);
         public int Count(Expression<Func<Runner, bool>> predicate) => _runners.Count(predicate.Compile());
@@ -72,6 +71,10 @@ namespace Data.Sample.Repositories
                 }).ToImmutableList();
         public ImmutableList<Runner> GetAllWithCategories(bool asNoTracking = false) => throw new NotImplementedException();
         public Runner GetIfHasNoTimeWithCategory(string chipId) => _runners.SingleOrDefault(r => r.RunningTime == null && r.ChipId == chipId);
+
+        public Runner GetWithCategoryById(int id)
+            => _runners.FirstOrDefault(r => r.Id == id);
+
         public void Remove(Runner entity) => _runners.Remove(entity);
         public void RemoveRange(IEnumerable<Runner> entities)
         {

@@ -13,6 +13,11 @@ namespace Data.Repositories
             : base(context)
         { }
 
+        Runner GetWithCategoryById(int id)
+            => Entries
+            .Include(r => r.Category)
+            .FirstOrDefault(r => r.Id == id);
+
         public Runner GetIfHasNoTimeWithCategory(string chipId)
         {
             if (chipId is null)
@@ -31,6 +36,9 @@ namespace Data.Repositories
                 query = query.AsNoTracking();
 
             return query.ToImmutableList();
-        }   
+        }
+
+        Runner IRunnerRepository.GetWithCategoryById(int id)
+            => Entries.Include(r => r.Category).FirstOrDefault(r => r.Id == id);
     }
 }

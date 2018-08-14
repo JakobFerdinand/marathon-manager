@@ -37,6 +37,9 @@ namespace Data
             _changesLogger = changesLogger;
         }
 
+        public void Attach<T>(T runner) where T : class
+            => _context.Set<T>().Attach(runner);
+
         public void Complete()
         {
             if (!_context.ChangeTracker.HasChanges())

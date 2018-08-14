@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Core.Models;
+using Core.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Core.Models;
-using Core.Repositories;
 
 namespace Core.Decorators
 {
@@ -13,7 +12,7 @@ namespace Core.Decorators
         private readonly IRunnerRepository baseRepository;
 
         public RunnerRepositoryDecorator(IRunnerRepository baseRepository) => this.baseRepository = baseRepository ?? throw new ArgumentNullException(nameof(baseRepository), $"{nameof(baseRepository)} must not be null.");
-
+        
         public virtual Runner Get(int id) => baseRepository.Get(id);
         public virtual Runner GetIfHasNoTimeWithCategory(string chipId) => baseRepository.GetIfHasNoTimeWithCategory(chipId);
         public virtual ImmutableList<Runner> GetAll(bool asNoTracking = true) => baseRepository.GetAll(asNoTracking);
@@ -26,5 +25,7 @@ namespace Core.Decorators
         public virtual void AddRange(IEnumerable<Runner> entities) => baseRepository.AddRange(entities);
         public virtual void Remove(Runner entity) => baseRepository.Remove(entity);
         public virtual void RemoveRange(IEnumerable<Runner> entities) => baseRepository.RemoveRange(entities);
+
+        public Runner GetWithCategoryById(int id) => baseRepository.GetWithCategoryById(id);
     }
 }
