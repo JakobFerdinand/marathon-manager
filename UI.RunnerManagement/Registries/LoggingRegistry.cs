@@ -21,9 +21,9 @@ namespace UI.RunnerManagement.Registries
                 .Use<ChangesLogger>()
                 .Singleton();
 
-            For<IChangesLogger>()
-                .Use<DbChangesLogger>()
-                .AlwaysUnique();
+            //For<IChangesLogger>()
+            //    .Use<DbChangesLogger>()
+            //    .AlwaysUnique();
         }
     }
 }

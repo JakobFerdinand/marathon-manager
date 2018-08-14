@@ -1,12 +1,12 @@
 ﻿using Core;
-using Core.Models;
 using Core.Extensions;
+using Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Windows.Input;
 using UI.RunnerManagement.Common;
-using System.Collections.Immutable;
 
 namespace UI.RunnerManagement.ViewModels
 {
@@ -41,7 +41,11 @@ namespace UI.RunnerManagement.ViewModels
         public Runner SelectedRunner
         {
             get => _selectedRunner;
-            set => Set(ref _selectedRunner, value);
+            set
+            {
+                if (Set(ref _selectedRunner, value))
+                    _unitOfWork.Attach(_selectedRunner);
+            }
         }
         public ImmutableList<string> SportClubs =>
             Runners?.Where(r => r.SportsClub != null)
@@ -90,7 +94,7 @@ namespace UI.RunnerManagement.ViewModels
 
         internal void LoadRunners()
         {
-            Runners = _unitOfWork.Runners.GetAll();
+            Runners = _unitOfWork.Runners.GetAllWithCategories();
             //ValidateStartnumbers();
             ValidateChipIds();
             NotifySportsClubAndCitiesAndInvalidRunners();
