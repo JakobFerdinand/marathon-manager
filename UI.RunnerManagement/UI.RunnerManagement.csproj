@@ -252,6 +252,8 @@
     <Compile Include="Registries\CommonRegistry.cs" />
     <Compile Include="Registries\DataRegistry.cs" />
     <Compile Include="Registries\LoggingRegistry.cs" />
+    <Compile Include="Registries\ViewRegistry.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Validation\IsRequiredValidationRule.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="Common\Command.cs" />

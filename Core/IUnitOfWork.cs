@@ -8,6 +8,7 @@ namespace Core
         ICategoryRepository Categories { get; }
         IRunnerRepository Runners { get; }
         void Attach<T>(T runner) where T : class;
+        bool HasChanges();
 
         void Complete();
     }

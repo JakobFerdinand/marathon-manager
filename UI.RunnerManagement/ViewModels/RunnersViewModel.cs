@@ -5,14 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using UI.RunnerManagement.Common;
+using UI.RunnerManagement.Services;
 
 namespace UI.RunnerManagement.ViewModels
 {
     public class RunnersViewModel : ViewModelBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly Func<IUnitOfWork> _getNewUnitOfWork;
+        private readonly IDialogService _dialogService;
+        private IUnitOfWork _unitOfWork;
 
         private IEnumerable<Category> _categories;
         private IEnumerable<Runner> _runners;
@@ -20,13 +24,18 @@ namespace UI.RunnerManagement.ViewModels
         private ICommand _editCommand;
         private ICommand _currentCellChangedCommand;
         private ICommand _initializeCommand;
+        private ICommand _reloadCommand;
         private ICommand _removeRunnerCommand;
         private ICommand _saveCommand;
         private bool _areStartnumbersUnic = true;
         private bool _areChipIdsUnic = true;
 
-        public RunnersViewModel(IUnitOfWork unitOfWork)
-            => _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork), $"{nameof(unitOfWork)} must not be null.");
+        public RunnersViewModel(Func<IUnitOfWork> getNewUnitOfWork, IDialogService dialogService)
+        {
+            _getNewUnitOfWork = getNewUnitOfWork ?? throw new ArgumentNullException(nameof(getNewUnitOfWork), $"{nameof(getNewUnitOfWork)} must not be null.");
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService), $"{nameof(dialogService)} must not be null.");
+            _unitOfWork = _getNewUnitOfWork();
+        }
 
         public IEnumerable<Category> Categories
         {
@@ -43,8 +52,13 @@ namespace UI.RunnerManagement.ViewModels
             get => _selectedRunner;
             set
             {
-                if (Set(ref _selectedRunner, value))
+                _selectedRunner = value;
+                if (_selectedRunner != null)
+                {
                     _unitOfWork.Attach(_selectedRunner);
+                    _selectedRunner.Category = Categories.Single(c => c.Id == _selectedRunner.Category.Id);
+                }
+                RaisePropertyChanged();
             }
         }
         public ImmutableList<string> SportClubs =>
@@ -55,7 +69,7 @@ namespace UI.RunnerManagement.ViewModels
                     .ToImmutableList()
             ?? ImmutableList<string>.Empty;
 
-        public ImmutableList<string> Cities => 
+        public ImmutableList<string> Cities =>
             Runners?.Where(r => r.City != null)
                     .Select(r => r.City)
                     .Distinct()
@@ -72,8 +86,8 @@ namespace UI.RunnerManagement.ViewModels
             get => _areChipIdsUnic;
             set => Set(ref _areChipIdsUnic, value);
         }
-        public ImmutableList<Runner> InvalidRunners => 
-            Runners?.Where(r => string.IsNullOrWhiteSpace(r.Firstname) 
+        public ImmutableList<Runner> InvalidRunners =>
+            Runners?.Where(r => string.IsNullOrWhiteSpace(r.Firstname)
                 || string.IsNullOrWhiteSpace(r.Lastname)
                 || (r.CategoryId == 0 && r.Category == null)).ToImmutableList()
             ?? ImmutableList<Runner>.Empty;
@@ -85,13 +99,35 @@ namespace UI.RunnerManagement.ViewModels
             LoadCategories();
             LoadRunners();
         }));
+        public ICommand ReloadCommand => _reloadCommand ?? (_reloadCommand = new Command(Reload));
         public ICommand RemoveRunnerCommand => _removeRunnerCommand ?? (_removeRunnerCommand = new Command(RemoveRunner));
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new Command(
             () => SaveRunners(),
-            () => AreStartnumbersUnic && 
+            () => AreStartnumbersUnic &&
                   AreChipIdsUnic &&
                   !InvalidRunners.Any()));
 
+        internal void Reload()
+        {
+            var messageBoxResult = MessageBoxResult.No;
+            if (_unitOfWork.HasChanges())
+                messageBoxResult = _dialogService.ShowYesNoMessageBox("Sie haben ungespeicherte Änderungen. wollen sie diese speichern?", "Ungespeicherte Änderungen");
+            if (messageBoxResult is MessageBoxResult.Yes)
+                _unitOfWork.Complete();
+
+            _unitOfWork.Dispose();
+            _unitOfWork = _getNewUnitOfWork();
+
+            Runners = null;
+            Categories = null;
+            SelectedRunner = null;
+            LoadData();
+        }
+        internal void LoadData()
+        {
+            Runners = _unitOfWork.Runners.GetAllWithCategories();
+            Categories = _unitOfWork.Categories.GetAll(asNoTracking: false);
+        }
         internal void LoadRunners()
         {
             Runners = _unitOfWork.Runners.GetAllWithCategories();
@@ -100,7 +136,9 @@ namespace UI.RunnerManagement.ViewModels
             NotifySportsClubAndCitiesAndInvalidRunners();
         }
         internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNoTracking: false);
+
         internal void SaveRunners() => _unitOfWork.Complete();
+
         internal void EditRunner(Runner selectedRunner)
         {
             if (selectedRunner.Id == 0)
