@@ -40,6 +40,8 @@ namespace Data
         public void Attach<T>(T runner) where T : class
             => _context.Set<T>().Attach(runner);
 
+        public bool HasChanges() => _context.ChangeTracker.HasChanges();
+
         public void Complete()
         {
             if (!_context.ChangeTracker.HasChanges())

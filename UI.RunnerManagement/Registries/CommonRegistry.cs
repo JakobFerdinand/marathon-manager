@@ -1,6 +1,7 @@
 ﻿using Logic.Common.Interfaces;
 using Logic.Common.Services;
 using StructureMap;
+using UI.RunnerManagement.Services;
 
 namespace UI.RunnerManagement.Registries
 {
@@ -14,6 +15,10 @@ namespace UI.RunnerManagement.Registries
 
             For<IDateTimeManager>()
                 .Use<DateTimeManager>()
+                .Singleton();
+
+            For<IDialogService>()
+                .Use<DialogService>()
                 .Singleton();
         }
     }

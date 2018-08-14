@@ -22,6 +22,8 @@ namespace Data.Sample
         public void Dispose()
         { }
 
+        public bool HasChanges() => false;
+
         public void Attach<T>(T runner) where T : class
             => throw new System.NotImplementedException();
     }
