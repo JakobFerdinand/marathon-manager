@@ -70,7 +70,7 @@ namespace Data.Sample.Repositories
                     TimeAtDestination = r.TimeAtDestination,
                     YearOfBirth = r.YearOfBirth
                 }).ToImmutableList();
-        public Task<ImmutableList<Runner>> GetAllWithRelated(bool asNoTracking = false) => throw new NotImplementedException();
+        public ImmutableList<Runner> GetAllWithCategories(bool asNoTracking = false) => throw new NotImplementedException();
         public Runner GetIfHasNoTimeWithCategory(string chipId) => _runners.SingleOrDefault(r => r.RunningTime == null && r.ChipId == chipId);
         public void Remove(Runner entity) => _runners.Remove(entity);
         public void RemoveRange(IEnumerable<Runner> entities)

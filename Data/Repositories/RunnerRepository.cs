@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
@@ -24,14 +23,14 @@ namespace Data.Repositories
                 .SingleOrDefault(r => r.ChipId == chipId && r.TimeAtDestination == null);
         }
 
-        public async Task<ImmutableList<Runner>> GetAllWithRelated(bool asNoTracking = false)
+        public ImmutableList<Runner> GetAllWithCategories(bool asNoTracking = true)
         {
             var query = Entries.Include(r => r.Category).AsQueryable();
 
             if (asNoTracking)
                 query = query.AsNoTracking();
 
-            return (await query.ToListAsync()).ToImmutableList();
+            return query.ToImmutableList();
         }   
     }
 }

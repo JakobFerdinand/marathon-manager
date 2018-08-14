@@ -72,20 +72,20 @@ namespace Core.Tests.Decorators
             var baseRepository = Substitute.For<IRunnerRepository>();
             var dec = new EmptyRunnerRepositoryDecoratorSubClass(baseRepository);
 
-            dec.GetAllWithRelated(true);
+            dec.GetAllWithCategories(true);
 
-            baseRepository.Received().GetAllWithRelated(true);
+            baseRepository.Received().GetAllWithCategories(true);
         }
         [Fact]
         [Trait("Unit", "")]
-        public async void GetAllWithRelatedfalse_Calles_BaseRepository_GetAllWithRelatedfalse()
+        public void GetAllWithRelatedfalse_Calles_BaseRepository_GetAllWithRelatedfalse()
         {
             var baseRepository = Substitute.For<IRunnerRepository>();
             var dec = new EmptyRunnerRepositoryDecoratorSubClass(baseRepository);
 
-            await dec.GetAllWithRelated(false);
+            dec.GetAllWithCategories(false);
 
-            await baseRepository.Received().GetAllWithRelated(false);
+            baseRepository.Received().GetAllWithCategories(false);
         }
         [Fact]
         [Trait("Unit", "")]
