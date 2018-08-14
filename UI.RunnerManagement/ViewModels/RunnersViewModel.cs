@@ -91,14 +91,14 @@ namespace UI.RunnerManagement.ViewModels
             (r.CategoryId == 0 && r.Category == null)) ?? new List<Runner>();
 
         public ICommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand<Runner>(EditRunner));
-        public ICommand CurrentCellChangedCommand => _currentCellChangedCommand ?? (_currentCellChangedCommand = new RelayCommand(CurrentCellChanged));
-        public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new RelayCommand(() =>
+        public ICommand CurrentCellChangedCommand => _currentCellChangedCommand ?? (_currentCellChangedCommand = new Command(CurrentCellChanged));
+        public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new Command(() =>
         {
             LoadCategories();
             LoadRunners();
         }));
-        public ICommand RemoveRunnerCommand => _removeRunnerCommand ?? (_removeRunnerCommand = new RelayCommand(RemoveRunner));
-        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new RelayCommand(
+        public ICommand RemoveRunnerCommand => _removeRunnerCommand ?? (_removeRunnerCommand = new Command(RemoveRunner));
+        public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new Command(
             () => SaveRunners(),
             () => AreStartnumbersUnic && 
                   AreChipIdsUnic &&

@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace UI.RunnerManagement.Common
 {
-    public class RelayCommand : ICommand
+    public class Command : ICommand
     {
         private Action executeHandler { get; }
         private Func<bool> canExecuteHandler { get; }
@@ -14,8 +14,8 @@ namespace UI.RunnerManagement.Common
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public RelayCommand(Action execute) => executeHandler = execute ?? throw new ArgumentNullException(nameof(execute), "Execute must not be null!");
-        public RelayCommand(Action execute, Func<bool> canExecute)
+        public Command(Action execute) => executeHandler = execute ?? throw new ArgumentNullException(nameof(execute), "Execute must not be null!");
+        public Command(Action execute, Func<bool> canExecute)
             : this(execute) => canExecuteHandler = canExecute;
 
         public bool CanExecute(object parameter) => canExecuteHandler == null ? true : canExecuteHandler();

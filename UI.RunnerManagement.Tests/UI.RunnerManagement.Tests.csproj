@@ -150,7 +150,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\RelayCommandTests.cs" />
+    <Compile Include="Common\CommandTests.cs" />
     <Compile Include="Common\ViewModelBaseTests.cs" />
     <Compile Include="Converters\ChipIdNotUnicErrorMessageConverterTests.cs" />
     <Compile Include="Validation\IsRequiredValidationRuleTests.cs" />
