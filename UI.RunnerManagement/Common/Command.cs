@@ -21,7 +21,7 @@ namespace UI.RunnerManagement.Common
         public bool CanExecute(object parameter) => canExecuteHandler == null ? true : canExecuteHandler();
         public void Execute(object parameter) => executeHandler();
     }
-    public class RelayCommand<T> : ICommand
+    public class Command<T> : ICommand
     {
         private Action<T> executeHandler { get; }
         private Func<T, bool> canExecuteHandler { get; }
@@ -32,8 +32,8 @@ namespace UI.RunnerManagement.Common
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public RelayCommand(Action<T> execute) => executeHandler = execute ?? throw new ArgumentNullException(nameof(execute), "Execute must not be null!");
-        public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
+        public Command(Action<T> execute) => executeHandler = execute ?? throw new ArgumentNullException(nameof(execute), "Execute must not be null!");
+        public Command(Action<T> execute, Func<T, bool> canExecute)
             : this(execute) => canExecuteHandler = canExecute;
 
         public bool CanExecute(object parameter) => canExecuteHandler == null ? true : canExecuteHandler((T)parameter);

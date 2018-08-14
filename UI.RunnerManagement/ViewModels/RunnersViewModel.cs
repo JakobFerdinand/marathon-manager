@@ -90,7 +90,7 @@ namespace UI.RunnerManagement.ViewModels
             string.IsNullOrWhiteSpace(r.Lastname) ||
             (r.CategoryId == 0 && r.Category == null)) ?? new List<Runner>();
 
-        public ICommand EditCommand => _editCommand ?? (_editCommand = new RelayCommand<Runner>(EditRunner));
+        public ICommand EditCommand => _editCommand ?? (_editCommand = new Command<Runner>(EditRunner));
         public ICommand CurrentCellChangedCommand => _currentCellChangedCommand ?? (_currentCellChangedCommand = new Command(CurrentCellChanged));
         public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new Command(() =>
         {

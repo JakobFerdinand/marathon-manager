@@ -12,8 +12,8 @@ namespace UI.RunnerManagement.Tests.Common
         {
             Assert.Throws<ArgumentNullException>(() => new Command(null));
             Assert.Throws<ArgumentNullException>(() => new Command(null, null));
-            Assert.Throws<ArgumentNullException>(() => new RelayCommand<string>(null));
-            Assert.Throws<ArgumentNullException>(() => new RelayCommand<string>(null, null));
+            Assert.Throws<ArgumentNullException>(() => new Command<string>(null));
+            Assert.Throws<ArgumentNullException>(() => new Command<string>(null, null));
         }
         [Fact]
         [Trait("Unit", "")]
@@ -26,7 +26,7 @@ namespace UI.RunnerManagement.Tests.Common
         [Trait("Unit", "")]
         public void CanCreateGenericInstance_without_given_canExecute()
         {
-            var genericCommand = new RelayCommand<string>(_ => { });
+            var genericCommand = new Command<string>(_ => { });
             Assert.NotNull(genericCommand);
         }
         [Fact]
@@ -40,7 +40,7 @@ namespace UI.RunnerManagement.Tests.Common
         [Trait("Unit", "")]
         public void CanCreateGenericInstance_with_given_canExecute()
         {
-            var genericCommand = new RelayCommand<string>(_ => { }, _ => true);
+            var genericCommand = new Command<string>(_ => { }, _ => true);
             Assert.NotNull(genericCommand);
         }
         [Fact]
@@ -59,7 +59,7 @@ namespace UI.RunnerManagement.Tests.Common
         public void Generic_Execute_should_call_given_execute_method()
         {
             var methodWasCalled = false;
-            var command = new RelayCommand<string>(_ => methodWasCalled = true);
+            var command = new Command<string>(_ => methodWasCalled = true);
 
             command.Execute(null);
 
@@ -70,7 +70,7 @@ namespace UI.RunnerManagement.Tests.Common
         public void Generic_Execute_should_call_given_execute_method_with_given_parameter()
         {
             string valueFromParameter = null;
-            var command = new RelayCommand<string>(v => valueFromParameter = v);
+            var command = new Command<string>(v => valueFromParameter = v);
 
             command.Execute("the Value from the parameter");
 
@@ -90,7 +90,7 @@ namespace UI.RunnerManagement.Tests.Common
         [Trait("Unit", "")]
         public void Generic_CanExecute_should_return_true_when_given_canExecute_method_is_null()
         {
-            var command = new RelayCommand<string>(_ => { });
+            var command = new Command<string>(_ => { });
 
             var canExecute = command.CanExecute(null);
 
@@ -119,7 +119,7 @@ namespace UI.RunnerManagement.Tests.Common
         public void Generic_CanExecute_should_call_given_canExecute_method()
         {
             var methodWasCalled = false;
-            var command = new RelayCommand<int>(
+            var command = new Command<int>(
                 _ => { },
                 _ =>
                 {
@@ -137,7 +137,7 @@ namespace UI.RunnerManagement.Tests.Common
         public void Generic_CanExecute_should_call_given_canExecute_method_with_given_parameter()
         {
             string valueFromParameter = null;
-            var command = new RelayCommand<string>(
+            var command = new Command<string>(
                 _ => { },
                 v =>
                 {
