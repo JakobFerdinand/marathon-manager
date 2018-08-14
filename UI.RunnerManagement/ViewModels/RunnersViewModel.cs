@@ -95,7 +95,7 @@ namespace UI.RunnerManagement.ViewModels
             ValidateChipIds();
             NotifySportsClubAndCitiesAndInvalidRunners();
         }
-        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNotTracking: false);
+        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNoTracking: false);
         internal void SaveRunners() => _unitOfWork.Complete();
         internal void EditRunner(Runner selectedRunner)
         {

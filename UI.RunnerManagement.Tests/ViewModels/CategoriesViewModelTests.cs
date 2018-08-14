@@ -4,6 +4,7 @@ using Core.Repositories;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using UI.RunnerManagement.ViewModels;
 using Xunit;
@@ -39,7 +40,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
 
             vm.LoadCategories();
 
-            categoryRepository.Received().GetAll(asNotTracking: true);
+            categoryRepository.Received().GetAll(asNoTracking: true);
         }
         [Fact]
         [Trait("Unit", "")]
@@ -48,13 +49,11 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll(asNotTracking: true)
-                .Returns(new List<Category>
-            {
+            categoryRepository.GetAll(asNoTracking: true)
+                .Returns(ImmutableList.Create(
                 new Category { Id = 1 },
                 new Category { Id = 2 },
-                new Category { Id = 3 },
-            });
+                new Category { Id = 3 }));
 
             var vm = new CategoriesViewModel(unitOfWork);
 
@@ -77,7 +76,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
 
             vm.InitializeCommand.Execute(null);
 
-            categoryRepository.Received().GetAll(asNotTracking: true);
+            categoryRepository.Received().GetAll(asNoTracking: true);
         }
         [Fact]
         [Trait("Unit", "")]
@@ -86,12 +85,10 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll(asNotTracking: true).Returns(new List<Category>
-            {
+            categoryRepository.GetAll(asNoTracking: true).Returns(ImmutableList.Create(
                 new Category { Id = 1 },
                 new Category { Id = 2 },
-                new Category { Id = 3 },
-            });
+                new Category { Id = 3 }));
 
             var vm = new CategoriesViewModel(unitOfWork);
 

@@ -43,7 +43,7 @@ namespace UI.JsonImport
 
         private static IConfigurationProvider GetMapperConfiguration(ICategoryRepository categoryRepository)
         {
-            var categories = categoryRepository.GetAll(asNotTracking: true);
+            var categories = categoryRepository.GetAll(asNoTracking: true);
 
             return new MapperConfiguration(c =>
             {
