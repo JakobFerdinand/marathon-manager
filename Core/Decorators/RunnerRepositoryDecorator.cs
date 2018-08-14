@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Core.Models;
@@ -15,10 +16,10 @@ namespace Core.Decorators
 
         public virtual Runner Get(int id) => baseRepository.Get(id);
         public virtual Runner GetIfHasNoTimeWithCategory(string chipId) => baseRepository.GetIfHasNoTimeWithCategory(chipId);
-        public virtual IEnumerable<Runner> GetAll(bool asNoTracking = false) => baseRepository.GetAll(asNoTracking);
-        public virtual Task<IEnumerable<Runner>> GetAllWithRelated(bool asNoTracking = false) => baseRepository.GetAllWithRelated(asNoTracking);
+        public virtual ImmutableList<Runner> GetAll(bool asNoTracking = true) => baseRepository.GetAll(asNoTracking);
+        public virtual Task<ImmutableList<Runner>> GetAllWithRelated(bool asNoTracking = false) => baseRepository.GetAllWithRelated(asNoTracking);
         public virtual int Count(Expression<Func<Runner, bool>> predicate) => baseRepository.Count(predicate);
-        public virtual IEnumerable<Runner> Find(Expression<Func<Runner, bool>> predicate) => baseRepository.Find(predicate);
+        public virtual ImmutableList<Runner> Find(Expression<Func<Runner, bool>> predicate) => baseRepository.Find(predicate);
         public virtual Runner FirstOrDefault(Expression<Func<Runner, bool>> predicate) => baseRepository.FirstOrDefault(predicate);
         public virtual Runner SingleOrDefault(Expression<Func<Runner, bool>> predicate) => baseRepository.SingleOrDefault(predicate);
         public virtual void Add(Runner entity) => baseRepository.Add(entity);

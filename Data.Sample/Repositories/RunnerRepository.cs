@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Core.Models;
+using Core.Repositories;
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Core.Models;
-using Core.Repositories;
 using Tynamix.ObjectFiller;
 
 namespace Data.Sample.Repositories
 {
     public class RunnerRepository : IRunnerRepository
     {
-        private List<Runner> _runners;
+        private ImmutableList<Runner> _runners;
 
         public RunnerRepository(CategoryRepository categoryRepository)
         {
@@ -39,23 +40,20 @@ namespace Data.Sample.Repositories
                 r.Category = categories[random.Next(0, categories.Count)];
                 r.CategoryId = r.Category.Id;
             }
-            _runners = runners.ToList();
+            _runners = runners.ToImmutableList();
         }
 
         public void Add(Runner entity) => _runners.Add(entity);
         public void AddRange(IEnumerable<Runner> entities) => _runners.AddRange(entities);
         public int Count(Expression<Func<Runner, bool>> predicate) => _runners.Count(predicate.Compile());
-        public IEnumerable<Runner> Find(Expression<Func<Runner, bool>> predicate) => _runners.Where(predicate.Compile()).ToList();
+        public ImmutableList<Runner> Find(Expression<Func<Runner, bool>> predicate) => _runners.Where(predicate.Compile()).ToImmutableList();
         public Runner FirstOrDefault(Expression<Func<Runner, bool>> predicate) => _runners.FirstOrDefault(predicate.Compile());
         public Runner Get(int id) => _runners.SingleOrDefault(r => r.Id == id);
-        public IEnumerable<Runner> GetAll(bool asNotTracking = false)
-        {
-            if (asNotTracking)
-                return _runners;
-
-            var temp = new List<Runner>();
-            foreach (var r in _runners)
-                temp.Add(new Runner
+        public ImmutableList<Runner> GetAll(bool asNotTracking = false)
+            => asNotTracking
+            ? _runners
+            : _runners.Select(r =>
+                new Runner
                 {
                     Id = r.Id,
                     Gender = r.Gender,
@@ -71,10 +69,8 @@ namespace Data.Sample.Repositories
                     Startnumber = r.Startnumber,
                     TimeAtDestination = r.TimeAtDestination,
                     YearOfBirth = r.YearOfBirth
-                });
-            return temp;
-        }
-        public Task<IEnumerable<Runner>> GetAllWithRelated(bool asNoTracking = false) => throw new NotImplementedException();
+                }).ToImmutableList();
+        public Task<ImmutableList<Runner>> GetAllWithRelated(bool asNoTracking = false) => throw new NotImplementedException();
         public Runner GetIfHasNoTimeWithCategory(string chipId) => _runners.SingleOrDefault(r => r.RunningTime == null && r.ChipId == chipId);
         public void Remove(Runner entity) => _runners.Remove(entity);
         public void RemoveRange(IEnumerable<Runner> entities)

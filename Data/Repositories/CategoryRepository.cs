@@ -1,6 +1,6 @@
 ﻿using Core.Models;
 using Core.Repositories;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Data.Repositories
@@ -11,6 +11,7 @@ namespace Data.Repositories
             : base(context)
         { }
 
-        public IEnumerable<Category> GetNotStarted() => Entries.Where(c => c.Starttime == null).ToList();
+        public ImmutableList<Category> GetNotStarted()
+            => Entries.Where(c => c.Starttime == null).ToImmutableList();
     }
 }

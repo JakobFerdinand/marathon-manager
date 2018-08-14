@@ -36,7 +36,7 @@ namespace UI.RunnerManagement.ViewModels
                 InitializeTimer();
             }));
 
-        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNotTracking: true);
+        internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNoTracking: true);
         internal void InitializeTimer() => _timer = new Timer(_ => LoadCategories(), null, dueTime: 0, period: 10000);
     }
 }

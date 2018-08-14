@@ -4,6 +4,7 @@ using Core.Repositories;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using UI.RunnerManagement.ViewModels;
 using Xunit;
@@ -50,12 +51,10 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var runnerRepository = Substitute.For<IRunnerRepository>();
             unitOfWork.Runners.Returns(runnerRepository);
-            runnerRepository.GetAll().Returns(new List<Runner>
-            {
+            runnerRepository.GetAll().Returns(ImmutableList.Create(
                 new Runner { Id = 1 },
                 new Runner { Id = 2 },
-                new Runner { Id = 3 },
-            });
+                new Runner { Id = 3 }));
 
             var vm = new RunnersViewModel(unitOfWork);
 
@@ -88,12 +87,10 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var runnerRepository = Substitute.For<IRunnerRepository>();
             unitOfWork.Runners.Returns(runnerRepository);
-            runnerRepository.GetAll().Returns(new List<Runner>
-            {
+            runnerRepository.GetAll().Returns(ImmutableList.Create(
                 new Runner { Id = 1 },
                 new Runner { Id = 2 },
-                new Runner { Id = 3 },
-            });
+                new Runner { Id = 3 }));
 
             var vm = new RunnersViewModel(unitOfWork);
 
@@ -214,12 +211,10 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll().Returns(new List<Category>
-            {
+            categoryRepository.GetAll().Returns(ImmutableList.Create(
                 new Category { Id = 1 },
                 new Category { Id = 2 },
-                new Category { Id = 3 },
-            });
+                new Category { Id = 3 }));
 
             var vm = new RunnersViewModel(unitOfWork);
 
@@ -251,12 +246,10 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll().Returns(new List<Category>
-            {
+            categoryRepository.GetAll().Returns(ImmutableList.Create(
                 new Category { Id = 1 },
                 new Category { Id = 2 },
-                new Category { Id = 3 },
-            });
+                new Category { Id = 3 }));
 
             var vm = new RunnersViewModel(unitOfWork);
 

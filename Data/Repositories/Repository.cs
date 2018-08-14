@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Core.Models;
+using Core.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
-using Core.Models;
-using Microsoft.EntityFrameworkCore;
-using Core.Repositories;
 
 namespace Data.Repositories
 {
@@ -22,9 +23,12 @@ namespace Data.Repositories
         public DbSet<TEntity> Entries { get; }
 
         public TEntity Get(int id) => Entries.Find(id);
-        public IEnumerable<TEntity> GetAll(bool asNotTracking = false) => asNotTracking ? Entries.AsNoTracking().ToList() : Entries.ToList();
+        public ImmutableList<TEntity> GetAll(bool asNotTracking = false)
+            => asNotTracking
+            ? Entries.AsNoTracking().ToImmutableList()
+            : Entries.ToImmutableList();
         public int Count(Expression<Func<TEntity, bool>> predicate) => Entries.Count(predicate);
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) => Entries.Where(predicate).ToList();
+        public ImmutableList<TEntity> Find(Expression<Func<TEntity, bool>> predicate) => Entries.Where(predicate).ToImmutableList();
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate) => Entries.FirstOrDefault(predicate);
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate) => Entries.SingleOrDefault(predicate);
         public void Add(TEntity entity) => Entries.Add(entity);
