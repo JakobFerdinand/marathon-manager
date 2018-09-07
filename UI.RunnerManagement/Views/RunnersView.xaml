@@ -70,72 +70,22 @@
             </DataGrid.ContextMenu>
         </DataGrid>
 
-        <!-- Error Messages -->
         <Grid Grid.Row="1" 
               Margin="0 8 0 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0">
-                <TextBlock Foreground="Red">
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource startnumberNotUnicErrorMessageConverter}" UpdateSourceTrigger="PropertyChanged">
-                            <Binding Path="AreStartnumbersUnic" UpdateSourceTrigger="PropertyChanged" />
-                            <Binding Path="Runners" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding AreStartnumbersUnic}" Value="False">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-
-                <TextBlock Foreground="Red">
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource chipIdNotUnicErrorMessageConverter}" UpdateSourceTrigger="PropertyChanged">
-                            <Binding Path="AreChipIdsUnic" UpdateSourceTrigger="PropertyChanged" />
-                            <Binding Path="Runners" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding AreChipIdsUnic}" Value="False">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-
-                <TextBlock Foreground="Red"
-                           Text="{Binding InvalidRunners, Converter={StaticResource invalidRunnersErrorMessageConverter}}">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </StackPanel>
+            <Button Grid.Column="1"
+                    Content="Neuer Läufer"
+                    Command="{Binding NewRunnerCommand}"/>
 
             <Button Grid.Column="2"
-                Content="Speichern"
-                Command="{Binding SaveCommand}" />
+                    Content="Speichern"
+                    Command="{Binding SaveCommand}"
+                    Margin="8 0 0 0" />
         </Grid>
 
         <Grid Grid.Row="2"

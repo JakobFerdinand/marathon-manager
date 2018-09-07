@@ -4,6 +4,7 @@ using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -19,9 +20,10 @@ namespace UI.RunnerManagement.ViewModels
         private IUnitOfWork _unitOfWork;
 
         private IEnumerable<Category> _categories;
-        private IEnumerable<Runner> _runners;
+        private ObservableCollection<Runner> _runners;
         private Runner _selectedRunner;
         private ICommand _initializeCommand;
+        private ICommand _newRunnerCommand;
         private ICommand _reloadCommand;
         private ICommand _removeRunnerCommand;
         private ICommand _saveCommand;
@@ -40,7 +42,7 @@ namespace UI.RunnerManagement.ViewModels
             get => _categories;
             set => Set(ref _categories, value);
         }
-        public IEnumerable<Runner> Runners
+        public ObservableCollection<Runner> Runners
         {
             get => _runners;
             set => Set(ref _runners, value);
@@ -51,7 +53,7 @@ namespace UI.RunnerManagement.ViewModels
             set
             {
                 _selectedRunner = value;
-                if (_selectedRunner != null)
+                if (_selectedRunner != null && _selectedRunner.Category != null)
                 {
                     _unitOfWork.Attach(_selectedRunner);
                     _selectedRunner.Category = Categories.Single(c => c.Id == _selectedRunner.Category.Id);
@@ -95,6 +97,7 @@ namespace UI.RunnerManagement.ViewModels
             LoadCategories();
             LoadRunners();
         }));
+        public ICommand NewRunnerCommand => _newRunnerCommand ?? (_newRunnerCommand = new Command(NewRunner));
         public ICommand ReloadCommand => _reloadCommand ?? (_reloadCommand = new Command(Reload));
         public ICommand RemoveRunnerCommand => _removeRunnerCommand ?? (_removeRunnerCommand = new Command(RemoveRunner));
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new Command(
@@ -120,16 +123,24 @@ namespace UI.RunnerManagement.ViewModels
         }
         internal void LoadData()
         {
-            Runners = _unitOfWork.Runners.GetAllWithCategories();
+            Runners = _unitOfWork.Runners.GetAllWithCategories().ToObservableCollection();
             Categories = _unitOfWork.Categories.GetAll(asNoTracking: false);
         }
         internal void LoadRunners()
         {
-            Runners = _unitOfWork.Runners.GetAllWithCategories();
+            Runners = _unitOfWork.Runners.GetAllWithCategories().ToObservableCollection();
             ValidateChipIds();
             NotifySportsClubAndCitiesAndInvalidRunners();
         }
         internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNoTracking: false);
+
+        internal void NewRunner()
+        {
+            var runner = new Runner();
+            _unitOfWork.Runners.Add(runner);
+            Runners.Add(runner);
+            SelectedRunner = runner;
+        }
 
         internal void SaveRunners() => _unitOfWork.Complete();
         
@@ -137,7 +148,7 @@ namespace UI.RunnerManagement.ViewModels
         {
             _unitOfWork.Runners.Remove(SelectedRunner);
             SelectedRunner = null;
-            Runners = _unitOfWork.Runners.GetAll();
+            Runners = _unitOfWork.Runners.GetAll().ToObservableCollection();
         }
         internal void NotifySportsClubAndCitiesAndInvalidRunners()
         {
