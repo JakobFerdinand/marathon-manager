@@ -156,7 +156,15 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
+            <Grid.Resources>
+                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" >
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}" >
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+            </Grid.Resources>
+            
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ElementName=startnummerColumn, Path=Header}" />
             <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding SelectedRunner.Startnumber}" />
 
