@@ -30,7 +30,9 @@ namespace Data.Repositories
 
         public ImmutableList<Runner> GetAllWithCategories(bool asNoTracking = true)
         {
-            var query = Entries.Include(r => r.Category).AsQueryable();
+            var query = Entries.Include(r => r.Category)
+                .OrderBy(r => r.Startnumber)
+                .AsQueryable();
 
             if (asNoTracking)
                 query = query.AsNoTracking();
