@@ -21,8 +21,6 @@ namespace UI.RunnerManagement.ViewModels
         private IEnumerable<Category> _categories;
         private IEnumerable<Runner> _runners;
         private Runner _selectedRunner;
-        private ICommand _editCommand;
-        private ICommand _currentCellChangedCommand;
         private ICommand _initializeCommand;
         private ICommand _reloadCommand;
         private ICommand _removeRunnerCommand;
