@@ -91,9 +91,7 @@ namespace UI.RunnerManagement.ViewModels
                 || string.IsNullOrWhiteSpace(r.Lastname)
                 || (r.CategoryId == 0 && r.Category == null)).ToImmutableList()
             ?? ImmutableList<Runner>.Empty;
-
-        public ICommand EditCommand => _editCommand ?? (_editCommand = new Command<Runner>(EditRunner));
-        public ICommand CurrentCellChangedCommand => _currentCellChangedCommand ?? (_currentCellChangedCommand = new Command(CurrentCellChanged));
+        
         public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new Command(() =>
         {
             LoadCategories();
@@ -136,26 +134,12 @@ namespace UI.RunnerManagement.ViewModels
         internal void LoadCategories() => Categories = _unitOfWork.Categories.GetAll(asNoTracking: false);
 
         internal void SaveRunners() => _unitOfWork.Complete();
-
-        internal void EditRunner(Runner selectedRunner)
-        {
-            if (selectedRunner.Id == 0)
-                _unitOfWork.Runners.Add(selectedRunner);
-
-            //ValidateStartnumbers();
-            ValidateChipIds();
-        }
+        
         internal void RemoveRunner()
         {
             _unitOfWork.Runners.Remove(SelectedRunner);
             SelectedRunner = null;
             Runners = _unitOfWork.Runners.GetAll();
-        }
-        internal void CurrentCellChanged()
-        {
-            ValidateChipIds();
-
-            NotifySportsClubAndCitiesAndInvalidRunners();
         }
         internal void NotifySportsClubAndCitiesAndInvalidRunners()
         {
