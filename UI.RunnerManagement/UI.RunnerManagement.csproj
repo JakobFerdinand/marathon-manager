@@ -246,6 +246,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Converters\ChipIdNotUnicErrorMessageConverter.cs" />
     <Compile Include="Converters\InvalidRunnersErrorMessageConverter.cs" />
     <Compile Include="Converters\StartnumberNotUnicErrorMessageConverter.cs" />
