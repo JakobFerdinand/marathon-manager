@@ -104,8 +104,7 @@ namespace UI.RunnerManagement.ViewModels
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new Command(
             () => SaveRunners(),
             () => AreStartnumbersUnic &&
-                  AreChipIdsUnic &&
-                  !InvalidRunners.Any()));
+                  AreChipIdsUnic));
 
         internal void Reload()
         {
@@ -131,7 +130,6 @@ namespace UI.RunnerManagement.ViewModels
         internal void LoadRunners()
         {
             Runners = _unitOfWork.Runners.GetAllWithCategories();
-            //ValidateStartnumbers();
             ValidateChipIds();
             NotifySportsClubAndCitiesAndInvalidRunners();
         }
@@ -155,7 +153,6 @@ namespace UI.RunnerManagement.ViewModels
         }
         internal void CurrentCellChanged()
         {
-            //ValidateStartnumbers();
             ValidateChipIds();
 
             NotifySportsClubAndCitiesAndInvalidRunners();
@@ -165,17 +162,6 @@ namespace UI.RunnerManagement.ViewModels
             RaisePropertyChanged(nameof(SportClubs));
             RaisePropertyChanged(nameof(Cities));
             RaisePropertyChanged(nameof(InvalidRunners));
-        }
-        internal void ValidateStartnumbers()
-        {
-            if (Runners is null)
-                return;
-
-            var startNumbers = Runners
-                .Where(r => r.Startnumber.HasValue && r.Startnumber != 0)
-                .Select(r => r.Startnumber.Value);
-
-            AreStartnumbersUnic = !startNumbers.ConaintsEqual();
         }
         internal void ValidateChipIds()
         {
