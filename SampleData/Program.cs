@@ -13,7 +13,20 @@ namespace SampleData
     {
         static void Main(string[] args)
         {
-            GenerateSampleData();
+            EnsureNewDatabase();
+        }
+
+        private static void EnsureNewDatabase(string connectionString = null)
+        {
+            var options = new DbContextOptionsBuilder<RunnerDbContext>()
+                .UseSqlServer(connectionString ?? "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True")
+                .Options;
+
+            using (var context = new RunnerDbContext(options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
         }
 
         private static void CalculateTimes()
