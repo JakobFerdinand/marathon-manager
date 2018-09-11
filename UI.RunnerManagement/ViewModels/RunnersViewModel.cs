@@ -142,8 +142,12 @@ namespace UI.RunnerManagement.ViewModels
             SelectedRunner = runner;
         }
 
-        internal void SaveRunners() => _unitOfWork.Complete();
-        
+        internal void SaveRunners()
+        {
+            _unitOfWork.Complete();
+            NotifySportsClubAndCitiesAndInvalidRunners();
+        }
+
         internal void RemoveRunner()
         {
             _unitOfWork.Runners.Remove(SelectedRunner);
