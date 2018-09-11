@@ -107,6 +107,9 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.Resources>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" >
+                    <Setter Property="Margin" Value="5 0 0 0" />
+                </Style>
                 <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" >
                     <Setter Property="Margin" Value="5" />
                 </Style>
@@ -118,7 +121,7 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ElementName=startnummerColumn, Path=Header}" />
             <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding SelectedRunner.Startnumber}" />
 
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=genderColumn, Path=Header}" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=genderColumn, Path=Header}" />
             <ComboBox Grid.Row="1" Grid.Column="1" IsEditable="False" >
                 <ComboBox.SelectedItem>
                     <Binding Path="SelectedRunner.Gender" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
