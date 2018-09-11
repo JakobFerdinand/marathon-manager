@@ -70,23 +70,22 @@
             </DataGrid.ContextMenu>
         </DataGrid>
 
-        <Grid Grid.Row="1" 
-              Margin="0 8 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="1" 
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
 
-            <Button Grid.Column="1"
-                    Content="Neuer Läufer"
-                    Command="{Binding NewRunnerCommand}"/>
+            <Button Content="Aktualisieren"
+                    Command="{Binding ReloadCommand}" />
 
-            <Button Grid.Column="2"
-                    Content="Speichern"
+            <Button Content="Neuer Läufer"
+                    Command="{Binding NewRunnerCommand}" 
+                    Margin="8 0 0 0 " />
+
+            <Button Content="Speichern"
                     Command="{Binding SaveCommand}"
                     Margin="8 0 0 0" />
-        </Grid>
+        </StackPanel>
 
         <Grid Grid.Row="2"
               Margin="0 8 0 0">
