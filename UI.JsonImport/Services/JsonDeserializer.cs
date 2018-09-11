@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Core.Models;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UI.JsonImport.Interfaces;
-using Core.Models;
-using AutoMapper;
 
 namespace UI.JsonImport.Services
 {
