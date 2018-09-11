@@ -14,13 +14,13 @@ namespace UI.JsonImport
     {
         static void Main(string[] args)
         {
-            var path = @"C:\Users\jw2\Desktop\runnerdata.json";
+            var path = @"C:\Development\runnerdata.json";
 
             var filereader = new StreamReader(path);
             var json = filereader.ReadToEnd();
 
             var options = new DbContextOptionsBuilder<RunnerDbContext>()
-                .UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True")
+                .UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True")
                 .Options;
             using (var context = new RunnerDbContext(options))
             {
