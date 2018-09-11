@@ -14,6 +14,7 @@ namespace SampleData
         static void Main(string[] args)
         {
             EnsureNewDatabase();
+            SaveCategories2017();
         }
 
         private static void EnsureNewDatabase(string connectionString = null)
@@ -74,7 +75,7 @@ namespace SampleData
         {
             Console.WriteLine("Generate Sample Data.");
             var runners = GenerateRunners();
-            var categories = GenerateCategories();
+            var categories = GenerateCategories2017();
             SaveData(runners, categories);
             Console.WriteLine("Generate Sample Data Complete.");
             Console.ReadKey();
@@ -104,12 +105,26 @@ namespace SampleData
             }
         }
 
-        private static IEnumerable<Category> GenerateCategories() => new List<Category>
+        private static void SaveCategories2017(string connectionString = null)
         {
-            new Category { Name = "Walken 3000", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Walken 10000", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Laufen 3000", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Laufen 10000", PlannedStartTime = DateTime.Now }
+            var options = new DbContextOptionsBuilder<RunnerDbContext>()
+                .UseSqlServer(connectionString ?? "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True")
+                .Options;
+
+            using (var context = new RunnerDbContext(options))
+            {
+                context.AddRange(GenerateCategories2017());
+                context.SaveChanges();
+            }
+        }
+        private static IEnumerable<Category> GenerateCategories2017() => new List<Category>
+        {
+            new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = DateTime.Now },
+            new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = DateTime.Now },
+            new Category { Name = "AK 2005 und j&uuml;nger, 500m", PlannedStartTime = DateTime.Now },
+            new Category { Name = "AK 2004 &ndash; 2001, 1.000m", PlannedStartTime = DateTime.Now },
+            new Category { Name = "Walken, 10.000m", PlannedStartTime = DateTime.Now },
+            new Category { Name = "Walken, 3.800m", PlannedStartTime = DateTime.Now }
         };
 
         private static IEnumerable<Runner> GenerateRunners()
