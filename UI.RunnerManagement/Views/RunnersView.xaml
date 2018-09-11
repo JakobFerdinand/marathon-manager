@@ -162,7 +162,7 @@
                       IsEditable="True"
                       IsTextSearchEnabled="True"
                       IsReadOnly="False"
-                      SelectedItem="{Binding SelectedRunner.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Text="{Binding SelectedRunner.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding Cities}"/>
 
             <TextBlock Grid.Row="0" Grid.Column="9" Text="{Binding ElementName=emailColumn, Path=Header}" />
