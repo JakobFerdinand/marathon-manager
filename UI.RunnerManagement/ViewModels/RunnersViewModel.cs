@@ -150,9 +150,21 @@ namespace UI.RunnerManagement.ViewModels
 
         internal void RemoveRunner()
         {
-            _unitOfWork.Runners.Remove(SelectedRunner);
-            SelectedRunner = null;
-            Runners = _unitOfWork.Runners.GetAll().ToObservableCollection();
+            SaveRunners();
+
+            var result = _dialogService.ShowYesNoMessageBox($"Wollen sie den Läufer {SelectedRunner.Startnumber} {SelectedRunner.Firstname} {SelectedRunner.Lastname} wirklich löschen?", "Läufer löschen");
+
+            switch (result)
+            {
+                case MessageBoxResult.No: return;
+
+                case MessageBoxResult.Yes:
+                    _unitOfWork.Runners.Remove(SelectedRunner);
+                    SelectedRunner = null;
+                    SaveRunners();
+                    LoadRunners();
+                    break;
+            }
         }
         internal void NotifySportsClubAndCitiesAndInvalidRunners()
         {
