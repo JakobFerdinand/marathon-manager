@@ -7,12 +7,55 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Linq;
 using UI.JsonImport.Services;
+using static System.Console;
 
 namespace UI.JsonImport
 {
     class Program
     {
         static void Main(string[] args)
+        {
+            WriteLine("1. Create Database");
+            WriteLine("2. Insert Categories");
+            WriteLine("3. Import Json Runners");
+            WriteLine("exit");
+
+            while (true)
+            {
+                var input = ReadLine();
+
+                switch (input)
+                {
+                    case "exit": return;
+
+                    case "1":
+                        CreateDatabase();
+                        break;
+
+                    case "2":
+                        InsertCategories();
+                        break;
+
+                    case "3":
+                        ImportRunners();
+                        break;
+
+                    default:
+                        WriteLine("Invalid input");
+                        break;
+                }
+            }
+        }
+
+        private static void CreateDatabase()
+        {
+
+        }
+
+        private static void InsertCategories()
+        { }
+
+        private static void ImportRunners()
         {
             var path = @"C:\Development\runnerdata.json";
 
