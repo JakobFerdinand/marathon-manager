@@ -118,7 +118,7 @@
             </Grid.Resources>
             
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ElementName=startnummerColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding SelectedRunner.Startnumber}" />
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding SelectedRunner.Startnumber, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=genderColumn, Path=Header}" />
             <ComboBox Grid.Row="1" Grid.Column="1" IsEditable="False" >
