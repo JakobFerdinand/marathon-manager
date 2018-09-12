@@ -5,6 +5,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Core.Models;assembly=Core"
+             xmlns:behaviors="clr-namespace:UI.RunnerManagement.Behaviors"
              xmlns:converters="clr-namespace:UI.RunnerManagement.Converters"
              xmlns:validationRules="clr-namespace:UI.RunnerManagement.Validation"
              DataContext="{Binding Source={StaticResource Locator}, Path=RunnersViewModel}"
@@ -17,8 +18,9 @@
     </i:Interaction.Triggers>
     <UserControl.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="S" 
-                    Command="{Binding SaveCommand}" 
-                    CommandParameter="{Binding ElementName=runnersDataGrid}"/>
+                    Command="{Binding SaveCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="N"
+                    Command="{Binding NewRunnerCommand}" />
         <KeyBinding Key="F5" Command="{Binding ReloadCommand}" />
     </UserControl.InputBindings>
     <UserControl.Resources>
@@ -42,6 +44,9 @@
                   CanUserDeleteRows="False"
                   CanUserSortColumns="True"
                   AutoGenerateColumns="False">
+            <i:Interaction.Behaviors>
+                <behaviors:ScrollToSelectedItemBehavior />
+            </i:Interaction.Behaviors>
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="startnummerColumn" Header="Startnummer" Binding="{Binding Startnumber}" IsReadOnly="True" />
 
