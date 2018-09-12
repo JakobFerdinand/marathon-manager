@@ -9,7 +9,9 @@
                       BorderThickness="1"
                       BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
                       DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowViewModel}"
-                      Title="MainWindow" Height="350" Width="825">
+                      Title="MainWindow" Height="350" Width="825"
+                      WindowStartupLocation="CenterScreen"
+                      WindowState="Maximized">
     <Grid>
         <TabControl Margin="8">
             <TabItem Header="Läufer">
