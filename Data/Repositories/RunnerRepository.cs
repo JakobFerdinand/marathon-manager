@@ -23,7 +23,7 @@ namespace Data.Repositories
             if (chipId is null)
                 throw new ArgumentNullException(nameof(chipId));
 
-            return Entries.AsNoTracking()
+            return Entries
                 .Include(r => r.Category)
                 .SingleOrDefault(r => r.ChipId == chipId && r.TimeAtDestination == null);
         }
