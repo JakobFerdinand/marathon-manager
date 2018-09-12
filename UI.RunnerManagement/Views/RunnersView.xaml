@@ -43,7 +43,8 @@
                   CanUserAddRows="True"
                   CanUserDeleteRows="False"
                   CanUserSortColumns="True"
-                  AutoGenerateColumns="False">
+                  AutoGenerateColumns="False"
+                  SelectionChanged="runnerDataGrid_SelectionChanged">
             <i:Interaction.Behaviors>
                 <behaviors:ScrollToSelectedItemBehavior />
             </i:Interaction.Behaviors>
@@ -123,7 +124,7 @@
             </Grid.Resources>
             
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ElementName=startnummerColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding SelectedRunner.Startnumber, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="0" Name="startnumberTextBox" Text="{Binding SelectedRunner.Startnumber, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=genderColumn, Path=Header}" />
             <ComboBox Grid.Row="1" Grid.Column="1" IsEditable="False" >
