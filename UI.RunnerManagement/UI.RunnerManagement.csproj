@@ -247,10 +247,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviors\ScrollToSelectedItemBehavior.cs" />
+    <Compile Include="Behaviors\TextBoxSelectAllBehavior.cs" />
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="Converters\ChipIdNotUnicErrorMessageConverter.cs" />
     <Compile Include="Converters\InvalidRunnersErrorMessageConverter.cs" />
     <Compile Include="Converters\StartnumberNotUnicErrorMessageConverter.cs" />
+    <Compile Include="Helpers\ILMemberAccessor.cs" />
+    <Compile Include="Helpers\ViewHelper.cs" />
     <Compile Include="Registries\CommonRegistry.cs" />
     <Compile Include="Registries\DataRegistry.cs" />
     <Compile Include="Registries\LoggingRegistry.cs" />

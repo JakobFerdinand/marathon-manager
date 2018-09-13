@@ -28,7 +28,7 @@
         <converters:InvalidRunnersErrorMessageConverter x:Key="invalidRunnersErrorMessageConverter" />
         <converters:ChipIdNotUnicErrorMessageConverter x:Key="chipIdNotUnicErrorMessageConverter" />
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -76,7 +76,7 @@
             </DataGrid.ContextMenu>
         </DataGrid>
 
-        <StackPanel Grid.Row="1" 
+        <StackPanel Grid.Row="1"
                     Margin="0 8 0 0"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
@@ -85,7 +85,7 @@
                     Command="{Binding ReloadCommand}" />
 
             <Button Content="Neuer Läufer"
-                    Command="{Binding NewRunnerCommand}" 
+                    Command="{Binding NewRunnerCommand}"
                     Margin="8 0 0 0 " />
 
             <Button Content="Speichern"
@@ -122,7 +122,7 @@
                     <Setter Property="Margin" Value="5" />
                 </Style>
             </Grid.Resources>
-            
+
             <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ElementName=startnummerColumn, Path=Header}" />
             <TextBox Grid.Row="1" Grid.Column="0" Name="startnumberTextBox" Text="{Binding SelectedRunner.Startnumber, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -140,13 +140,25 @@
             </ComboBox>
 
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding ElementName=firstnameColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SelectedRunner.Firstname, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding SelectedRunner.Firstname, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <behaviors:TextBoxSelectAllBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
 
             <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding ElementName=lastnameColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedRunner.Lastname, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedRunner.Lastname, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <behaviors:TextBoxSelectAllBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
 
             <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding ElementName=birthdayColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding SelectedRunner.YearOfBirth, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding SelectedRunner.YearOfBirth, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <behaviors:TextBoxSelectAllBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
 
             <TextBlock Grid.Row="0" Grid.Column="5" Text="{Binding ElementName=categoryColumn, Path=Header}" />
             <ComboBox Grid.Row="1" Grid.Column="5"
@@ -155,10 +167,14 @@
                       DisplayMemberPath="Name" />
 
             <TextBlock Grid.Row="0" Grid.Column="6" Text="{Binding ElementName=chipIdColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="6" Text="{Binding SelectedRunner.ChipId, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="6" Text="{Binding SelectedRunner.ChipId, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <behaviors:TextBoxSelectAllBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
 
             <TextBlock Grid.Row="0" Grid.Column="7" Text="{Binding ElementName=sportsclubColumn, Path=Header}" />
-            <ComboBox Grid.Row="1" Grid.Column="7" 
+            <ComboBox Grid.Row="1" Grid.Column="7"
                       IsEditable="True"
                       IsTextSearchEnabled="True"
                       IsReadOnly="False"
@@ -166,7 +182,7 @@
                       ItemsSource="{Binding SportClubs}" />
 
             <TextBlock Grid.Row="0" Grid.Column="8" Text="{Binding ElementName=cityColumn, Path=Header}" />
-            <ComboBox Grid.Row="1" Grid.Column="8" 
+            <ComboBox Grid.Row="1" Grid.Column="8"
                       IsEditable="True"
                       IsTextSearchEnabled="True"
                       IsReadOnly="False"
@@ -174,7 +190,11 @@
                       ItemsSource="{Binding Cities}"/>
 
             <TextBlock Grid.Row="0" Grid.Column="9" Text="{Binding ElementName=emailColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="9" Text="{Binding SelectedRunner.Email, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="9" Text="{Binding SelectedRunner.Email, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Behaviors>
+                    <behaviors:TextBoxSelectAllBehavior />
+                </i:Interaction.Behaviors>
+            </TextBox>
         </Grid>
     </Grid>
 </UserControl>
