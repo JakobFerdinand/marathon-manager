@@ -52,6 +52,12 @@ namespace UI.RunnerManagement.ViewModels
             get => _selectedRunner;
             set
             {
+                if (_selectedRunner?.IsValid() == false)
+                {
+                    _dialogService.ShowOkMessageBox("Bitte geben Sie für den aktuellen Läufer einen Vor- und einen Nachnamen ein.", "Läuferdaten ungültig");
+                    return;
+                }
+
                 _selectedRunner = value;
                 if (_selectedRunner != null && _selectedRunner.Category != null)
                 {
@@ -91,19 +97,20 @@ namespace UI.RunnerManagement.ViewModels
                 || string.IsNullOrWhiteSpace(r.Lastname)
                 || (r.CategoryId == 0 && r.Category == null)).ToImmutableList()
             ?? ImmutableList<Runner>.Empty;
-        
+
         public ICommand InitializeCommand => _initializeCommand ?? (_initializeCommand = new Command(() =>
         {
             LoadCategories();
             LoadRunners();
         }));
-        public ICommand NewRunnerCommand => _newRunnerCommand ?? (_newRunnerCommand = new Command(NewRunner));
+        public ICommand NewRunnerCommand => _newRunnerCommand ?? (_newRunnerCommand = new Command(NewRunner, () => SelectedRunner.IsValid() != false));
         public ICommand ReloadCommand => _reloadCommand ?? (_reloadCommand = new Command(Reload));
         public ICommand RemoveRunnerCommand => _removeRunnerCommand ?? (_removeRunnerCommand = new Command(RemoveRunner));
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new Command(
             () => SaveRunners(),
-            () => AreStartnumbersUnic &&
-                  AreChipIdsUnic));
+            () => SelectedRunner?.IsValid() != false
+                  && AreStartnumbersUnic
+                  && AreChipIdsUnic));
 
         internal void Reload()
         {
@@ -167,6 +174,7 @@ namespace UI.RunnerManagement.ViewModels
                     break;
             }
         }
+
         internal void NotifySportsClubAndCitiesAndInvalidRunners()
         {
             RaisePropertyChanged(nameof(SportClubs));
