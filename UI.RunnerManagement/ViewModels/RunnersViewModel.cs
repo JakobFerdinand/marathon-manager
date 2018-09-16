@@ -137,6 +137,7 @@ namespace UI.RunnerManagement.ViewModels
         internal void NewRunner()
         {
             var runner = new Runner();
+            runner.Gender = Gender.Mann;
             _unitOfWork.Runners.Add(runner);
             Runners.Add(runner);
             SelectedRunner = runner;

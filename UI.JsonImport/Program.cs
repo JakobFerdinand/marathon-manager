@@ -4,8 +4,10 @@ using Core.Repositories;
 using Data;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UI.JsonImport.Services;
 using static System.Console;
 
@@ -13,6 +15,8 @@ namespace UI.JsonImport
 {
     class Program
     {
+        private static IConfigurationRoot Configuration { get; set; }
+
         static void Main(string[] args)
         {
             WriteLine("1. Create Database");
@@ -47,9 +51,32 @@ namespace UI.JsonImport
             }
         }
 
+        public static void Startup()
+        {
+            var basePath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            Configuration = builder.Build();
+        }
+
         private static void CreateDatabase()
         {
+            var connectionString = Configuration.GetConnectionString("Default");
 
+            if (connectionString is null)
+            {
+                WriteLine("Beim Lesen des ConnectionStrings ist ein Fehler aufgetreten. Bitte geben Sie ihn per Hand ein:");
+                connectionString = ReadLine();
+            }
+            var options = new DbContextOptionsBuilder<RunnerDbContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+            using (var context = new RunnerDbContext(options))
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
         }
 
         private static void InsertCategories()
@@ -84,7 +111,7 @@ namespace UI.JsonImport
             }
         }
 
-        private static IConfigurationProvider GetMapperConfiguration(ICategoryRepository categoryRepository)
+        private static AutoMapper.IConfigurationProvider GetMapperConfiguration(ICategoryRepository categoryRepository)
         {
             var categories = categoryRepository.GetAll(asNoTracking: true);
 
