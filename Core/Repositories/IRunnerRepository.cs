@@ -8,6 +8,5 @@ namespace Core.Repositories
         Runner GetWithCategoryById(int id);
         ImmutableList<Runner> GetAllWithCategories(bool asNoTracking = true);
         Runner GetIfHasNoTimeWithCategory(string chipId);
-        ImmutableList<Runner> GetForCategoryId(int id);
     }
 }
