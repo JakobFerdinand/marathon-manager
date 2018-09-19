@@ -46,8 +46,8 @@ namespace UI.ExportResults.Services
         {
             var (maenner, frauen) = GetResultsForCategory(categoryId);
             return (
-                maenner.Where(r => r.Geburtsjahr >= runnerBornInOrAfterYear).Select((r, i) => r.WithRang(i)).ToImmutableList(),
-                frauen.Where(r => r.Geburtsjahr >= runnerBornInOrAfterYear).Select((r, i) => r.WithRang(i)).ToImmutableList()
+                maenner.Where(r => r.Geburtsjahr >= runnerBornInOrAfterYear).Select((r, i) => r.WithRang(i+1)).ToImmutableList(),
+                frauen.Where(r => r.Geburtsjahr >= runnerBornInOrAfterYear).Select((r, i) => r.WithRang(i+1)).ToImmutableList()
                 );
         }
 
