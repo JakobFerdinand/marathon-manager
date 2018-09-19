@@ -42,6 +42,15 @@ namespace UI.ExportResults.Services
                 );
         }
 
+        public (ImmutableList<ExportRunner> männer, ImmutableList<ExportRunner> frauen) GetResultsForCategory(int categoryId, int runnerBornInOrAfterYear)
+        {
+            var (maenner, frauen) = GetResultsForCategory(categoryId);
+            return (
+                maenner.Where(r => r.Geburtsjahr >= runnerBornInOrAfterYear).Select((r, i) => r.WithRang(i)).ToImmutableList(),
+                frauen.Where(r => r.Geburtsjahr >= runnerBornInOrAfterYear).Select((r, i) => r.WithRang(i)).ToImmutableList()
+                );
+        }
+
         public (ImmutableList<ExportRunner> männer, ImmutableList<ExportRunner> frauen) GetOldestRunner()
         {
             var maleRunnersQuery = dbContext.Runners.Include(r => r.Category)

@@ -26,4 +26,18 @@ namespace UI.ExportResults.Models
         public int Geburtsjahr { get; }
         public TimeSpan Zeit { get; }
     }
+
+    public static partial class Extensions
+    {
+        public static ExportRunner WithRang(this ExportRunner @this, int rang)
+            => new ExportRunner(
+                rang,
+                @this.Startnummer,
+                @this.Vorname,
+                @this.Nachname,
+                @this.Geschlecht,
+                @this.Verein,
+                @this.Geburtsjahr,
+                @this.Zeit);
+    }
 }
