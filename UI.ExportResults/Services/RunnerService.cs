@@ -65,7 +65,7 @@ namespace UI.ExportResults.Services
 
             return (
                 maleRunnersQuery.Where(r => r.YearOfBirth == yearOfBirthOfOldesdMaleRunner).Select(exportRunners).ToImmutableList(),
-                femaleRunnersQuery.Where(r => r.YearOfBirth == yearOfBirthOfOldesdMaleRunner).Select(exportRunners).ToImmutableList()
+                femaleRunnersQuery.Where(r => r.YearOfBirth == yearOfBirthOfOldesdFemaleRunner).Select(exportRunners).ToImmutableList()
                 );
         }
     }
