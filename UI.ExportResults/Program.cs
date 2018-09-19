@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using CsvHelper;
+using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace UI.ExportResults
         private static void Main(string[] args)
         {
             Startup();
-
+            Export();
         }
 
         public static void Startup()
@@ -69,7 +70,14 @@ namespace UI.ExportResults
 
         private static void WriteRunners(IEnumerable<ExportRunner> runners, string exportPath)
         {
+            using (var streamWriter = new StreamWriter(exportPath))
+            using (var csv = new CsvWriter(streamWriter))
+            {
+                csv.Configuration.Delimiter = ";";
 
+                csv.WriteRecords(runners);
+                csv.Flush();
+            }
         }
     }
 }
