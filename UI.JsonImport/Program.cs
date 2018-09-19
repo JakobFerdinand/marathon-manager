@@ -19,6 +19,8 @@ namespace UI.JsonImport
 
         static void Main(string[] args)
         {
+            Startup();
+
             WriteLine("1. Create Database");
             WriteLine("2. Insert Categories");
             WriteLine("3. Import Json Runners");
