@@ -1,6 +1,8 @@
 ﻿using Logic.Common.Interfaces;
 using Logic.Common.Services;
+using Notifications.Wpf;
 using StructureMap;
+using System.Windows;
 using UI.RunnerManagement.Services;
 
 namespace UI.RunnerManagement.Registries
@@ -19,6 +21,10 @@ namespace UI.RunnerManagement.Registries
 
             For<IDialogService>()
                 .Use<DialogService>()
+                .Singleton();
+
+            For<INotificationService>()
+                .Use(c => new NotificationService(new NotificationManager(null)))
                 .Singleton();
         }
     }

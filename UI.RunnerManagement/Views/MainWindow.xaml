@@ -4,6 +4,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:notifications="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
                       xmlns:local="clr-namespace:UI.RunnerManagement.Views"
                       mc:Ignorable="d"
                       BorderThickness="1"
@@ -22,5 +23,7 @@
                 <local:CategoriesView />
             </TabItem>
         </TabControl>
+
+        <notifications:NotificationArea x:Name="NotificationArea" Position="TopRight" MaxItems="3" />
     </Grid>
 </Controls:MetroWindow>

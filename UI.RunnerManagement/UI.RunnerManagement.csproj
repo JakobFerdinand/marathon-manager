@@ -109,6 +109,9 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Notifications.Wpf, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Notifications.Wpf.0.1.1\lib\net461\Notifications.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
@@ -259,6 +262,7 @@
     <Compile Include="Registries\LoggingRegistry.cs" />
     <Compile Include="Registries\ViewRegistry.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Validation\IsRequiredValidationRule.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="Common\Command.cs" />

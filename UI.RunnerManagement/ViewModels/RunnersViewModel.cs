@@ -17,6 +17,7 @@ namespace UI.RunnerManagement.ViewModels
     {
         private readonly Func<IUnitOfWork> _getNewUnitOfWork;
         private readonly IDialogService _dialogService;
+        private readonly INotificationService _notificationService;
         private IUnitOfWork _unitOfWork;
 
         private IEnumerable<Category> _categories;
@@ -30,11 +31,12 @@ namespace UI.RunnerManagement.ViewModels
         private bool _areStartnumbersUnic = true;
         private bool _areChipIdsUnic = true;
 
-        public RunnersViewModel(Func<IUnitOfWork> getNewUnitOfWork, IDialogService dialogService)
+        public RunnersViewModel(Func<IUnitOfWork> getNewUnitOfWork, IDialogService dialogService, INotificationService notificationService)
         {
             _getNewUnitOfWork = getNewUnitOfWork ?? throw new ArgumentNullException(nameof(getNewUnitOfWork), $"{nameof(getNewUnitOfWork)} must not be null.");
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService), $"{nameof(dialogService)} must not be null.");
-            _unitOfWork = _getNewUnitOfWork();
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+            _unitOfWork = _getNewUnitOfWork?.Invoke() ?? throw new ArgumentNullException(nameof(getNewUnitOfWork));
         }
 
         public IEnumerable<Category> Categories
@@ -154,6 +156,8 @@ namespace UI.RunnerManagement.ViewModels
         {
             _unitOfWork.Complete();
             NotifySportsClubAndCitiesAndInvalidRunners();
+
+            _notificationService.ShowNotification("Es wurde erfolgreich gespeichert.", "Gespeichert", NotificationType.Success);
         }
 
         internal void RemoveRunner()
