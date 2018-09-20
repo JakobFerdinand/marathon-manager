@@ -48,13 +48,6 @@ namespace UI.ExportResults
                 var (m, f) = runnerService.GetResultsForCategory(c.Id);
                 WriteRunners(m, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Maenner.csv"));
                 WriteRunners(f, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Frauen.csv"));
-
-                if (c.Name.StartsWith("Hobbylauf"))
-                {
-                    var (jugendMaenner, jugendFrauen) = runnerService.GetResultsForCategory(c.Id, runnerBornInOrAfterYear: 2007);
-                    WriteRunners(jugendMaenner, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Jugend_Maenner.csv"));
-                    WriteRunners(jugendFrauen, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Jugend_Frauen.csv"));
-                }
             }
 
             var (maenner, frauen) = runnerService.GetOldestRunner();
