@@ -131,6 +131,7 @@ namespace SampleData
         {
             new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
             new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
+            new Category { Name = "U16 Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
             new Category { Name = "AK 2007 und jünger, 500m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 10, 00) },
             new Category { Name = "AK 2006 - 2003, 1.000m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 20, 00) },
             new Category { Name = "Walken, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
