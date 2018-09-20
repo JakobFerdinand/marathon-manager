@@ -14,7 +14,7 @@ namespace UI.JsonImport.Services
 
         public IEnumerable<Runner> Deserialize(string json)
         {
-            var data = JsonConvert.DeserializeObject<IEnumerable<Models.Runner>>(json);
+            var data = JsonConvert.DeserializeObject<IEnumerable<Models.ImportObject>>(json);
 
             var runners = _mapper.Map<IEnumerable<Runner>>(data);
             return  runners;
