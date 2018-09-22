@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Reflection;
+using UI.ExportResults.CsvMappings;
 using UI.ExportResults.Models;
 using UI.ExportResults.Services;
 using static System.Console;
@@ -45,14 +46,17 @@ namespace UI.ExportResults
             var categories = context.Categories.ToImmutableList();
             foreach (var c in categories)
             {
-                var (m, f) = runnerService.GetResultsForCategory(c.Id);
-                WriteRunners(m, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Maenner.csv"));
-                WriteRunners(f, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Frauen.csv"));
+                var (maenner, frauen) = runnerService.GetResultsForCategory(c.Id);
+                CreateFile(maenner, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Maenner.csv"));
+                CreateFile(frauen, Path.Combine(path, $"{c.Name.Replace(" ", "")}_Frauen.csv"));
             }
 
-            var (maenner, frauen) = runnerService.GetOldestRunner();
-            WriteRunners(maenner, Path.Combine(path, $"Aelteste_Maenner.csv"));
-            WriteRunners(frauen, Path.Combine(path, $"Aelteste_Frauen.csv"));
+            var (aeltesteMaenner, aeltesteFrauen) = runnerService.GetOldestRunner();
+            CreateFile(aeltesteMaenner, Path.Combine(path, $"Aelteste_Maenner.csv"));
+            CreateFile(aeltesteFrauen, Path.Combine(path, $"Aelteste_Frauen.csv"));
+
+            var vereine = runnerService.GetSportclubsRangs();
+            CreateFile(vereine, Path.Combine(path, $"Vereine.csv"));
 
             string readPath()
             {
@@ -61,14 +65,16 @@ namespace UI.ExportResults
             }
         }
 
-        private static void WriteRunners(IEnumerable<ExportRunner> runners, string exportPath)
+        private static void CreateFile<T>(IEnumerable<T> data, string exportPath)
         {
             using (var streamWriter = new StreamWriter(exportPath))
             using (var csv = new CsvWriter(streamWriter))
             {
                 csv.Configuration.Delimiter = ";";
+                csv.Configuration.RegisterClassMap<ExportRunnerMap>();
+                csv.Configuration.RegisterClassMap<ExportSportsclubMap>();
 
-                csv.WriteRecords(runners);
+                csv.WriteRecords(data);
                 csv.Flush();
             }
         }

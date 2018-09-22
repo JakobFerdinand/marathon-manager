@@ -59,5 +59,12 @@ namespace UI.ExportResults.Services
                 femaleRunnersQuery.Where(r => r.YearOfBirth == yearOfBirthOfOldesdFemaleRunner).Select(exportRunners).ToImmutableList()
                 );
         }
+
+        public ImmutableList<ExportSportsclub> GetSportclubsRangs()
+            => dbContext.Runners
+            .Where(r => r.RunningTime != null)
+            .GroupBy(r => r.SportsClub)
+            .Select((g, i) => new ExportSportsclub(i + 1, g.Key, g.Count()))
+            .ToImmutableList();
     }
 }

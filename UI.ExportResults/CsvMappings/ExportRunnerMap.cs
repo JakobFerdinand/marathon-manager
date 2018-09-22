@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration;
 using UI.ExportResults.Models;
 
-namespace UI.ExportResults
+namespace UI.ExportResults.CsvMappings
 {
     public class ExportRunnerMap : ClassMap<ExportRunner>
     {
