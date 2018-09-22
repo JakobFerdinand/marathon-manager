@@ -13,4 +13,13 @@
         public string Name { get; }
         public int Count { get; }
     }
+
+    public static partial class Extensions
+    {
+        public static ExportSportsclub WithRang(this ExportSportsclub @this, int rang)
+            => new ExportSportsclub(
+                rang,
+                @this.Name,
+                @this.Count);
+    }
 }
