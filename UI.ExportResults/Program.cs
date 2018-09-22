@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using UI.ExportResults.CsvMappings;
 using UI.ExportResults.Models;
 using UI.ExportResults.Services;
@@ -59,16 +60,19 @@ namespace UI.ExportResults
             var vereine = runnerService.GetSportclubsRangs();
             CreateFile(vereine, Path.Combine(path, $"Vereine.csv"));
 
+            var alleLäufer = runnerService.GetAllRunners();
+            CreateFile<ExportRunnerSimple, ExportRunnerSimpleMap>(alleLäufer, Path.Combine(path, $"Alle_Laeufer.csv"));
+
             string readPath()
             {
                 Write("Export Directory Path: ");
                 return ReadLine();
-            }
+            } 
         }
 
         private static void CreateFile<T>(IEnumerable<T> data, string exportPath)
         {
-            using (var streamWriter = new StreamWriter(exportPath))
+            using (var streamWriter = new StreamWriter(exportPath, false, Encoding.Unicode))
             using (var csv = new CsvWriter(streamWriter))
             {
                 csv.Configuration.Delimiter = ";";
@@ -83,7 +87,7 @@ namespace UI.ExportResults
         private static void CreateFile<T, TMap>(IEnumerable<T> data, string exportPath)
             where TMap : ClassMap<T>
         {
-            using (var streamWriter = new StreamWriter(exportPath))
+            using (var streamWriter = new StreamWriter(exportPath, false, Encoding.Unicode))
             using (var csv = new CsvWriter(streamWriter))
             {
                 csv.Configuration.Delimiter = ";";
