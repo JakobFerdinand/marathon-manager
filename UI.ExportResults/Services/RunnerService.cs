@@ -63,8 +63,11 @@ namespace UI.ExportResults.Services
         public ImmutableList<ExportSportsclub> GetSportclubsRangs()
             => dbContext.Runners
             .Where(r => r.RunningTime != null)
+            .ToList()
             .GroupBy(r => r.SportsClub)
-            .Select((g, i) => new ExportSportsclub(i + 1, g.Key, g.Count()))
+            .Select(g => new ExportSportsclub(0, g.Key, g.Count()))
+            .OrderByDescending(e => e.Count)
+            .Select((e, i) => e.WithRang(i + 1))
             .ToImmutableList();
     }
 }

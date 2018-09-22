@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -52,8 +53,8 @@ namespace UI.ExportResults
             }
 
             var (aeltesteMaenner, aeltesteFrauen) = runnerService.GetOldestRunner();
-            CreateFile(aeltesteMaenner, Path.Combine(path, $"Aelteste_Maenner.csv"));
-            CreateFile(aeltesteFrauen, Path.Combine(path, $"Aelteste_Frauen.csv"));
+            CreateFile<ExportRunner, ExportOldestRunnerMap>(aeltesteMaenner, Path.Combine(path, $"Aelteste_Maenner.csv"));
+            CreateFile<ExportRunner, ExportOldestRunnerMap>(aeltesteFrauen, Path.Combine(path, $"Aelteste_Frauen.csv"));
 
             var vereine = runnerService.GetSportclubsRangs();
             CreateFile(vereine, Path.Combine(path, $"Vereine.csv"));
@@ -73,6 +74,20 @@ namespace UI.ExportResults
                 csv.Configuration.Delimiter = ";";
                 csv.Configuration.RegisterClassMap<ExportRunnerMap>();
                 csv.Configuration.RegisterClassMap<ExportSportsclubMap>();
+
+                csv.WriteRecords(data);
+                csv.Flush();
+            }
+        }
+
+        private static void CreateFile<T, TMap>(IEnumerable<T> data, string exportPath)
+            where TMap : ClassMap<T>
+        {
+            using (var streamWriter = new StreamWriter(exportPath))
+            using (var csv = new CsvWriter(streamWriter))
+            {
+                csv.Configuration.Delimiter = ";";
+                csv.Configuration.RegisterClassMap<TMap>();
 
                 csv.WriteRecords(data);
                 csv.Flush();
