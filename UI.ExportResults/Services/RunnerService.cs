@@ -28,6 +28,15 @@ namespace UI.ExportResults.Services
                 geburtsjahr: runner.YearOfBirth,
                 zeit: runner.RunningTime ?? throw new InvalidOperationException("The query returned a runner without runningtime."));
 
+        public IImmutableList<ExportRunnerSimple> GetAllRunners()
+            => dbContext.Runners
+            .Include(r => r.Category)
+            .OrderBy(r => r.Lastname)
+            .ThenBy(r => r.Firstname)
+            .ToImmutableList()
+            .Select(r => new ExportRunnerSimple(r.Firstname, r.Lastname, r.Startnumber ?? 0, r.YearOfBirth, r.Category.Name))
+            .ToImmutableList();
+
         public (ImmutableList<ExportRunner> männer, ImmutableList<ExportRunner> frauen) GetResultsForCategory(int categoryId)
         {
             var runners = dbContext.Runners.Include(r => r.Category)
@@ -51,8 +60,8 @@ namespace UI.ExportResults.Services
                 .Where(r => r.RunningTime != null)
                 .Where(r => r.Gender == Gender.Frau);
 
-            var yearOfBirthOfOldesdMaleRunner = maleRunnersQuery.Min(r => r.YearOfBirth);
-            var yearOfBirthOfOldesdFemaleRunner = femaleRunnersQuery.Min(r => r.YearOfBirth);
+            var yearOfBirthOfOldesdMaleRunner = maleRunnersQuery.Any() ? maleRunnersQuery.Min(r => r.YearOfBirth) : 0;
+            var yearOfBirthOfOldesdFemaleRunner = femaleRunnersQuery.Any() ? femaleRunnersQuery.Min(r => r.YearOfBirth) : 0;
 
             return (
                 maleRunnersQuery.Where(r => r.YearOfBirth == yearOfBirthOfOldesdMaleRunner).Select(exportRunners).ToImmutableList(),
