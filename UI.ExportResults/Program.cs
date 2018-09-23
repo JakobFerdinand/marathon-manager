@@ -72,7 +72,7 @@ namespace UI.ExportResults
 
         private static void CreateFile<T>(IEnumerable<T> data, string exportPath)
         {
-            using (var streamWriter = new StreamWriter(exportPath, false, Encoding.Unicode))
+            using (var streamWriter = new StreamWriter(exportPath, false, Encoding.UTF8))
             using (var csv = new CsvWriter(streamWriter))
             {
                 csv.Configuration.Delimiter = ";";
@@ -87,7 +87,7 @@ namespace UI.ExportResults
         private static void CreateFile<T, TMap>(IEnumerable<T> data, string exportPath)
             where TMap : ClassMap<T>
         {
-            using (var streamWriter = new StreamWriter(exportPath, false, Encoding.Unicode))
+            using (var streamWriter = new StreamWriter(exportPath, false, Encoding.UTF8))
             using (var csv = new CsvWriter(streamWriter))
             {
                 csv.Configuration.Delimiter = ";";
