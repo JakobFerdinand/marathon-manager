@@ -12,6 +12,7 @@ namespace UI.ExportResults.CsvMappings
             Map(r => r.Vorname).Name("Vorname");
             Map(r => r.Geburtsjahr).Name("Geburtsjahr");
             Map(r => r.Kategorie).Name("Strecke");
+            Map(r => r.Verein).Name("Verein");
         }
     }
 }
