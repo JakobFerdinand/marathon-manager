@@ -73,10 +73,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0DFED4D0-EC1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{60598BA2-AEA9-439B-BF0B-D12E3D3D83F5}"
 	ProjectSection(SolutionItems) = preProject
+		Logos\ACF-Logo.pdf = Logos\ACF-Logo.pdf
 		appsettings.json = appsettings.json
+		Logos\BurgschänkeFrauenstein.jpeg = Logos\BurgschänkeFrauenstein.jpeg
+		Logos\logo_sc_mining.pdf = Logos\logo_sc_mining.pdf
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.ExportResults", "UI.ExportResults\UI.ExportResults.csproj", "{FB21FA9A-E128-4C25-BDD6-7EF9904A5972}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI.ExportResults", "UI.ExportResults\UI.ExportResults.csproj", "{FB21FA9A-E128-4C25-BDD6-7EF9904A5972}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
