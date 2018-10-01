@@ -34,7 +34,7 @@ namespace UI.ExportResults.Services
             .OrderBy(r => r.Lastname)
             .ThenBy(r => r.Firstname)
             .ToImmutableList()
-            .Select(r => new ExportRunnerSimple(r.Firstname, r.Lastname, r.Startnumber ?? 0, r.YearOfBirth, r.Category.Name))
+            .Select(r => new ExportRunnerSimple(r.Firstname, r.Lastname, r.Startnumber ?? 0, r.YearOfBirth, r.Category.Name, r.SportsClub))
             .ToImmutableList();
 
         public (ImmutableList<ExportRunner> männer, ImmutableList<ExportRunner> frauen) GetResultsForCategory(int categoryId)
@@ -71,7 +71,18 @@ namespace UI.ExportResults.Services
 
         public ImmutableList<ExportSportsclub> GetSportclubsRangs()
             => dbContext.Runners
+            .Where(r => !string.IsNullOrWhiteSpace(r.SportsClub))
             .Where(r => r.RunningTime != null)
+            .ToList()
+            .GroupBy(r => r.SportsClub)
+            .Select(g => new ExportSportsclub(0, g.Key, g.Count()))
+            .OrderByDescending(e => e.Count)
+            .Select((e, i) => e.WithRang(i + 1))
+            .ToImmutableList();
+
+        public ImmutableList<ExportSportsclub> GetAngemeldeteSportclubsRangs()
+            => dbContext.Runners
+            .Where(r => !string.IsNullOrWhiteSpace(r.SportsClub))
             .ToList()
             .GroupBy(r => r.SportsClub)
             .Select(g => new ExportSportsclub(0, g.Key, g.Count()))

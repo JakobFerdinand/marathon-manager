@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using UI.ExportResults.CsvMappings;
@@ -59,9 +60,12 @@ namespace UI.ExportResults
 
             var vereine = runnerService.GetSportclubsRangs();
             CreateFile(vereine, Path.Combine(path, $"Vereine.csv"));
+            var angemeldeteVereine = runnerService.GetAngemeldeteSportclubsRangs();
+            CreateFile(angemeldeteVereine, Path.Combine(path, $"AngemeldeteLaeufer_Vereine.csv"));
 
             var alleLäufer = runnerService.GetAllRunners();
             CreateFile<ExportRunnerSimple, ExportRunnerSimpleMap>(alleLäufer, Path.Combine(path, $"Alle_Laeufer.csv"));
+            CreateFile<ExportRunnerSimple, ExportRunnerSimpleMap>(alleLäufer.OrderBy(r => r.Startnummer), Path.Combine(path, $"Alle_Laeufer_nach_Startnummer.csv"));
 
             string readPath()
             {
