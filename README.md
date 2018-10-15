@@ -4,6 +4,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/JakobFerdinand/MarathonManager/badge.svg?branch=master)](https://coveralls.io/github/JakobFerdinand/MarathonManager?branch=master)
 
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/JakobFerdinand/MarathonManager.svg?columns=all)](https://waffle.io/JakobFerdinand/MarathonManager)
+
 # MarathonManager
 A small runner data management software with time measurement for the "[Drei Schlösser Lauf](http://www.sc-mining.org/SpracheDE_104.html)" in Frauenstein Austria.
 
