@@ -31,77 +31,6 @@ namespace UI.RunnerManagement.Tests.ViewModels
         }
         [Fact]
         [Trait("Unit", "")]
-        public void LoadRunners_calles_RunnersRepository_GetAll()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var runnerRepository = Substitute.For<IRunnerRepository>();
-            unitOfWork.Runners.Returns(runnerRepository);
-
-            var vm = new RunnersViewModel(() => Substitute.For<IUnitOfWork>(), Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.LoadRunners();
-
-            runnerRepository.Received().GetAll();
-        }
-        [Fact]
-        [Trait("Unit", "")]
-        public void LoadRunners_calles_RunnersRepository_GetAll2()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var runnerRepository = Substitute.For<IRunnerRepository>();
-            unitOfWork.Runners.Returns(runnerRepository);
-            runnerRepository.GetAll().Returns(ImmutableList.Create(
-                new Runner { Id = 1 },
-                new Runner { Id = 2 },
-                new Runner { Id = 3 }));
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.LoadRunners();
-
-            Assert.NotNull(vm.Runners);
-            Assert.NotEmpty(vm.Runners);
-            Assert.Equal(3, vm.Runners.Count());
-            Assert.Equal(1, vm.Runners.First().Id);
-        }
-
-        [Fact]
-        [Trait("Unit", "")]
-        public void InitializeCommand_Execute_calles_RunnersRepository_GetAll()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var runnerRepository = Substitute.For<IRunnerRepository>();
-            unitOfWork.Runners.Returns(runnerRepository);
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.InitializeCommand.Execute(null);
-
-            runnerRepository.Received().GetAll();
-        }
-        [Fact]
-        [Trait("Unit", "")]
-        public void InitializeCommand_Execute_calles_RunnersRepository_GetAll2()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var runnerRepository = Substitute.For<IRunnerRepository>();
-            unitOfWork.Runners.Returns(runnerRepository);
-            runnerRepository.GetAll().Returns(ImmutableList.Create(
-                new Runner { Id = 1 },
-                new Runner { Id = 2 },
-                new Runner { Id = 3 }));
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.InitializeCommand.Execute(null);
-
-            Assert.NotNull(vm.Runners);
-            Assert.NotEmpty(vm.Runners);
-            Assert.Equal(3, vm.Runners.Count());
-            Assert.Equal(1, vm.Runners.First().Id);
-        }
-        [Fact]
-        [Trait("Unit", "")]
         public void Runners_setter_raises_propertyChanged_Event()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
@@ -153,21 +82,6 @@ namespace UI.RunnerManagement.Tests.ViewModels
 
             unitOfWork.Received().Complete();
         }
-        [Fact]
-        [Trait("Unit", "")]
-        public void EditRunner_SelectedRunner_is_new_object_calles_runnerRepository_Add()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var runnerRepository = Substitute.For<IRunnerRepository>();
-            unitOfWork.Runners.Returns(runnerRepository);
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            var selectedRunner = new Runner { Id = 0 };
-
-            runnerRepository.Received().Add(Arg.Any<Runner>());
-            runnerRepository.Received().Add(selectedRunner);
-        }
         [Theory]
         [InlineData(1)]
         [InlineData(5)]
@@ -186,76 +100,6 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var selectedRunner = new Runner { Id = runnerId };
 
             runnerRepository.DidNotReceive().Add(Arg.Any<Runner>());
-        }
-        [Fact]
-        [Trait("Unit", "")]
-        public void LoadCategories_calles_categoryRepository_GetAll()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var categoryRepository = Substitute.For<ICategoryRepository>();
-            unitOfWork.Categories.Returns(categoryRepository);
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.LoadCategories();
-
-            categoryRepository.Received().GetAll();
-        }
-        [Fact]
-        [Trait("Unit", "")]
-        public void LoadCategories_calles_categoryRepository_GetAll2()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var categoryRepository = Substitute.For<ICategoryRepository>();
-            unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll().Returns(ImmutableList.Create(
-                new Category { Id = 1 },
-                new Category { Id = 2 },
-                new Category { Id = 3 }));
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.LoadCategories();
-
-            Assert.NotNull(vm.Categories);
-            Assert.NotEmpty(vm.Categories);
-            Assert.Equal(3, vm.Categories.Count());
-            Assert.Equal(1, vm.Categories.First().Id);
-        }
-        [Fact]
-        [Trait("Unit", "")]
-        public void InitializeCommand_Execute_calles_categoryRepository_GetAll()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var categoryRepository = Substitute.For<ICategoryRepository>();
-            unitOfWork.Categories.Returns(categoryRepository);
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.InitializeCommand.Execute(null);
-
-            categoryRepository.Received().GetAll();
-        }
-        [Fact]
-        [Trait("Unit", "")]
-        public void InitializeCommand_Execute_calles_categoryRepository_GetAll2()
-        {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var categoryRepository = Substitute.For<ICategoryRepository>();
-            unitOfWork.Categories.Returns(categoryRepository);
-            categoryRepository.GetAll().Returns(ImmutableList.Create(
-                new Category { Id = 1 },
-                new Category { Id = 2 },
-                new Category { Id = 3 }));
-
-            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
-
-            vm.InitializeCommand.Execute(null);
-
-            Assert.NotNull(vm.Categories);
-            Assert.NotEmpty(vm.Categories);
-            Assert.Equal(3, vm.Categories.Count());
-            Assert.Equal(1, vm.Categories.First().Id);
         }
     }
 }

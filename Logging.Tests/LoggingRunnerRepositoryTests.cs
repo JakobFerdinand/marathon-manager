@@ -86,39 +86,6 @@ namespace Logging.Tests
         }
         [Fact]
         [Trait("Unit", "")]
-        public void GetIfHasNoTimeWithCategory_repository_throws_InvalidOperationException_calles_logger_LogError()
-        {
-            var dateTimeManager = Substitute.For<IDateTimeManager>();
-            var logger = Substitute.For<ILogger>();
-            var repository = Substitute.For<IRunnerRepository>();
-
-            repository.GetIfHasNoTimeWithCategory("_").Returns(_ => throw new InvalidOperationException());
-
-            var decorator = new LoggingRunnerRepository(dateTimeManager, logger, repository);
-
-            decorator.GetIfHasNoTimeWithCategory("_");
-
-            logger.ReceivedWithAnyArgs().LogError(null);
-        }
-        [Fact]
-        [Trait("Unit", "")]
-        public void GetIfHasNoTimeWithCategory_repository_throws_InvalidOperationException_calles_logger_LogError2()
-        {
-            var dateTimeManager = Substitute.For<IDateTimeManager>();
-            var logger = Substitute.For<ILogger>();
-            var repository = Substitute.For<IRunnerRepository>();
-
-            repository.GetIfHasNoTimeWithCategory("_").Returns(_ => throw new InvalidOperationException());
-            dateTimeManager.Now.Returns(new DateTime(2017, 06, 20, 14, 49, 55, 124));
-
-            var decorator = new LoggingRunnerRepository(dateTimeManager, logger, repository);
-
-            decorator.GetIfHasNoTimeWithCategory("_");
-
-            logger.Received().LogError(Arg.Any<string>());
-        }
-        [Fact]
-        [Trait("Unit", "")]
         public void GetAll_calles_repository_Get()
         {
             var dateTimeManager = Substitute.For<IDateTimeManager>();
