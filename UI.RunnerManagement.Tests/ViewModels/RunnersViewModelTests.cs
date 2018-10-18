@@ -3,9 +3,10 @@ using Core.Models;
 using Core.Repositories;
 using NSubstitute;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
+using UI.RunnerManagement.Services;
 using UI.RunnerManagement.ViewModels;
 using Xunit;
 
@@ -15,18 +16,16 @@ namespace UI.RunnerManagement.Tests.ViewModels
     {
         [Fact]
         [Trait("Unit", "")]
-        public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
+        public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null, null, null));
         [Fact]
         [Trait("Unit", "")]
-        public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null));
+        public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new RunnersViewModel(null, null, null));
         [Fact]
         [Trait("Unit", "")]
         public void CanCreateInstance()
         {
-            var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => Substitute.For<IUnitOfWork>(), Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
             Assert.NotNull(vm);
-            Assert.NotNull(vm.EditCommand);
             Assert.NotNull(vm.InitializeCommand);
             Assert.NotNull(vm.SaveCommand);
         }
@@ -38,7 +37,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var runnerRepository = Substitute.For<IRunnerRepository>();
             unitOfWork.Runners.Returns(runnerRepository);
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => Substitute.For<IUnitOfWork>(), Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.LoadRunners();
 
@@ -56,7 +55,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
                 new Runner { Id = 2 },
                 new Runner { Id = 3 }));
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.LoadRunners();
 
@@ -74,7 +73,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var runnerRepository = Substitute.For<IRunnerRepository>();
             unitOfWork.Runners.Returns(runnerRepository);
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.InitializeCommand.Execute(null);
 
@@ -92,7 +91,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
                 new Runner { Id = 2 },
                 new Runner { Id = 3 }));
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.InitializeCommand.Execute(null);
 
@@ -106,7 +105,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
         public void Runners_setter_raises_propertyChanged_Event()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             var eventWasRaised = false;
             vm.PropertyChanged += (s, a) =>
@@ -115,7 +114,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
                     eventWasRaised = true;
             };
 
-            vm.Runners = new List<Runner>();
+            vm.Runners = new ObservableCollection<Runner>();
 
             Assert.True(eventWasRaised);
         }
@@ -124,9 +123,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
         public void Runners_setter_sets_collection()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
-            var runners = new List<Runner>();
+            var runners = new ObservableCollection<Runner>();
 
             vm.Runners = runners;
 
@@ -137,7 +136,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
         public void SaveRunners_calles_unitOfWork_Complete()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.SaveRunners();
 
@@ -148,7 +147,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
         public void SaveCommand_execute_calles_unitOfWork_Complete()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.SaveCommand.Execute(null);
 
@@ -162,10 +161,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var runnerRepository = Substitute.For<IRunnerRepository>();
             unitOfWork.Runners.Returns(runnerRepository);
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             var selectedRunner = new Runner { Id = 0 };
-            vm.EditRunner(selectedRunner);
 
             runnerRepository.Received().Add(Arg.Any<Runner>());
             runnerRepository.Received().Add(selectedRunner);
@@ -183,10 +181,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var runnerRepository = Substitute.For<IRunnerRepository>();
             unitOfWork.Runners.Returns(runnerRepository);
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             var selectedRunner = new Runner { Id = runnerId };
-            vm.EditRunner(selectedRunner);
 
             runnerRepository.DidNotReceive().Add(Arg.Any<Runner>());
         }
@@ -198,7 +195,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.LoadCategories();
 
@@ -216,7 +213,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
                 new Category { Id = 2 },
                 new Category { Id = 3 }));
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.LoadCategories();
 
@@ -233,7 +230,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.InitializeCommand.Execute(null);
 
@@ -251,7 +248,7 @@ namespace UI.RunnerManagement.Tests.ViewModels
                 new Category { Id = 2 },
                 new Category { Id = 3 }));
 
-            var vm = new RunnersViewModel(unitOfWork);
+            var vm = new RunnersViewModel(() => unitOfWork, Substitute.For<IDialogService>(), Substitute.For<INotificationService>());
 
             vm.InitializeCommand.Execute(null);
 
