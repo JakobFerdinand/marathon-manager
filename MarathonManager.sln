@@ -73,8 +73,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0DFED4D0-EC1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{60598BA2-AEA9-439B-BF0B-D12E3D3D83F5}"
 	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
 		appsettings.json = appsettings.json
 		appveyor.yml = appveyor.yml
+		azure-pipelines.yml = azure-pipelines.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
