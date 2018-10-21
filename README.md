@@ -1,6 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/8ttcb97m22dwhmxv?svg=true)](https://ci.appveyor.com/project/JakobFerdinand/marathonmanager)
 [![Build status](https://jakobferdinand.visualstudio.com/MarathonManager/_apis/build/status/MarathonManager-.NET%20Desktop-CI%20Github)](https://jakobferdinand.visualstudio.com/MarathonManager/_build/latest?definitionId=10)
-[![Build Status](https://travis-ci.org/JakobFerdinand/MarathonManager.svg?branch=master)](https://travis-ci.org/JakobFerdinand/MarathonManager)
+<!-- [![Build Status](https://travis-ci.org/JakobFerdinand/MarathonManager.svg?branch=master)](https://travis-ci.org/JakobFerdinand/MarathonManager) -->
 
 [![Coverage Status](https://coveralls.io/repos/github/JakobFerdinand/MarathonManager/badge.svg?branch=master)](https://coveralls.io/github/JakobFerdinand/MarathonManager?branch=master)
 
