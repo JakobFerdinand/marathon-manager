@@ -237,8 +237,8 @@
       <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Tynamix.ObjectFiller, Version=1.5.4.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tynamix.ObjectFiller.1.5.4.1\lib\net452\Tynamix.ObjectFiller.dll</HintPath>
+    <Reference Include="Tynamix.ObjectFiller, Version=1.5.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tynamix.ObjectFiller.1.5.5\lib\net452\Tynamix.ObjectFiller.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
