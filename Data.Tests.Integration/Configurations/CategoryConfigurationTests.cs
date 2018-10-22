@@ -76,43 +76,6 @@ SELECT Count(*)
         }
         [Fact]
         [Trait("Integration", "Sql Server")]
-        public async Task Categories_should_have_a_PrimaryKeyColumn_called_CategoryId()
-        {
-            var databaseName = nameof(Categories_should_have_a_PrimaryKeyColumn_called_CategoryId);
-            var connectionString = string.Format(TestConfiguration.ConnectionString, databaseName);
-            var options = new DbContextOptionsBuilder<RunnerDbContext>()
-                .UseSqlServer(connectionString)
-                .Options;
-            using (var context = new RunnerDbContext(options))
-                await context.Database.EnsureCreatedAsync();
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = @"
-SELECT COLUMN_NAME 
-    FROM MarathonManager.INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-    WHERE TABLE_NAME LIKE 'Categories' AND CONSTRAINT_NAME LIKE 'PK%'";
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        var results = new List<string>();
-                        while (await reader.ReadAsync())
-                            results.Add(reader["COLUMN_NAME"] as string);
-
-                        var containsWantedColum = results.Any(r => r.Equals("CategoryId", StringComparison.InvariantCultureIgnoreCase));
-                        Assert.True(containsWantedColum);
-                    }
-                }
-            }
-
-            using (var context = new RunnerDbContext(options))
-                await context.Database.EnsureDeletedAsync();
-        }
-        [Fact]
-        [Trait("Integration", "Sql Server")]
         public async Task Categories_should_have_a_not_nullable_column_called_CategoryId_of_type_Integer()
         {
             var databaseName = nameof(Categories_should_have_a_not_nullable_column_called_CategoryId_of_type_Integer);
