@@ -96,13 +96,13 @@ namespace UI.JsonImport
             }
 
             ImmutableList<Category> GenerateCategories2018() => ImmutableList.Create(
-                new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-                new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-                new Category { Name = "U16 Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-                new Category { Name = "AK 2007 und jünger, 500m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 10, 00) },
-                new Category { Name = "AK 2006 - 2003, 1.000m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 20, 00) },
-                new Category { Name = "Walken, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-                new Category { Name = "Walken, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) }
+                new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
+                new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
+                new Category { Name = "U16 Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
+                new Category { Name = "AK 2007 und jünger, 500m", PlannedStartTime = new DateTime(2019, 09, 22, 09, 10, 00) },
+                new Category { Name = "AK 2006 - 2003, 1.000m", PlannedStartTime = new DateTime(2019, 09, 22, 09, 20, 00) },
+                new Category { Name = "Walken, 10.000m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
+                new Category { Name = "Walken, 3.800m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) }
             );
         }
 
@@ -182,15 +182,15 @@ namespace UI.JsonImport
                     .ForMember(r => r.Startnumber, map => map.Ignore());
 
                 c.CreateMap<Models.ImportObject, Runner>()
-                    .BeforeMap((i, _) => i.Spalte_19.CheckCategory(categories))
-                    .ForMember(r => r.Gender, map => map.MapFrom(r => r.Spalte_17 == "Mann" ? Gender.Mann : Gender.Frau))
-                    .ForMember(r => r.Firstname, map => map.MapFrom(r => r.Spalte_02))
-                    .ForMember(r => r.Lastname, map => map.MapFrom(r => r.Spalte_03))
-                    .ForMember(r => r.YearOfBirth, map => map.MapFrom(r => r.Spalte_05.ToYear()))
-                    .ForMember(r => r.City, map => map.MapFrom(r => r.Spalte_06 != "leer" ? r.Spalte_06 : null))
-                    .ForMember(r => r.Email, map => map.MapFrom(r => r.Spalte_08 != "leer" ? r.Spalte_08 : null))
-                    .ForMember(r => r.SportsClub, map => map.MapFrom(r => r.Spalte_01 != "leer" ? r.Spalte_01 : null))
-                    .ForMember(r => r.CategoryId, map => map.MapFrom(r => categories.Single(category => category.Name == r.Spalte_19).Id))
+                    .BeforeMap((i, _) => i.Bewerb.CheckCategory(categories))
+                    .ForMember(r => r.Gender, map => map.MapFrom(r => r.Geschlecht == "Geschl_M" ? Gender.Mann : Gender.Frau))
+                    .ForMember(r => r.Firstname, map => map.MapFrom(r => r.Vorname))
+                    .ForMember(r => r.Lastname, map => map.MapFrom(r => r.Nachname))
+                    .ForMember(r => r.YearOfBirth, map => map.MapFrom(r => r.Geburtsdatum.ToYear()))
+                    .ForMember(r => r.City, map => map.MapFrom(r => r.Wohnort != "leer" ? r.Wohnort : null))
+                    .ForMember(r => r.Email, map => map.MapFrom(r => r.Email != "leer" ? r.Email : null))
+                    .ForMember(r => r.SportsClub, map => map.MapFrom(r => r.Verein != "leer" ? r.Verein : null))
+                    .ForMember(r => r.CategoryId, map => map.MapFrom(r => categories.Single(category => category.Name == r.Bewerb).Id))
                     .ForMember(r => r.Id, map => map.Ignore())
                     .ForMember(r => r.RunningTime, map => map.Ignore())
                     .ForMember(r => r.Category, map => map.Ignore())
