@@ -6,7 +6,9 @@ using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +21,7 @@ namespace UI.JsonImport
     {
         private static IConfigurationRoot Configuration { get; set; }
 
-        private static void Main(string[] args)
+        private static void Main(string[] _)
         {
             Startup();
 
@@ -96,15 +98,25 @@ namespace UI.JsonImport
             }
 
             ImmutableList<Category> GenerateCategories2018() => ImmutableList.Create(
-                new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = "U16 Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = "AK 2007 und jünger, 500m", PlannedStartTime = new DateTime(2019, 09, 22, 09, 10, 00) },
-                new Category { Name = "AK 2006 - 2003, 1.000m", PlannedStartTime = new DateTime(2019, 09, 22, 09, 20, 00) },
-                new Category { Name = "Walken, 10.000m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = "Walken, 3.800m", PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) }
+                new Category { Name = categoryMapping["lauf_10k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
+                new Category { Name = categoryMapping["lauf_3.8k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
+                new Category { Name = categoryMapping["kinder_500m"], PlannedStartTime = new DateTime(2019, 09, 22, 09, 10, 00) },
+                new Category { Name = categoryMapping["kinder_1000m"], PlannedStartTime = new DateTime(2019, 09, 22, 09, 20, 00) },
+                new Category { Name = categoryMapping["walken_10k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
+                new Category { Name = categoryMapping["walken_3.8k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) }
             );
         }
+
+        private static readonly ImmutableDictionary<string, string> categoryMapping = new Dictionary<string, string>
+        {
+            ["lauf_10k"] = "Hauptlauf, 10.000m",
+            ["lauf_3.8k"] = "Hobbylauf, 3.800m",
+            ["walken_10k"] = "Walken, 10.000m",
+            ["walken_3.8k"] = "Walken, 3.800m",
+            ["kinder_500m"] = "Kinder, 500m",
+            ["kinder_1000m"] = "Kinder, 1000m"
+        }
+        .ToImmutableDictionary();
 
         private static void ImportRunners()
         {
@@ -182,7 +194,7 @@ namespace UI.JsonImport
                     .ForMember(r => r.Startnumber, map => map.Ignore());
 
                 c.CreateMap<Models.ImportObject, Runner>()
-                    .BeforeMap((i, _) => i.Bewerb.CheckCategory(categories))
+                    .BeforeMap((i, _) => i.Bewerb.CheckCategory(categoryMapping))
                     .ForMember(r => r.Gender, map => map.MapFrom(r => r.Geschlecht == "Geschl_M" ? Gender.Mann : Gender.Frau))
                     .ForMember(r => r.Firstname, map => map.MapFrom(r => r.Vorname))
                     .ForMember(r => r.Lastname, map => map.MapFrom(r => r.Nachname))
@@ -190,7 +202,7 @@ namespace UI.JsonImport
                     .ForMember(r => r.City, map => map.MapFrom(r => r.Wohnort != "leer" ? r.Wohnort : null))
                     .ForMember(r => r.Email, map => map.MapFrom(r => r.Email != "leer" ? r.Email : null))
                     .ForMember(r => r.SportsClub, map => map.MapFrom(r => r.Verein != "leer" ? r.Verein : null))
-                    .ForMember(r => r.CategoryId, map => map.MapFrom(r => categories.Single(category => category.Name == r.Bewerb).Id))
+                    .ForMember(r => r.CategoryId, map => map.MapFrom(r => categories.Single(category => category.Name == categoryMapping[r.Bewerb]).Id))
                     .ForMember(r => r.Id, map => map.Ignore())
                     .ForMember(r => r.RunningTime, map => map.Ignore())
                     .ForMember(r => r.Category, map => map.Ignore())
@@ -208,13 +220,13 @@ namespace UI.JsonImport
             => @this.Length == 4
             ? int.TryParse(@this, out var year)
                 ? year : 0
-            : DateTime.TryParse(@this, out var date)
+            : DateTime.TryParse(@this, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var date)
                 ? date.Year : 0;
 
-        internal static void CheckCategory(this string @this, ImmutableList<Category> categories)
+        internal static void CheckCategory(this string @this, ImmutableDictionary<string, string> categories)
         {
-            if (!categories.Select(c => c.Name).Contains(@this))
-                throw new Exception($"Category \"{@this}\" not in DB.");
+            if (!categories.ContainsKey(@this))
+                throw new Exception($"Category \"{@this}\" not defined.");
         }
     }
 }
