@@ -10,24 +10,11 @@ namespace UI.RunnerManagement.Helpers
     public static class ViewHelper
     {
         public static bool IsWithin(DependencyObject c1, DependencyObject c2, Popup popup = null)
-        {
-            if (c1 is null || c2 is null)
-                return false;
-
-            if (c1 == c2)
-                return true;
-
-            if (IsAncestor(c1, c2) || IsAncestor(c2, c1))
-                return true;
-
-            if (popup != null && (IsPopupItem(c1, popup) || IsPopupItem(c2, popup)))
-                return true;
-
-            if (IsPopupItem(c1, c2) || IsPopupItem(c2, c1))
-                return true;
-
-            return false;
-        }
+            => c1 is null || c2 is null ? false
+            : c1 == c2 ? true
+            : IsAncestor(c1, c2) || IsAncestor(c2, c1) ? true
+            : popup != null && (IsPopupItem(c1, popup) || IsPopupItem(c2, popup)) ? true
+            : IsPopupItem(c1, c2) || IsPopupItem(c2, c1);
 
         public static bool IsAncestor(DependencyObject obj, DependencyObject ancestor, bool preventEquals = false)
         {
@@ -64,21 +51,16 @@ namespace UI.RunnerManagement.Helpers
         {
             if (parent is ItemsControl)
                 return ItemsControl.ItemsControlFromItemContainer(obj) == (ItemsControl)parent;
-            else
-            {
-                var popupInheritanceParent = GetPopupInheritanceParent(obj);
-                if (popupInheritanceParent == parent)
-                    return true;
-                else if (popupInheritanceParent is Popup && !(parent is Popup))
-                    return ((Popup)popupInheritanceParent).PlacementTarget == parent;
-                else
-                    return false;
-            }
+
+            var popupInheritanceParent = GetPopupInheritanceParent(obj);
+            return popupInheritanceParent == parent ? true
+                : popupInheritanceParent is Popup && !(parent is Popup) ? ((Popup)popupInheritanceParent).PlacementTarget == parent
+                : false;
         }
 
         public static DependencyObject GetPopupInheritanceParent(DependencyObject control)
         {
-            FrameworkElement topLevelParet = ViewHelper.GetTopLevelParent<FrameworkElement>(control);
+            var topLevelParet = GetTopLevelParent<FrameworkElement>(control);
             if (topLevelParet != null && topLevelParet.GetType().Name.Equals("PopupRoot"))
             {
                 var parent = LogicalTreeHelper.GetParent(topLevelParet);
@@ -86,18 +68,17 @@ namespace UI.RunnerManagement.Helpers
                     parent = GetInheritanceParent(topLevelParet);
                 return parent;
             }
-            else
-                return null;
+
+            return null;
         }
 
         public static T GetTopLevelParent<T>(DependencyObject obj)
         {
             var parent = obj;
-            var prevParent = default(T);
-
+            T prevParent;
             do
             {
-                prevParent = parent is T ? (T)(object)parent : default(T);
+                prevParent = parent is T ? (T)(object)parent : default;
                 parent = (DependencyObject)(object)GetParentElement<T>(parent);
             }
             while (parent != null);
@@ -115,15 +96,12 @@ namespace UI.RunnerManagement.Helpers
             {
                 parent = GetVisualOrLogicalAncestor(parent as DependencyObject);
 
-                if ((parent is T) && ((controlFilter == null) || (controlFilter((T)parent))))
+                if ((parent is T) && ((controlFilter == null) || controlFilter((T)parent)))
                     break;
             }
             while (parent != null);
 
-            if (parent == null)
-                return default(T);
-            else
-                return (T)parent;
+            return parent == null ? default : (T)parent;
         }
 
         private static Func<object, DependencyObject> _getInheritanceParentMethod = null;
