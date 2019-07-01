@@ -22,9 +22,10 @@ namespace UI.RunnerManagement.Validation
 
                 case int i when i <= 0:
                     return new ValidationResult(false, $"Der Wert{(Fieldname == null ? "" : $" für das Feld {Fieldname}")} darf nicht kleiner oder gleich 0 sein.");
-            }
 
-            return ValidationResult.ValidResult;
+                default:
+                    return ValidationResult.ValidResult;
+            }
         }
     }
 }
