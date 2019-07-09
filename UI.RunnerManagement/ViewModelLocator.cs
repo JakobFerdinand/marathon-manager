@@ -46,7 +46,7 @@ namespace UI.RunnerManagement
                 c.AddRegistry(new LoggingRegistry(Configuration));
                 c.AddRegistry(new DataRegistry(bool.Parse(Configuration.GetSection("UseSampleData").Value)));
             });
-            _container.RegisterConcreteTypeAsSingelton<AdministrationMainViewModel>();
+            _container.Configure(c => c.ForConcreteType<AdministrationMainViewModel>().Configure.Singleton().Ctor<string>().Is(Configuration.GetSection("AdministrationPassword").Value));
             _container.RegisterConcreteTypeAsSingelton<MainWindowViewModel>();
             _container.RegisterConcreteTypeAsSingelton<RunnersViewModel>();
         }
