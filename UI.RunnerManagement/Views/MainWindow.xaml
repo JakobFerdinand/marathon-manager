@@ -22,6 +22,10 @@
             <TabItem Header="Kategorien">
                 <local:CategoriesView />
             </TabItem>
+
+            <TabItem Header="Administration">
+                <local:AdministrationMainView />
+            </TabItem>
         </TabControl>
 
         <notifications:NotificationArea x:Name="NotificationArea" Position="TopRight" MaxItems="3" />

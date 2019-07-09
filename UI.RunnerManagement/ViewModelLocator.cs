@@ -15,6 +15,7 @@ namespace UI.RunnerManagement
         private readonly IContainer _container;
         private IConfigurationRoot Configuration { get; set; }
 
+        public AdministrationMainViewModel AdministrationMainViewModel => _container.GetInstance<AdministrationMainViewModel>();
         public CategoriesViewModel CategoriesViewModel => _container.GetInstance<CategoriesViewModel>();
         public MainWindowViewModel MainWindowViewModel => _container.GetInstance<MainWindowViewModel>();
         public RunnersViewModel RunnersViewModel => _container.GetInstance<RunnersViewModel>();
@@ -45,6 +46,7 @@ namespace UI.RunnerManagement
                 c.AddRegistry(new LoggingRegistry(Configuration));
                 c.AddRegistry(new DataRegistry(bool.Parse(Configuration.GetSection("UseSampleData").Value)));
             });
+            _container.RegisterConcreteTypeAsSingelton<AdministrationMainViewModel>();
             _container.RegisterConcreteTypeAsSingelton<MainWindowViewModel>();
             _container.RegisterConcreteTypeAsSingelton<RunnersViewModel>();
         }
