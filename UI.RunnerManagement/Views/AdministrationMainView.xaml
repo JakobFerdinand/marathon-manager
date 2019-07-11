@@ -29,9 +29,19 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid>
-                
-            </Grid>
+            <WrapPanel Margin="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <WrapPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Width" Value="200" />
+                        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" />
+                        <Setter Property="Margin" Value="5" />
+                    </Style>
+                </WrapPanel.Resources>
+
+                <Button Content="Datenbank erstellen/sichern" />
+                <Button Content="Kategorien einfügen/ändern" />
+                <Button Content="Testdaten einfügen" />
+            </WrapPanel>
 
             <Button Grid.Row="1" Content="Logout" Command="{Binding LogoutCommand}" />
         </Grid>
