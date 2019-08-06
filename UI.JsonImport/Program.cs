@@ -147,7 +147,8 @@ namespace UI.JsonImport
             {
                 var categoryRepository = new CategoryRepository(context);
                 var runnerRepository = new RunnerRepository(context);
-                using (var unitOfWork = new UnitOfWork(context, categoryRepository, runnerRepository))
+                var database = new Database(context);
+                using (var unitOfWork = new UnitOfWork(context, categoryRepository, runnerRepository, database))
                 {
                     var mapperConfiguration = GetMapperConfiguration(unitOfWork.Categories);
                     var mapper = new Mapper(mapperConfiguration);

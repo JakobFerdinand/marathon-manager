@@ -9,11 +9,14 @@ namespace Data.Sample
         public ICategoryRepository Categories { get; }
         public IRunnerRepository Runners { get; }
 
+        public IDatabase Database { get; }
+
         public UnitOfWork()
         {
             var categories = new CategoryRepository();
             Categories = categories;
             Runners = new RunnerRepository(categories);
+            Database = new Database();
         }
 
         public void Complete()
