@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -13,17 +14,26 @@ namespace UI.RunnerManagement.Views
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel.CouldConnectToDatabaseEvent += couldConnect => tabControl.ItemsSource = GetVisibleTabItems(couldConnect).ToList();
+            ViewModel.CouldConnectToDatabaseEvent += couldConnect => tabControl
+                .Items
+                .AddRange(GetVisibleTabItems(couldConnect).ToTabItems());
         }
 
-        private IEnumerable<UserControl> GetVisibleTabItems(bool couldConnnectToDatabase)
+        private IEnumerable<(UserControl control, string header)> GetVisibleTabItems(bool couldConnnectToDatabase)
         {
             if (couldConnnectToDatabase)
             {
-                yield return new RunnersView();
-                yield return new CategoriesView();
+                yield return (new RunnersView(), "Läufer");
+                yield return (new CategoriesView(), "Kategorien");
             }
-            yield return new AdministrationMainView();
+            yield return (new AdministrationMainView(), "Administration");
         }
+    }
+
+    internal static partial class Extensions
+    {
+        public static IEnumerable<TabItem> ToTabItems(this IEnumerable<(UserControl control, string header)> @this)
+            => @this
+            .Select(i => new TabItem { Header = i.header, Content = i.control });
     }
 }
