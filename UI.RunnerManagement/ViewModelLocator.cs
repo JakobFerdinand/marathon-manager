@@ -17,6 +17,7 @@ namespace UI.RunnerManagement
 
         public AdministrationMainViewModel AdministrationMainViewModel => _container.GetInstance<AdministrationMainViewModel>();
         public CategoriesViewModel CategoriesViewModel => _container.GetInstance<CategoriesViewModel>();
+        public CreateRestoreDatabaseViewModel CreateRestoreDatabaseViewModel => _container.GetInstance<CreateRestoreDatabaseViewModel>();
         public MainWindowViewModel MainWindowViewModel => _container.GetInstance<MainWindowViewModel>();
         public RunnersViewModel RunnersViewModel => _container.GetInstance<RunnersViewModel>();
 
