@@ -1,7 +1,9 @@
-﻿namespace Core.Repositories
+﻿using System.Threading.Tasks;
+
+namespace Core.Repositories
 {
     public interface IDatabase
     {
-        bool CanConnect();
+        Task<bool> CanConnectAsync();
     }
 }

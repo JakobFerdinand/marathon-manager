@@ -1,4 +1,6 @@
 ﻿using Core.Repositories;
+using System;
+using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
@@ -9,7 +11,16 @@ namespace Data.Repositories
         public Database(RunnerDbContext context)
             => this.context = context ?? throw new System.ArgumentNullException(nameof(context));
 
-        public bool CanConnect()
-            => context.Database.CanConnect();
+        public async Task<bool> CanConnectAsync()
+        {
+            try
+            {
+                return await context.Database.CanConnectAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
