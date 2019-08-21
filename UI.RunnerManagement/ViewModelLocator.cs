@@ -15,6 +15,7 @@ namespace UI.RunnerManagement
         private readonly IContainer _container;
         private IConfigurationRoot Configuration { get; set; }
 
+        public AddAndChangeCategoriesViewModel AddAndChangeCategoriesViewModel => _container.GetInstance<AddAndChangeCategoriesViewModel>();
         public AdministrationMainViewModel AdministrationMainViewModel => _container.GetInstance<AdministrationMainViewModel>();
         public CategoriesViewModel CategoriesViewModel => _container.GetInstance<CategoriesViewModel>();
         public CreateRestoreDatabaseViewModel CreateRestoreDatabaseViewModel => _container.GetInstance<CreateRestoreDatabaseViewModel>();
@@ -47,6 +48,8 @@ namespace UI.RunnerManagement
                 c.AddRegistry(new LoggingRegistry(Configuration));
                 c.AddRegistry(new DataRegistry(bool.Parse(Configuration.GetSection("UseSampleData").Value)));
             });
+
+            _container.RegisterConcreteTypeAsSingelton<AddAndChangeCategoriesViewModel>();
             _container.Configure(c => c.ForConcreteType<AdministrationMainViewModel>().Configure.Singleton().Ctor<string>().Is(Configuration.GetSection("AdministrationPassword").Value));
             _container.RegisterConcreteTypeAsSingelton<MainWindowViewModel>();
             _container.RegisterConcreteTypeAsSingelton<RunnersViewModel>();
