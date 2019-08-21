@@ -86,5 +86,19 @@ where dbid > 4
                 return ImmutableArray.Create<string>();
             }
         }
+
+        public bool IsServerOnline(string serverName)
+        {
+            try
+            {
+                using (var connection = new SqlConnection($"Server={serverName};Database=master;Trusted_Connection=true;"))
+                    connection.Open();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

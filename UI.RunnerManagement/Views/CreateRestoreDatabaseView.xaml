@@ -14,6 +14,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -23,7 +25,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Server" />
-        <ComboBox Grid.Column="0" Grid.Row="1" Text="{Binding Server}" ItemsSource="{Binding AvailableServers}" Width="200" IsEditable="True" >
+        <ComboBox Grid.Column="0" Grid.Row="1" Text="{Binding Server, UpdateSourceTrigger=PropertyChanged, Delay=500}" ItemsSource="{Binding AvailableServers}" Width="200" IsEditable="True" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DropDownOpened">
                     <i:InvokeCommandAction Command="{Binding RefreshServersCommand}" />
@@ -32,8 +34,33 @@
         </ComboBox>
         <Button Grid.Column="1" Grid.Row="1" Content="Refresh" Command="{Binding RefreshServersCommand}" Margin="20 0 0 0" />
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Datenbank" />
-        <ComboBox Grid.Column="0" Grid.Row="4" Text="{Binding Database}" ItemsSource="{Binding AvailableDatabases}" Width="200" IsEditable="True" >
+        <Ellipse Grid.Column="0" Grid.Row="3" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" HorizontalAlignment="Right">
+            <Ellipse.Style>
+                <Style TargetType="Ellipse">
+                    <Setter Property="Fill" Value="Red" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CanConnectToServer}" Value="True">
+                            <Setter Property="Fill" Value="Green" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Ellipse.Style>
+        </Ellipse>
+        <TextBlock Grid.Column="1" Grid.Row="3" Margin="20 0 0 0">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Text" Value="Der Server ist nicht erreichbar." />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CanConnectToServer}" Value="True">
+                            <Setter Property="Text" Value="Server erreichbar." />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Datenbank" />
+        <ComboBox Grid.Column="0" Grid.Row="6" Text="{Binding Database}" ItemsSource="{Binding AvailableDatabases}" Width="200" IsEditable="True" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DropDownOpened">
                     <i:InvokeCommandAction Command="{Binding RefreshDatabasesCommand}" />

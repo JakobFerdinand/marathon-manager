@@ -24,7 +24,11 @@ namespace UI.RunnerManagement.ViewModels
         public string Server
         {
             get => server;
-            set => Set(ref server, value);
+            set
+            {
+                if (Set(ref server, value) && !Server.IsNullOrEmpty())
+                    CanConnectToServer = unitOfWork.Database.IsServerOnline(Server);
+            }
         }
 
         private string database;
@@ -32,6 +36,13 @@ namespace UI.RunnerManagement.ViewModels
         {
             get => database;
             set => Set(ref database, value);
+        }
+
+        private bool canConnectToServer;
+        public bool CanConnectToServer
+        {
+            get => canConnectToServer;
+            set => Set(ref canConnectToServer, value);
         }
 
         public ICommand RefreshServersCommand { get; }
