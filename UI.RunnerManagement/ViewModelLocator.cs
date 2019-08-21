@@ -1,6 +1,8 @@
 ﻿using Data;
 using Data.Logging;
 using Logic.Common.Extensions;
+using Logic.Common.Interfaces;
+using Logic.Common.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
@@ -48,6 +50,13 @@ namespace UI.RunnerManagement
                 c.AddRegistry(new LoggingRegistry(Configuration));
                 c.AddRegistry(new DataRegistry(bool.Parse(Configuration.GetSection("UseSampleData").Value)));
             });
+
+            _container.Configure(c => c
+                .For<IConnectionstringService>()
+                .Use<ConnectionstringService>()
+                .Singleton()
+                .Ctor<Action<string>>().Is(s => Configuration.GetSection("ConnectionStrings").GetSection("Default").Value = s)
+                .Ctor<Func<string>>().Is(() => Configuration.GetConnectionString("Default")));
 
             _container.RegisterConcreteTypeAsSingelton<AddAndChangeCategoriesViewModel>();
             _container.Configure(c => c.ForConcreteType<AdministrationMainViewModel>().Configure.Singleton().Ctor<string>().Is(Configuration.GetSection("AdministrationPassword").Value));

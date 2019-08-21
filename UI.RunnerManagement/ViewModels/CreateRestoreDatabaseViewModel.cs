@@ -1,4 +1,5 @@
 ﻿using Core;
+using Logic.Common.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -9,10 +10,15 @@ namespace UI.RunnerManagement.ViewModels
     public class CreateRestoreDatabaseViewModel : ViewModelBase
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IConnectionstringService connectionstringService;
 
-        public CreateRestoreDatabaseViewModel(IUnitOfWork unitOfWork)
+        public CreateRestoreDatabaseViewModel(IUnitOfWork unitOfWork, IConnectionstringService connectionstringService)
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            this.connectionstringService = connectionstringService ?? throw new ArgumentNullException(nameof(connectionstringService));
+
+            (Server, Database) = connectionstringService.GetConnectionDetails();
+
             RefreshServersCommand = new Command(RefreshServers);
             RefreshDatabasesCommand = new Command(RefreshDatabases, CanRefreshDatabases);
         }
