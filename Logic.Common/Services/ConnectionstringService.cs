@@ -26,5 +26,18 @@ namespace Logic.Common.Services
                 database.Substring(database.IndexOf('=') + 1)
                 );
         }
+
+        public void SaveConnectionDetails((string Server, string Database) details)
+            => saveConnectionstring(BuildConnectionstring(details));
+
+        private string BuildConnectionstring((string Server, string Database) details)
+            => string.Join(";", new[] { $"server={details.Server}", $"database={details.Database}" }
+            .Concat(getConnectionstring()
+                .ToLower()
+                .Split(';')
+                .Where(d => !d.StartsWith("server="))
+                .Where(d => !d.StartsWith("data source="))
+                .Where(d => !d.StartsWith("database="))
+                .Where(d => !d.StartsWith("initial catalog="))));
     }
 }
