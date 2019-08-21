@@ -31,5 +31,14 @@
             </i:Interaction.Triggers>
         </ComboBox>
         <Button Grid.Column="1" Grid.Row="1" Content="Refresh" Command="{Binding RefreshServersCommand}" Margin="20 0 0 0" />
+
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Datenbank" />
+        <ComboBox Grid.Column="0" Grid.Row="4" Text="{Binding Database}" ItemsSource="{Binding AvailableDatabases}" Width="200" IsEditable="True" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="DropDownOpened">
+                    <i:InvokeCommandAction Command="{Binding RefreshDatabasesCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ComboBox>
     </Grid>
 </UserControl>

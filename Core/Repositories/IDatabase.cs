@@ -6,7 +6,7 @@ namespace Core.Repositories
     public interface IDatabase
     {
         Task<bool> CanConnectAsync();
-
         ImmutableArray<string> GetAvailableServers();
+        ImmutableArray<string> GetAllDatabases(string server);
     }
 }

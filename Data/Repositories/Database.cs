@@ -1,6 +1,8 @@
 ﻿using Core.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +25,35 @@ namespace Data.Repositories
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        public ImmutableArray<string> GetAllDatabases(string server)
+        {
+            try
+            {
+                using (var connnection = new SqlConnection($"Server={server};Database=master;Trusted_Connection=True"))
+                using (var command = connnection.CreateCommand())
+                {
+                    command.CommandText = @"
+Select name 
+from master.dbo.sysdatabases
+where dbid > 4
+";
+
+                    connnection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var result = new List<string>();
+                        while (reader.Read())
+                            result.Add(reader["name"] as string);
+                        return result.ToImmutableArray();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return ImmutableArray.Create<string>();
             }
         }
 
