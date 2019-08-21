@@ -1,5 +1,4 @@
-﻿using Core.Extensions;
-using Core.Models;
+﻿using Core.Models;
 using Logging.Interfaces;
 using Logging.Loggers;
 using NSubstitute;
