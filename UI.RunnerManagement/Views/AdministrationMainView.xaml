@@ -31,9 +31,11 @@
 
             <TabControl TabStripPlacement="Left">
                 <TabItem Header="Datenbank erstellen/sichern">
-                    <local:CreateRestoreDatabaseView/>
+                    <local:CreateRestoreDatabaseView HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </TabItem>
-                <TabItem Header="Kategoorien einfügen/ändern"></TabItem>
+                <TabItem Header="Kategoorien einfügen/ändern">
+                    <local:AddAndChangeCategoriesView HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </TabItem>
                 <TabItem Header="Testdaten einfügen"/>
             </TabControl>
 

@@ -77,11 +77,15 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Validation\IsRequiredValidationRule.cs" />
+    <Compile Include="ViewModels\AddAndChangeCategoriesViewModel.cs" />
     <Compile Include="ViewModels\AdministrationMainViewModel.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="Common\Command.cs" />
     <Compile Include="ViewModels\CreateRestoreDatabaseViewModel.cs" />
     <Compile Include="ViewModels\RunnersViewModel.cs" />
+    <Compile Include="Views\AddAndChangeCategoriesView.xaml.cs">
+      <DependentUpon>AddAndChangeCategoriesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AdministrationMainView.xaml.cs">
       <DependentUpon>AdministrationMainView.xaml</DependentUpon>
     </Compile>
@@ -94,6 +98,10 @@
     <Compile Include="Views\RunnersView.xaml.cs">
       <DependentUpon>RunnersView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AddAndChangeCategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AdministrationMainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
