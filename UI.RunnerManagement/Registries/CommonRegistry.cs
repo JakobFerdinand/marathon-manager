@@ -26,6 +26,10 @@ namespace UI.RunnerManagement.Registries
             For<INotificationService>()
                 .Use(c => new NotificationService(new NotificationManager(null)))
                 .Singleton();
+
+            For<IConnectionstringService>()
+                .Use<ConnectionstringService>()
+                .Singleton();
         }
     }
 }
