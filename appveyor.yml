@@ -19,3 +19,7 @@ before_build:
 
 build:
   project: MarathonManager.sln
+
+test:
+  only:
+  - Core.Test.dll
