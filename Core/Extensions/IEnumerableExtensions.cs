@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Core.Extensions
+namespace System
 {
     public static class IEnumerableExtensions
     {

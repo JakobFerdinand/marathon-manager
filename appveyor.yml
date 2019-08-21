@@ -6,7 +6,7 @@ branches:
 image: Visual Studio 2019
 
 services:
-  - mssql2014
+  - mssql
 
 platform: Any CPU
 
@@ -19,3 +19,8 @@ before_build:
 
 build:
   project: MarathonManager.sln
+
+test:
+  assemblies:
+      only:
+      - Core.Test.dll

@@ -2,6 +2,7 @@
 using Core.Repositories;
 using Data.Shared;
 using Logging.Interfaces;
+using System;
 using System.Linq;
 
 namespace Data
@@ -14,27 +15,31 @@ namespace Data
 
         public ICategoryRepository Categories { get; }
         public IRunnerRepository Runners { get; }
+        public IDatabase Database { get; }
 
         public UnitOfWork(
             RunnerDbContext context,
             ICategoryRepository categories,
-            IRunnerRepository runners)
+            IRunnerRepository runners,
+            IDatabase database)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
 
-            Categories = categories;
-            Runners = runners;
+            Categories = categories ?? throw new ArgumentNullException(nameof(categories));
+            Runners = runners ?? throw new ArgumentNullException(nameof(runners));
+            Database = database ?? throw new ArgumentNullException(nameof(database));
         }
         public UnitOfWork(
             RunnerDbContext context,
             ICategoryRepository categories,
             IRunnerRepository runners,
+            IDatabase database,
             IChangesFinder changesFinder,
             IChangesLogger changesLogger)
-            : this(context, categories, runners)
+            : this(context, categories, runners, database)
         {
-            _changesFinder = changesFinder;
-            _changesLogger = changesLogger;
+            _changesFinder = changesFinder ?? throw new ArgumentNullException(nameof(changesFinder));
+            _changesLogger = changesLogger ?? throw new ArgumentNullException(nameof(changesLogger));
         }
 
         public void Attach<T>(T runner) where T : class

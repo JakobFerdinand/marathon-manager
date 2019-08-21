@@ -36,7 +36,7 @@ namespace SampleData
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
-            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new Database(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 var r = context.Runners.SingleOrDefault(rx => rx.Startnumber == 193);
                 var category = context.Categories.Single(c => c.Id == 14);
@@ -55,7 +55,7 @@ namespace SampleData
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
-            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new Database(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 var runners = unitOfWork.Runners.GetAll().ToList();
 
@@ -87,7 +87,7 @@ namespace SampleData
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
-            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new Database(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 unitOfWork.Categories.AddRange(categories);
                 unitOfWork.Complete();
