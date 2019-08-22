@@ -42,8 +42,8 @@ namespace Data
             _changesLogger = changesLogger ?? throw new ArgumentNullException(nameof(changesLogger));
         }
 
-        public void Attach<T>(T runner) where T : class
-            => _context.Set<T>().Attach(runner);
+        public void Attach<T>(T entity) where T : class
+            => _context.Set<T>().Attach(entity);
 
         public bool HasChanges() => _context.ChangeTracker.HasChanges();
 
