@@ -9,5 +9,7 @@ namespace Core.Repositories
         bool IsServerOnline(string server);
         ImmutableArray<string> GetAvailableServers();
         ImmutableArray<string> GetAllDatabases(string server);
+        bool EnsureDeleted();
+        bool EnsureCreated();
     }
 }

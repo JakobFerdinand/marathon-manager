@@ -28,6 +28,12 @@ namespace Data.Repositories
             }
         }
 
+        public bool EnsureCreated()
+            => context.Database.EnsureCreated();
+
+        public bool EnsureDeleted()
+            => context.Database.EnsureDeleted();
+
         public ImmutableArray<string> GetAllDatabases(string server)
         {
             try
