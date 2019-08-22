@@ -11,7 +11,7 @@
              DataContext="{Binding Source={StaticResource Locator}, Path=AddAndChangeCategoriesViewModel}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding ReloadCategoriesCommand}" />
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <UserControl.InputBindings>
@@ -41,7 +41,22 @@
                 <DataGridTextColumn x:Name="plannedStarttimeColumn" Header="Geplante Startzeit" Binding="{Binding PlannedStartTime, StringFormat=HH:mm:ss}" IsReadOnly="True" />
                 <DataGridTextColumn x:Name="starttimeColumn" Header="Startzeit" Binding="{Binding Starttime, StringFormat=HH:mm:ss}" IsReadOnly="True" />
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Löschen" Command="{Binding RemoveRunnerCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
+
+        <StackPanel Grid.Row="1"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+
+            <Button Content="Aktualisieren" Command="{Binding ReloadCategoriesCommand}" />
+            <Button Content="Neue Categorie" Margin="8 0 0 0" Command="{Binding NewCategoryCommand}" />
+            <Button Content="Speichern" Margin="8 0 0 0" Command="{Binding SaveCommand}" />
+        </StackPanel>
 
         <Grid Grid.Row="2"
               Margin="0 8 0 0">
@@ -70,7 +85,7 @@
             <TextBox Grid.Row="1" Grid.Column="0" Name="nameTextBox" Text="{Binding SelectedCategory.Name, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ElementName=plannedStarttimeColumn, Path=Header}" />
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedCategory.PlannedStartTime, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedCategory.PlannedStartTime, StringFormat=HH:mm:ss, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </Grid>
 </UserControl>
