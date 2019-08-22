@@ -19,7 +19,11 @@ namespace UI.RunnerManagement.ViewModels
 
             (Server, Database) = connectionstringService.GetConnectionDetails();
 
-            SaveConnectionDetailsCommand = new Command(SaveConnectionDetails, CanSaveConnectionDetails);
+            SaveConnectionDetailsCommand = new ExtendedCommand(
+                SaveConnectionDetails,
+                () => "Änderungen speichern",
+                CanSaveConnectionDetails,
+                () => "Diese Funktion wird noch nicht unterstützt.");
             RefreshServersCommand = new Command(RefreshServers);
             RefreshDatabasesCommand = new Command(RefreshDatabases, CanRefreshDatabases);
         }
@@ -56,7 +60,8 @@ namespace UI.RunnerManagement.ViewModels
         private void SaveConnectionDetails()
             => connectionstringService.SaveConnectionDetails((Server, Database));
         private bool CanSaveConnectionDetails()
-            => !Server.IsNullOrEmpty()
+            => false
+            && !Server.IsNullOrEmpty()
             && !Database.IsNullOrEmpty();
 
         public ICommand RefreshServersCommand { get; }
