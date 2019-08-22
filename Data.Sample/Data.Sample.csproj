@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <RuntimeIdentifiers>win-x64;win10-x64</RuntimeIdentifiers>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.5" />
   </ItemGroup>
 
