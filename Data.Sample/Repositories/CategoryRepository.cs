@@ -32,6 +32,7 @@ namespace Data.Sample.Repositories
                 PlannedStartTime = c.PlannedStartTime,
                 Starttime = c.Starttime
             }).ToImmutableList();
+
         public ImmutableList<Category> GetNotStarted() => _categories.Where(c => c.Starttime == null).ToImmutableList();
         public void Remove(Category entity) => _categories.Remove(entity);
         public void RemoveRange(IEnumerable<Category> entities)
