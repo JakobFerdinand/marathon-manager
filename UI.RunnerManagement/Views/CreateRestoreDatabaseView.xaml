@@ -68,6 +68,9 @@
             </i:Interaction.Triggers>
         </ComboBox>
 
-        <Button Grid.Column="1" Grid.Row="6" Content="Speichern" Command="{Binding SaveConnectionDetailsCommand}" Margin="20 0 0 0" />
+        <Button Grid.Column="1" Grid.Row="6" Content="Speichern"
+                Command="{Binding SaveConnectionDetailsCommand}"
+                ToolTip="{Binding SaveConnectionDetailsCommand.Tooltip}"
+                Margin="20 0 0 0" />
     </Grid>
 </UserControl>

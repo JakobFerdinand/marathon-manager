@@ -63,6 +63,7 @@
     </ApplicationDefinition>
     <Compile Include="Behaviors\ScrollToSelectedItemBehavior.cs" />
     <Compile Include="Behaviors\TextBoxSelectAllBehavior.cs" />
+    <Compile Include="Common\ExtendedCommand.cs" />
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="Converters\BoolToVisibilityCollapsedConverter.cs" />
     <Compile Include="Converters\ChipIdNotUnicErrorMessageConverter.cs" />
