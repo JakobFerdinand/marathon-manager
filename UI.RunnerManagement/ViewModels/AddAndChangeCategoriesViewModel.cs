@@ -52,10 +52,15 @@ namespace UI.RunnerManagement.ViewModels
 
         private void LoadData()
         {
-            SelectedCategory = null;
-            var categories = unitOfWork.Categories.GetAll(asNoTracking: true);
-            Categories.Clear();
-            Categories.AddRange(categories);
+            try
+            {
+                SelectedCategory = null;
+                var categories = unitOfWork.Categories.GetAll(asNoTracking: true);
+                Categories.Clear();
+                Categories.AddRange(categories);
+            }
+            catch
+            { }
         }
 
         private void ReloadCategoriesCommandHandler()
