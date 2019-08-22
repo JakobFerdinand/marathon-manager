@@ -23,8 +23,8 @@ namespace UI.StartRuns
             var categories = _unitOfWork.Categories.GetNotStarted();
 
             Console.WriteLine($"Noch nicht gestartete Läufe ({categories.Count()}):");
-            foreach (var c in categories.OrderBy(c => c.PlannedStartTime))
-                Console.WriteLine($"Id: {c.Id, 3} | {c.Name,-30} | geplant: {c.PlannedStartTime.ToString("HH:mm:ss")}");
+            foreach (var c in categories.OrderBy(c => c.Id))
+                Console.WriteLine($"Id: {c.Id, 3} | {c.Name,-30}");
 
             Console.WriteLine("\nWelche Läufe sollen gestartet werden?");
             Console.WriteLine("Id eingeben und mit Return bestätigen. Zum Starten 'start' eingeben.");

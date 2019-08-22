@@ -79,7 +79,7 @@ namespace UI.RunnerManagement.ViewModels
 
         private void NewCategoryCommandHandler()
         {
-            var category = new Category { PlannedStartTime = DateTime.Now.Date };
+            var category = new Category();
             unitOfWork.Categories.Add(category);
             Categories.Add(category);
             SelectedCategory = category;

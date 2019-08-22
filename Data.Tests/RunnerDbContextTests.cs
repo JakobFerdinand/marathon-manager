@@ -38,9 +38,9 @@ namespace Data.Tests
 
                 var categories = new[]
                 {
-                    new Category { Name = "Category1", PlannedStartTime = new DateTime(2017, 09, 22, 18, 05, 00)},
-                    new Category { Name = "Category2", PlannedStartTime = new DateTime(2000, 01, 01, 10, 55, 00)},
-                    new Category { Name = "Category3", PlannedStartTime = new DateTime(2012, 12, 31, 00, 00, 00)},
+                    new Category { Name = "Category1" },
+                    new Category { Name = "Category2" },
+                    new Category { Name = "Category3" },
                 };
 
                 context.Categories.AddRange(categories);
@@ -52,13 +52,10 @@ namespace Data.Tests
                 var categories = context.Categories.ToList();
 
                 Assert.Equal(3, categories.Count);
-                Assert.Equal(18, categories[0].PlannedStartTime.Hour);
                 Assert.Equal("Category2", categories[1].Name);
-                Assert.Equal(0, categories[2].PlannedStartTime.Millisecond);
                 Assert.Null(categories[1].Starttime);
 
                 categories[0].Name = "New Category Name Number 1";
-                categories[1].PlannedStartTime = new DateTime(2004, 02, 29, 13, 14, 00);
                 categories[2].Name = "Whatever";
 
                 context.SaveChanges();
@@ -70,7 +67,6 @@ namespace Data.Tests
 
                 Assert.Equal(3, categories.Count);
                 Assert.Equal("New Category Name Number 1", categories[0].Name);
-                Assert.Equal(2004, categories[1].PlannedStartTime.Year);
                 Assert.Equal("Whatever", categories[2].Name);
 
                 context.Remove(categories[1]);
@@ -108,9 +104,9 @@ namespace Data.Tests
 
                 var categories = new[]
                 {
-                    new Category { Name = "Category1", PlannedStartTime = new DateTime(2017, 09, 22, 18, 05, 00)},
-                    new Category { Name = "Category2", PlannedStartTime = new DateTime(2000, 01, 01, 10, 55, 00)},
-                    new Category { Name = "Category3", PlannedStartTime = new DateTime(2012, 12, 31, 00, 00, 00)},
+                    new Category { Name = "Category1" },
+                    new Category { Name = "Category2" },
+                    new Category { Name = "Category3" },
                 };
 
                 await context.Categories.AddRangeAsync(categories);
@@ -122,13 +118,10 @@ namespace Data.Tests
                 var categories = await context.Categories.ToListAsync();
 
                 Assert.Equal(3, categories.Count);
-                Assert.Equal(18, categories[0].PlannedStartTime.Hour);
                 Assert.Equal("Category2", categories[1].Name);
-                Assert.Equal(0, categories[2].PlannedStartTime.Millisecond);
                 Assert.Null(categories[1].Starttime);
 
                 categories[0].Name = "New Category Name Number 1";
-                categories[1].PlannedStartTime = new DateTime(2004, 02, 29, 13, 14, 00);
                 categories[2].Name = "Whatever";
 
                 await context.SaveChangesAsync();
@@ -140,7 +133,6 @@ namespace Data.Tests
 
                 Assert.Equal(3, categories.Count);
                 Assert.Equal("New Category Name Number 1", categories[0].Name);
-                Assert.Equal(2004, categories[1].PlannedStartTime.Year);
                 Assert.Equal("Whatever", categories[2].Name);
 
                 context.Remove(categories[1]);
@@ -178,9 +170,9 @@ namespace Data.Tests
 
                 var categories = new[]
                 {
-                    new Category { Name = "Category1", PlannedStartTime = new DateTime(2017, 09, 22, 18, 05, 00)},
-                    new Category { Name = "Category2", PlannedStartTime = new DateTime(2000, 01, 01, 10, 55, 00)},
-                    new Category { Name = "Category3", PlannedStartTime = new DateTime(2012, 12, 31, 00, 00, 00)},
+                    new Category { Name = "Category1" },
+                    new Category { Name = "Category2" },
+                    new Category { Name = "Category3" },
                 };
 
                 context.Categories.AddRange(categories);
@@ -235,9 +227,9 @@ namespace Data.Tests
 
                 var categories = new[]
                 {
-                    new Category { Name = "Category1", PlannedStartTime = new DateTime(2017, 09, 22, 18, 05, 00)},
-                    new Category { Name = "Category2", PlannedStartTime = new DateTime(2000, 01, 01, 10, 55, 00)},
-                    new Category { Name = "Category3", PlannedStartTime = new DateTime(2012, 12, 31, 00, 00, 00)},
+                    new Category { Name = "Category1" },
+                    new Category { Name = "Category2" },
+                    new Category { Name = "Category3" },
                 };
 
                 await context.Categories.AddRangeAsync(categories);

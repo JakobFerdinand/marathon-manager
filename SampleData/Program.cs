@@ -119,23 +119,23 @@ namespace SampleData
         }
         private static IEnumerable<Category> GenerateCategories2017() => new List<Category>
         {
-            new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "AK 2005 und jünger, 500m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "AK 2004 - 2001, 1.000m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Walken, 10.000m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Walken, 3.800m", PlannedStartTime = DateTime.Now }
+            new Category { Name = "Hauptlauf, 10.000m" },
+            new Category { Name = "Hobbylauf, 3.800m" },
+            new Category { Name = "AK 2005 und jünger, 500m" },
+            new Category { Name = "AK 2004 - 2001, 1.000m" },
+            new Category { Name = "Walken, 10.000m" },
+            new Category { Name = "Walken, 3.800m" }
         };
 
         private static IEnumerable<Category> GenerateCategories2018() => new List<Category>
         {
-            new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "U16 Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "AK 2007 und jünger, 500m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 10, 00) },
-            new Category { Name = "AK 2006 - 2003, 1.000m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 20, 00) },
-            new Category { Name = "Walken, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "Walken, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) }
+            new Category { Name = "Hauptlauf, 10.000m" },
+            new Category { Name = "Hobbylauf, 3.800m" },
+            new Category { Name = "U16 Hobbylauf, 3.800m" },
+            new Category { Name = "AK 2007 und jünger, 500m" },
+            new Category { Name = "AK 2006 - 2003, 1.000m" },
+            new Category { Name = "Walken, 10.000m" },
+            new Category { Name = "Walken, 3.800m" }
         };
 
         private static IEnumerable<Runner> GenerateRunners()
