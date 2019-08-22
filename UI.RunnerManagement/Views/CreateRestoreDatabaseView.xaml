@@ -32,7 +32,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ComboBox>
-        <Button Grid.Column="1" Grid.Row="1" Content="Refresh" Command="{Binding RefreshServersCommand}" Margin="20 0 0 0" />
+        <Button Grid.Column="1" Grid.Row="1" Content="Aktualisieren" Command="{Binding RefreshServersCommand}" Margin="20 0 0 0" />
 
         <Ellipse Grid.Column="0" Grid.Row="3" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" HorizontalAlignment="Right">
             <Ellipse.Style>
@@ -67,5 +67,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ComboBox>
+
+        <Button Grid.Column="1" Grid.Row="6" Content="Speichern" Command="{Binding SaveConnectionDetailsCommand}" Margin="20 0 0 0" />
     </Grid>
 </UserControl>
