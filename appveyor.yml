@@ -28,3 +28,13 @@ test:
 artifacts:
   - path: UI.RunnerManagement\bin\$(configuration)
     name: RunnerManagement
+
+deploy:
+  release: RunnerManagement
+  description: 'RunnerManagement release'
+  privider: GitHub
+  auth_token:
+    secure: huPTB1t9hb4gO751NtbRvIm3Q8bhyUJbHkHJpy49CkOeug6/xK9vHqyq7bRyHaZI
+  artifact: RunnerManagement
+  draft: false
+  prerelease: true
