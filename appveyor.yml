@@ -24,3 +24,7 @@ test:
   assemblies:
       only:
       - Core.Test.dll
+
+artifacts:
+  - path: UI.RunnerManagement\bin\$(configuration)
+    name: RunnerManagement
