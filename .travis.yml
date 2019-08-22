@@ -1,7 +1,0 @@
-language: csharp
-
-os:
-  - linux
-  - osx
-
-solution: MarathonManager.sln
