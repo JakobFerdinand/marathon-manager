@@ -1,12 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
     <RuntimeIdentifiers>win-x64;win10-x64</RuntimeIdentifiers>
-  </ItemGroup>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.5" />
