@@ -22,7 +22,6 @@
                   >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Geplante Startzeit" Binding="{Binding PlannedStartTime, StringFormat=HH:mm:ss}" />
                 <DataGridTextColumn Header="Startzeit" Binding="{Binding Starttime, StringFormat=HH:mm:ss:fff}" />
             </DataGrid.Columns>
         </DataGrid>

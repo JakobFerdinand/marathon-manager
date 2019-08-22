@@ -11,10 +11,10 @@ namespace Data.Sample.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private ImmutableList<Category> _categories = ImmutableList.Create(
-            new Category { Id = 1, Name = "Laufen 10km", PlannedStartTime = new DateTime(2017, 10, 08, 10, 00, 00) },
-            new Category { Id = 1, Name = "Laufen 3.8km", PlannedStartTime = new DateTime(2017, 10, 08, 10, 00, 00) },
-            new Category { Id = 1, Name = "Walken 10km", PlannedStartTime = new DateTime(2017, 10, 08, 09, 30, 00) },
-            new Category { Id = 1, Name = "Walken 3.8km", PlannedStartTime = new DateTime(2017, 10, 08, 09, 30, 00) });
+            new Category { Id = 1, Name = "Laufen 10km" },
+            new Category { Id = 1, Name = "Laufen 3.8km" },
+            new Category { Id = 1, Name = "Walken 10km" },
+            new Category { Id = 1, Name = "Walken 3.8km" });
 
         public void Add(Category entity) => _categories.Add(entity);
         public void AddRange(IEnumerable<Category> entities) => _categories.AddRange(entities);
@@ -29,7 +29,6 @@ namespace Data.Sample.Repositories
             {
                 Id = c.Id,
                 Name = c.Name,
-                PlannedStartTime = c.PlannedStartTime,
                 Starttime = c.Starttime
             }).ToImmutableList();
 

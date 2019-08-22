@@ -14,7 +14,6 @@ namespace Core.Tests.Models
             Assert.NotNull(category);
             Assert.NotNull(category.Runners);
             Assert.Null(category.Starttime);
-            Assert.Equal(default(DateTime), category.PlannedStartTime);
             Assert.Null(category.Name);
         }
     }
