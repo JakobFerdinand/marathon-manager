@@ -11,17 +11,17 @@ namespace UI.RunnerManagement.ViewModels
 {
     public class AddAndChangeCategoriesViewModel : ViewModelBase
     {
-        private readonly Func<IUnitOfWork> getNewUnitOfWork;
-        private readonly IDialogService dialogService;
-        private readonly INotificationService notificationService;
-        private IUnitOfWork unitOfWork;
+        private readonly Func<IUnitOfWork> _getNewUnitOfWork;
+        private readonly IDialogService _dialogService;
+        private readonly INotificationService _notificationService;
+        private IUnitOfWork _unitOfWork;
 
         public AddAndChangeCategoriesViewModel(Func<IUnitOfWork> getNewUnitOfWork, IUnitOfWork unitOfWork, IDialogService dialogService, INotificationService notificationService)
         {
-            this.getNewUnitOfWork = getNewUnitOfWork ?? throw new ArgumentNullException(nameof(getNewUnitOfWork));
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+            _getNewUnitOfWork = getNewUnitOfWork ?? throw new ArgumentNullException(nameof(getNewUnitOfWork));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
 
             InitializeCommand = new Command(LoadData);
             ReloadCategoriesCommand = new Command(ReloadCategoriesCommandHandler);
@@ -45,7 +45,7 @@ namespace UI.RunnerManagement.ViewModels
             {
                 selectedCategory = value;
                 if (selectedCategory != null && selectedCategory.Id > 0)
-                    unitOfWork.Attach(selectedCategory);
+                    _unitOfWork.Attach(selectedCategory);
                 RaisePropertyChanged();
             }
         }
@@ -55,7 +55,7 @@ namespace UI.RunnerManagement.ViewModels
             try
             {
                 SelectedCategory = null;
-                var categories = unitOfWork.Categories.GetAll(asNoTracking: true);
+                var categories = _unitOfWork.Categories.GetAll(asNoTracking: true);
                 Categories.Clear();
                 Categories.AddRange(categories);
             }
@@ -66,13 +66,13 @@ namespace UI.RunnerManagement.ViewModels
         private void ReloadCategoriesCommandHandler()
         {
             var messageBoxResult = MessageBoxResult.No;
-            if (unitOfWork.HasChanges())
-                messageBoxResult = dialogService.ShowYesNoMessageBox("Sie haben ungespeicherte Änderungen. wollen sie diese speichern?", "Ungespeicherte Änderungen");
+            if (_unitOfWork.HasChanges())
+                messageBoxResult = _dialogService.ShowYesNoMessageBox("Sie haben ungespeicherte Änderungen. wollen sie diese speichern?", "Ungespeicherte Änderungen");
             if (messageBoxResult is MessageBoxResult.Yes)
-                unitOfWork.Complete();
+                _unitOfWork.Complete();
 
-            unitOfWork.Dispose();
-            unitOfWork = getNewUnitOfWork();
+            _unitOfWork.Dispose();
+            _unitOfWork = _getNewUnitOfWork();
 
             LoadData();
         }
@@ -80,7 +80,7 @@ namespace UI.RunnerManagement.ViewModels
         private void NewCategoryCommandHandler()
         {
             var category = new Category();
-            unitOfWork.Categories.Add(category);
+            _unitOfWork.Categories.Add(category);
             Categories.Add(category);
             SelectedCategory = category;
         }
@@ -88,24 +88,24 @@ namespace UI.RunnerManagement.ViewModels
         private void SaveCommandHandler()
         {
             SaveCategories();
-            notificationService.ShowNotification("Es wurde erfolgreich gespeichert.", "Gespeichert", NotificationType.Success);
+            _notificationService.ShowNotification("Es wurde erfolgreich gespeichert.", "Gespeichert", NotificationType.Success);
         }
 
         private void SaveCategories()
-            => unitOfWork.Complete();
+            => _unitOfWork.Complete();
 
         private void RemoveRunnerCommandHandler()
         {
             SaveCategories();
 
-            var result = dialogService.ShowYesNoMessageBox($"Wollen sie die Kategorie {selectedCategory.Name} wirklich löschen?", "Kategorie löschen");
+            var result = _dialogService.ShowYesNoMessageBox($"Wollen sie die Kategorie {selectedCategory.Name} wirklich löschen?", "Kategorie löschen");
 
             switch (result)
             {
                 case MessageBoxResult.No: return;
 
                 case MessageBoxResult.Yes:
-                    unitOfWork.Categories.Remove(selectedCategory);
+                    _unitOfWork.Categories.Remove(selectedCategory);
                     selectedCategory = null;
                     SaveCategories();
                     ReloadCategoriesCommandHandler();
