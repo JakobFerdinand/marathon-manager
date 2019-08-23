@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.EventAggregation;
 using Logic.Common.Interfaces;
 using System;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using UI.RunnerManagement.Common;
+using UI.RunnerManagement.Events;
 using UI.RunnerManagement.Services;
 
 namespace UI.RunnerManagement.ViewModels
@@ -16,17 +18,20 @@ namespace UI.RunnerManagement.ViewModels
         private readonly IConnectionstringService _connectionstringService;
         private readonly IDialogService _dialogService;
         private readonly INotificationService _notificationService;
+        private readonly IEventAggregator _eventAggregator;
 
         public CreateRestoreDatabaseViewModel(
             IUnitOfWork unitOfWork
             , IConnectionstringService connectionstringService
             , IDialogService dialogService
-            , INotificationService notificationService)
+            , INotificationService notificationService
+            , IEventAggregator eventAggregator)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _connectionstringService = connectionstringService ?? throw new ArgumentNullException(nameof(connectionstringService));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             (Server, Database) = connectionstringService.GetConnectionDetails();
 
             SaveConnectionDetailsCommand = new ExtendedCommand(
@@ -101,8 +106,10 @@ namespace UI.RunnerManagement.ViewModels
                 if(_dialogService.ShowYesNoMessageBox("Es ist bereits eine Datenbank vorhanden. Wollen Sie diese ersetzten?", "Datenbank vorhanden") is MessageBoxResult.Yes)
                     return;
 
+            _eventAggregator.GetEvent<EnsureDatabaseDeletingEvent>().Publish();
             _unitOfWork.Database.EnsureDeleted();
             _unitOfWork.Database.EnsureCreated();
+            _eventAggregator.GetEvent<EnsureDatabaseCreatedEvent>().Publish();
             _notificationService.ShowNotification("Die Datenbank wurde neu erstellt.", "Datenbank erstellt", NotificationType.Success);
 
         }

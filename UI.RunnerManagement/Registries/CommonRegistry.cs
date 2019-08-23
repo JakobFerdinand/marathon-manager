@@ -1,4 +1,5 @@
-﻿using Logic.Common.Interfaces;
+﻿using Core.EventAggregation;
+using Logic.Common.Interfaces;
 using Logic.Common.Services;
 using Notifications.Wpf;
 using StructureMap;
@@ -25,6 +26,10 @@ namespace UI.RunnerManagement.Registries
 
             For<INotificationService>()
                 .Use(c => new NotificationService(new NotificationManager(null)))
+                .Singleton();
+
+            For<IEventAggregator>()
+                .Use<EventAggregator>()
                 .Singleton();
         }
     }
