@@ -3,6 +3,7 @@ using Data.Logging;
 using Logic.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Rollbar;
 using StructureMap;
 using System;
 using UI.RunnerManagement.Registries;
@@ -53,6 +54,20 @@ namespace UI.RunnerManagement
             _container.Configure(c => c.ForConcreteType<AdministrationMainViewModel>().Configure.Singleton().Ctor<string>().Is(Configuration.GetSection("AdministrationPassword").Value));
             _container.RegisterConcreteTypeAsSingelton<MainWindowViewModel>();
             _container.RegisterConcreteTypeAsSingelton<RunnersViewModel>();
+
+            InitializeRollbar();
+        }
+
+        public void InitializeRollbar()
+        {
+            var rollbar = Configuration.GetRoolbarSettings();
+            RollbarLocator.RollbarInstance.Configure(new RollbarConfig
+            {
+                AccessToken = rollbar.accessToken,
+                Environment = rollbar.environment
+            });
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => RollbarLocator.RollbarInstance.Error(e.ExceptionObject as Exception);
         }
     }
 }
