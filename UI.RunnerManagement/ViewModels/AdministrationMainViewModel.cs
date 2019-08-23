@@ -5,10 +5,10 @@ namespace UI.RunnerManagement.ViewModels
 {
     public class AdministrationMainViewModel : ViewModelBase
     {
-        private readonly string administrationPassword;
+        private readonly string _administrationPassword;
         public AdministrationMainViewModel(string administrationPassword)
         {
-            this.administrationPassword = administrationPassword;
+            _administrationPassword = administrationPassword;
 
             LoginCommand = new Command(
                 execute: () =>

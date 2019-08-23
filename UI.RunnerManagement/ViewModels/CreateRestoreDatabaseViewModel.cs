@@ -12,10 +12,10 @@ namespace UI.RunnerManagement.ViewModels
 {
     public class CreateRestoreDatabaseViewModel : ViewModelBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IConnectionstringService connectionstringService;
-        private readonly IDialogService dialogService;
-        private readonly INotificationService notificationService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IConnectionstringService _connectionstringService;
+        private readonly IDialogService _dialogService;
+        private readonly INotificationService _notificationService;
 
         public CreateRestoreDatabaseViewModel(
             IUnitOfWork unitOfWork
@@ -23,10 +23,10 @@ namespace UI.RunnerManagement.ViewModels
             , IDialogService dialogService
             , INotificationService notificationService)
         {
-            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            this.connectionstringService = connectionstringService ?? throw new ArgumentNullException(nameof(connectionstringService));
-            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _connectionstringService = connectionstringService ?? throw new ArgumentNullException(nameof(connectionstringService));
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
             (Server, Database) = connectionstringService.GetConnectionDetails();
 
             SaveConnectionDetailsCommand = new ExtendedCommand(
@@ -49,7 +49,7 @@ namespace UI.RunnerManagement.ViewModels
             set
             {
                 if (Set(ref server, value) && !Server.IsNullOrEmpty())
-                    CanConnectToServer = unitOfWork.Database.IsServerOnline(Server);
+                    CanConnectToServer = _unitOfWork.Database.IsServerOnline(Server);
             }
         }
 
@@ -69,7 +69,7 @@ namespace UI.RunnerManagement.ViewModels
 
         public ICommand SaveConnectionDetailsCommand { get; }
         private void SaveConnectionDetails()
-            => connectionstringService.SaveConnectionDetails((Server, Database));
+            => _connectionstringService.SaveConnectionDetails((Server, Database));
         private bool CanSaveConnectionDetails()
             => false
             && !Server.IsNullOrEmpty()
@@ -80,7 +80,7 @@ namespace UI.RunnerManagement.ViewModels
         {
             AvailableServers.Clear();
             AvailableDatabases.Clear();
-            var servers = unitOfWork.Database.GetAvailableServers();
+            var servers = _unitOfWork.Database.GetAvailableServers();
             AvailableServers.AddRange(servers);
         }
 
@@ -88,7 +88,7 @@ namespace UI.RunnerManagement.ViewModels
         private void RefreshDatabases()
         {
             AvailableDatabases.Clear();
-            var databases = unitOfWork.Database.GetAllDatabases(Server);
+            var databases = _unitOfWork.Database.GetAllDatabases(Server);
             AvailableDatabases.AddRange(databases);
         }
         private bool CanRefreshDatabases()
@@ -97,13 +97,13 @@ namespace UI.RunnerManagement.ViewModels
         public ICommand RecreateDatabaseCommand { get; }
         private void RecreateDatabase()
         {
-            if (unitOfWork.Database.GetAllDatabases(Server).Any(d => d == Database))
-                if(dialogService.ShowYesNoMessageBox("Es ist bereits eine Datenbank vorhanden. Wollen Sie diese ersetzten?", "Datenbank vorhanden") is MessageBoxResult.Yes)
+            if (_unitOfWork.Database.GetAllDatabases(Server).Any(d => d == Database))
+                if(_dialogService.ShowYesNoMessageBox("Es ist bereits eine Datenbank vorhanden. Wollen Sie diese ersetzten?", "Datenbank vorhanden") is MessageBoxResult.Yes)
                     return;
 
-            unitOfWork.Database.EnsureDeleted();
-            unitOfWork.Database.EnsureCreated();
-            notificationService.ShowNotification("Die Datenbank wurde neu erstellt.", "Datenbank erstellt", NotificationType.Success);
+            _unitOfWork.Database.EnsureDeleted();
+            _unitOfWork.Database.EnsureCreated();
+            _notificationService.ShowNotification("Die Datenbank wurde neu erstellt.", "Datenbank erstellt", NotificationType.Success);
 
         }
         private bool CanRecreateDatabase()
