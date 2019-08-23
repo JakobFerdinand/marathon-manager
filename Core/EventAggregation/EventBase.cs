@@ -16,6 +16,9 @@ namespace Core.EventAggregation
             return new Unsubscribe(() => _subscriptions.Remove(action));
         }
 
+        public void Publish()
+            => _subscriptions.ForEach(a => a?.Invoke());
+
         private class Unsubscribe : IDisposable
         {
             private readonly Action _unsubscribe;

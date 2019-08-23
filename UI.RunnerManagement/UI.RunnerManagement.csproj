@@ -69,6 +69,8 @@
     <Compile Include="Converters\ChipIdNotUnicErrorMessageConverter.cs" />
     <Compile Include="Converters\InvalidRunnersErrorMessageConverter.cs" />
     <Compile Include="Converters\StartnumberNotUnicErrorMessageConverter.cs" />
+    <Compile Include="Events\EnsureDatabaseCreatedEvent.cs" />
+    <Compile Include="Events\EnsureDatabaseDeletingEvent.cs" />
     <Compile Include="Helpers\ILMemberAccessor.cs" />
     <Compile Include="Helpers\ViewHelper.cs" />
     <Compile Include="Registries\CommonRegistry.cs" />
