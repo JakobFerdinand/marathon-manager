@@ -20,21 +20,26 @@ before_build:
 build:
   project: MarathonManager.sln
 
+after_build:
+  cmd: publish_win10.bat
+
 test:
   assemblies:
       only:
       - Core.Test.dll
 
+7z a MarathonManager.zip .\MarathonManager\bin\$(configuration) .\Publish\UI.TimeRecord .\Publish\UI.StartRuns
+
 artifacts:
-  - path: UI.RunnerManagement\bin\$(configuration)
-    name: RunnerManagement
+  - path: MarathonManager.zip
+    name: MarathonManager
 
 deploy:
-  release: 'RunnerManagement $(version)'
-  description: 'RunnerManagement release $(version)'
+  release: 'MarathonManager $(version)'
+  description: 'MarathonManager release $(version)'
   provider: GitHub
   auth_token:
     secure: iO5+PhCcDk190CyCB9EBLc+1kD0GWXdJUdQMalcl62xQYSUKLmAJJue1MsAt7WE8
-  artifact: RunnerManagement
+  artifact: MarathonManager
   draft: false
   prerelease: true
