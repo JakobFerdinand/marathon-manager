@@ -98,12 +98,12 @@ namespace UI.JsonImport
             }
 
             ImmutableList<Category> GenerateCategories2018() => ImmutableList.Create(
-                new Category { Name = categoryMapping["lauf_10k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = categoryMapping["lauf_3.8k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = categoryMapping["kinder_500m"], PlannedStartTime = new DateTime(2019, 09, 22, 09, 10, 00) },
-                new Category { Name = categoryMapping["kinder_1000m"], PlannedStartTime = new DateTime(2019, 09, 22, 09, 20, 00) },
-                new Category { Name = categoryMapping["walken_10k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = categoryMapping["walken_3.8k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) }
+                new Category { Name = categoryMapping["lauf_10k"] },
+                new Category { Name = categoryMapping["lauf_3.8k"] },
+                new Category { Name = categoryMapping["kinder_500m"] },
+                new Category { Name = categoryMapping["kinder_1000m"] },
+                new Category { Name = categoryMapping["walken_10k"] },
+                new Category { Name = categoryMapping["walken_3.8k"] }
             );
         }
 
@@ -227,7 +227,7 @@ namespace UI.JsonImport
         internal static void CheckCategory(this string @this, ImmutableDictionary<string, string> categories)
         {
             if (!categories.ContainsKey(@this))
-                throw new Exception($"Category \"{@this}\" not defined.");
+                throw new InvalidOperationException($"Category \"{@this}\" not defined.");
         }
     }
 }

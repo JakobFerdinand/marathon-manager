@@ -9,7 +9,7 @@ namespace Core
         IRunnerRepository Runners { get; }
         IDatabase Database { get; }
 
-        void Attach<T>(T runner) where T : class;
+        void Attach<T>(T entity) where T : class;
         bool HasChanges();
 
         void Complete();

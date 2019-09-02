@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.EventAggregation;
 using Core.Models;
 using Core.Repositories;
 using NSubstitute;
@@ -15,16 +16,17 @@ namespace UI.RunnerManagement.Tests.ViewModels
     {
         [Fact]
         [Trait("Unit", "")]
-        public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
+        public void Constructor_all_parameters_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null, null));
         [Fact]
         [Trait("Unit", "")]
-        public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null));
+        public void Constructor_unitOfWork_null_ArgumentNullException() => Assert.Throws<ArgumentNullException>(() => new CategoriesViewModel(null, null));
         [Fact]
         [Trait("Unit", "")]
         public void CanCreateInstance()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new CategoriesViewModel(unitOfWork);
+            var eventAggregator = Substitute.For<IEventAggregator>();
+            var vm = new CategoriesViewModel(unitOfWork, eventAggregator);
             Assert.NotNull(vm);
             Assert.NotNull(vm.InitializeCommand);
         }
@@ -35,8 +37,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
+            var eventAggregator = Substitute.For<IEventAggregator>();
 
-            var vm = new CategoriesViewModel(unitOfWork);
+            var vm = new CategoriesViewModel(unitOfWork, eventAggregator);
 
             vm.LoadCategories();
 
@@ -54,8 +57,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
                 new Category { Id = 1 },
                 new Category { Id = 2 },
                 new Category { Id = 3 }));
+            var eventAggregator = Substitute.For<IEventAggregator>();
 
-            var vm = new CategoriesViewModel(unitOfWork);
+            var vm = new CategoriesViewModel(unitOfWork, eventAggregator);
 
             vm.LoadCategories();
 
@@ -71,8 +75,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
             var unitOfWork = Substitute.For<IUnitOfWork>();
             var categoryRepository = Substitute.For<ICategoryRepository>();
             unitOfWork.Categories.Returns(categoryRepository);
+            var eventAggregator = Substitute.For<IEventAggregator>();
 
-            var vm = new CategoriesViewModel(unitOfWork);
+            var vm = new CategoriesViewModel(unitOfWork, eventAggregator);
 
             vm.InitializeCommand.Execute(null);
 
@@ -89,8 +94,9 @@ namespace UI.RunnerManagement.Tests.ViewModels
                 new Category { Id = 1 },
                 new Category { Id = 2 },
                 new Category { Id = 3 }));
+            var eventAggregator = Substitute.For<IEventAggregator>();
 
-            var vm = new CategoriesViewModel(unitOfWork);
+            var vm = new CategoriesViewModel(unitOfWork, eventAggregator);
 
             vm.InitializeCommand.Execute(null);
 
@@ -104,7 +110,8 @@ namespace UI.RunnerManagement.Tests.ViewModels
         public void Categories_setter_raises_propertyChanged_Event()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new CategoriesViewModel(unitOfWork);
+            var eventAggregator = Substitute.For<IEventAggregator>();
+            var vm = new CategoriesViewModel(unitOfWork, eventAggregator);
 
             var eventWasRaised = false;
             vm.PropertyChanged += (s, a) =>
@@ -122,7 +129,8 @@ namespace UI.RunnerManagement.Tests.ViewModels
         public void Categories_setter_sets_collection()
         {
             var unitOfWork = Substitute.For<IUnitOfWork>();
-            var vm = new CategoriesViewModel(unitOfWork);
+            var eventAggregator = Substitute.For<IEventAggregator>();
+            var vm = new CategoriesViewModel(unitOfWork, eventAggregator);
 
             var categories = new List<Category>();
             vm.Categories = categories;

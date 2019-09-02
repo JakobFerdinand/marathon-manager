@@ -18,6 +18,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -32,7 +33,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ComboBox>
-        <Button Grid.Column="1" Grid.Row="1" Content="Refresh" Command="{Binding RefreshServersCommand}" Margin="20 0 0 0" />
+        <Button Grid.Column="1" Grid.Row="1" Content="Aktualisieren" Command="{Binding RefreshServersCommand}" Margin="20 0 0 0" />
 
         <Ellipse Grid.Column="0" Grid.Row="3" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=ActualHeight}" HorizontalAlignment="Right">
             <Ellipse.Style>
@@ -58,14 +59,22 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        
+
         <TextBlock Grid.Column="0" Grid.Row="5" Text="Datenbank" />
-        <ComboBox Grid.Column="0" Grid.Row="6" Text="{Binding Database}" ItemsSource="{Binding AvailableDatabases}" Width="200" IsEditable="True" >
+        <ComboBox Grid.Column="0" Grid.Row="6" Text="{Binding Database, Mode=OneWay}" ItemsSource="{Binding AvailableDatabases}" Width="200" IsEnabled="False" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DropDownOpened">
                     <i:InvokeCommandAction Command="{Binding RefreshDatabasesCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ComboBox>
+
+        <Button Grid.Column="1" Grid.Row="6" Content="Speichern"
+                Command="{Binding SaveConnectionDetailsCommand}"
+                ToolTip="{Binding SaveConnectionDetailsCommand.Tooltip}"
+                Margin="20 0 0 0" />
+
+        <Button Grid.ColumnSpan="2" Grid.Row="8" Content="Datenbank neu erstellen"
+                Command="{Binding RecreateDatabaseCommand}" />
     </Grid>
 </UserControl>

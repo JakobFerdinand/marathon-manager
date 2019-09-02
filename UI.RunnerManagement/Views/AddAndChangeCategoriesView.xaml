@@ -3,11 +3,84 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:UI.RunnerManagement.Behaviors"
              xmlns:local="clr-namespace:UI.RunnerManagement.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Source={StaticResource Locator}, Path=AddAndChangeCategoriesViewModel}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding ReloadCategoriesCommand}" />
+    </UserControl.InputBindings>
+
     <Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Add and change Categories</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DataGrid Grid.Row="0"
+                  ItemsSource="{Binding Categories}"
+                  SelectedItem="{Binding SelectedCategory}"
+                  CanUserAddRows="True"
+                  CanUserDeleteRows="False"
+                  CanUserSortColumns="True"
+                  AutoGenerateColumns="False"
+                  SelectionChanged="categoriesDataGrid_SelectionChanged">
+            <i:Interaction.Behaviors>
+                <behaviors:ScrollToSelectedItemBehavior />
+            </i:Interaction.Behaviors>
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="nameColumn" Header="Name" Binding="{Binding Name}" IsReadOnly="True" />
+                <DataGridTextColumn x:Name="starttimeColumn" Header="Startzeit" Binding="{Binding Starttime, StringFormat=HH:mm:ss}" IsReadOnly="True" />
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Löschen" Command="{Binding RemoveRunnerCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <StackPanel Grid.Row="1"
+                    Margin="0 8 0 0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+
+            <Button Content="Aktualisieren" Command="{Binding ReloadCategoriesCommand}" />
+            <Button Content="Neue Categorie" Margin="8 0 0 0" Command="{Binding NewCategoryCommand}" />
+            <Button Content="Speichern" Margin="8 0 0 0" Command="{Binding SaveCommand}" />
+        </StackPanel>
+
+        <Grid Grid.Row="2"
+              Margin="0 8 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=nameColumn, Path=Width}" />
+                <ColumnDefinition Width="{Binding ElementName=starttimeColumn, Path=Width}" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}" >
+                    <Setter Property="Margin" Value="5 0 0 0" />
+                </Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" >
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}" >
+                    <Setter Property="Margin" Value="5" />
+                </Style>
+            </Grid.Resources>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ElementName=nameColumn, Path=Header}" />
+            <TextBox Grid.Row="1" Grid.Column="0" Name="nameTextBox" Text="{Binding SelectedCategory.Name, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
     </Grid>
 </UserControl>

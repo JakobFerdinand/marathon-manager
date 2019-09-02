@@ -28,6 +28,12 @@ namespace Data.Repositories
             }
         }
 
+        public bool EnsureCreated()
+            => context.Database.EnsureCreated();
+
+        public bool EnsureDeleted()
+            => context.Database.EnsureDeleted();
+
         public ImmutableArray<string> GetAllDatabases(string server)
         {
             try
@@ -91,7 +97,7 @@ where dbid > 4
         {
             try
             {
-                using (var connection = new SqlConnection($"Server={serverName};Database=master;Trusted_Connection=true;"))
+                using (var connection = new SqlConnection($"Server={serverName};Database=master;Trusted_Connection=true;Connection Timeout=5"))
                     connection.Open();
                 return true;
             }

@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-
     <IsPackable>false</IsPackable>
+    <RuntimeIdentifiers>win-x64;win10-x64</RuntimeIdentifiers>
+    <TargetLatestRuntimePatch>True</TargetLatestRuntimePatch>
   </PropertyGroup>
 
   <ItemGroup>

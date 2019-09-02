@@ -24,3 +24,17 @@ test:
   assemblies:
       only:
       - Core.Test.dll
+
+artifacts:
+  - path: UI.RunnerManagement\bin\$(configuration)
+    name: RunnerManagement
+
+deploy:
+  release: RunnerManagement
+  description: 'RunnerManagement release'
+  provider: GitHub
+  auth_token:
+    secure: huPTB1t9hb4gO751NtbRvIm3Q8bhyUJbHkHJpy49CkOeug6/xK9vHqyq7bRyHaZI
+  artifact: RunnerManagement
+  draft: false
+  prerelease: true
