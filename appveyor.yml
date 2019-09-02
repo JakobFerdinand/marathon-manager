@@ -22,21 +22,21 @@ build:
 
 after_build:
   cmd: publish_win10.bat
+  cmd: 7z a MarathonManager.zip .\MarathonManager\bin\$(configuration) .\Publish\UI.TimeRecord .\Publish\UI.StartRuns
 
 test:
   assemblies:
       only:
       - Core.Test.dll
 
-7z a MarathonManager.zip .\MarathonManager\bin\$(configuration) .\Publish\UI.TimeRecord .\Publish\UI.StartRuns
 
 artifacts:
   - path: MarathonManager.zip
     name: MarathonManager
 
 deploy:
-  release: 'MarathonManager %APPVEYOR_BUILD_VERSION%'
-  description: 'MarathonManager release %APPVEYOR_BUILD_VERSION%'
+  release: MarathonManager %APPVEYOR_BUILD_VERSION%
+  description: MarathonManager release %APPVEYOR_BUILD_VERSION%
   provider: GitHub
   auth_token:
     secure: iO5+PhCcDk190CyCB9EBLc+1kD0GWXdJUdQMalcl62xQYSUKLmAJJue1MsAt7WE8
