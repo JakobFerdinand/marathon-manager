@@ -27,11 +27,16 @@ test:
 
 after_test:
   cmd: publish_win10.bat
-  cmd: 7z a MarathonManager.zip .\MarathonManager\bin\$(configuration) .\Publish\UI.TimeRecord .\Publish\UI.StartRuns
 
 artifacts:
-  - path: MarathonManager.zip
+  - path: MarathonManager\bin\$(configuration)
     name: MarathonManager
+
+  - path: Publish\UI.TimeRecord
+    name: TimeRecord
+
+  - path: Publish\UI.StartRuns
+    name: StartRuns
 
 deploy:
   release: MarathonManager %APPVEYOR_BUILD_VERSION%
