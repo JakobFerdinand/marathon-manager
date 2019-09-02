@@ -35,8 +35,8 @@ artifacts:
     name: MarathonManager
 
 deploy:
-  release: MarathonManager %APPVEYOR_BUILD_VERSION%
-  description: MarathonManager release %APPVEYOR_BUILD_VERSION%
+  release: 'MarathonManager %APPVEYOR_BUILD_VERSION%'
+  description: 'MarathonManager release %APPVEYOR_BUILD_VERSION%'
   provider: GitHub
   auth_token:
     secure: iO5+PhCcDk190CyCB9EBLc+1kD0GWXdJUdQMalcl62xQYSUKLmAJJue1MsAt7WE8
