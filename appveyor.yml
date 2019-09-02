@@ -20,15 +20,14 @@ before_build:
 build:
   project: MarathonManager.sln
 
-after_build:
-  cmd: publish_win10.bat
-  cmd: 7z a MarathonManager.zip .\MarathonManager\bin\$(configuration) .\Publish\UI.TimeRecord .\Publish\UI.StartRuns
-
 test:
   assemblies:
       only:
       - Core.Test.dll
 
+after_test:
+  cmd: publish_win10.bat
+  cmd: 7z a MarathonManager.zip .\MarathonManager\bin\$(configuration) .\Publish\UI.TimeRecord .\Publish\UI.StartRuns
 
 artifacts:
   - path: MarathonManager.zip
