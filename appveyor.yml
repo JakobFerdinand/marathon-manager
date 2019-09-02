@@ -30,8 +30,8 @@ artifacts:
     name: RunnerManagement
 
 deploy:
-  release: RunnerManagement
-  description: 'RunnerManagement release'
+  release: 'RunnerManagement $(version)'
+  description: 'RunnerManagement release $(version)'
   provider: GitHub
   auth_token:
     secure: iO5+PhCcDk190CyCB9EBLc+1kD0GWXdJUdQMalcl62xQYSUKLmAJJue1MsAt7WE8
