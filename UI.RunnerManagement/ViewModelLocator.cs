@@ -13,9 +13,9 @@ using UI.RunnerManagement.ViewModels;
 
 namespace UI.RunnerManagement
 {
-    internal class ViewModelLocator
+    public class ViewModelLocator
     {
-        private readonly IContainer _container;
+        private readonly IContainer _container = new Container();
         private IConfigurationRoot Configuration { get; set; }
 
         public AddAndChangeCategoriesViewModel AddAndChangeCategoriesViewModel => _container.GetInstance<AddAndChangeCategoriesViewModel>();
@@ -25,21 +25,12 @@ namespace UI.RunnerManagement
         public MainWindowViewModel MainWindowViewModel => _container.GetInstance<MainWindowViewModel>();
         public RunnersViewModel RunnersViewModel => _container.GetInstance<RunnersViewModel>();
 
-        public ViewModelLocator()
+        public ViewModelLocator(IConfigurationRoot configuration)
         {
-            _container = new Container();
-
-            Startup();
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             ConfigureServices();
         }
 
-        public void Startup()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Environment.CurrentDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            Configuration = builder.Build();
-        }
 
         public void ConfigureServices()
         {
@@ -69,14 +60,12 @@ namespace UI.RunnerManagement
 
         public void InitializeRollbar()
         {
-            var rollbar = Configuration.GetRoolbarSettings();
+            var (accessToken, environment) = Configuration.GetRoolbarSettings();
             RollbarLocator.RollbarInstance.Configure(new RollbarConfig
             {
-                AccessToken = rollbar.accessToken,
-                Environment = rollbar.environment
+                AccessToken = accessToken,
+                Environment = environment
             });
-
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => RollbarLocator.RollbarInstance.Error(e.ExceptionObject as Exception);
         }
     }
 }

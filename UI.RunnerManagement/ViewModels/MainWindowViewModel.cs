@@ -6,7 +6,7 @@ using UI.RunnerManagement.Services;
 
 namespace UI.RunnerManagement.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly INotificationService _notificationService;

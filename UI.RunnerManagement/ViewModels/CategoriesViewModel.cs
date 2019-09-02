@@ -10,7 +10,7 @@ using UI.RunnerManagement.Events;
 
 namespace UI.RunnerManagement.ViewModels
 {
-    internal class CategoriesViewModel : ViewModelBase
+    public class CategoriesViewModel : ViewModelBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private IEnumerable<Category> _categories;
