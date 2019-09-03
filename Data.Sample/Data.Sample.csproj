@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <RuntimeIdentifiers>win-x64;win10-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win;win-x64;win10-x64</RuntimeIdentifiers>
     <TargetLatestRuntimePatch>True</TargetLatestRuntimePatch>
   </PropertyGroup>
 
