@@ -26,7 +26,7 @@ test:
       - Core.Test.dll
 
 after_test:
-  cmd: pack_artifacts.bat $(configuration)
+  cmd: pack_artifacts.bat %CONFIGURATION%
 
 artifacts:
   - path: Publish
@@ -34,7 +34,7 @@ artifacts:
 
 deploy:
   release: MarathonManager %APPVEYOR_BUILD_VERSION%
-  description: MarathonManager $(configuration) %APPVEYOR_BUILD_VERSION%
+  description: MarathonManager %CONFIGURATION% %APPVEYOR_BUILD_VERSION%
   provider: GitHub
   auth_token:
     secure: iO5+PhCcDk190CyCB9EBLc+1kD0GWXdJUdQMalcl62xQYSUKLmAJJue1MsAt7WE8
