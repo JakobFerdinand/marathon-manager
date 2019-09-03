@@ -146,8 +146,10 @@ namespace UI.RunnerManagement.ViewModels
 
         internal void NewRunner()
         {
-            var runner = new Runner();
-            runner.Gender = Gender.Mann;
+            var runner = new Runner
+            {
+                Gender = Gender.Mann
+            };
             _unitOfWork.Runners.Add(runner);
             Runners.Add(runner);
             SelectedRunner = runner;
@@ -171,14 +173,15 @@ namespace UI.RunnerManagement.ViewModels
 
             switch (result)
             {
-                case MessageBoxResult.No: return;
-
                 case MessageBoxResult.Yes:
                     _unitOfWork.Runners.Remove(SelectedRunner);
                     SelectedRunner = null;
                     SaveRunners();
                     LoadRunners();
                     break;
+
+                case MessageBoxResult.No:
+                default: return;
             }
         }
 

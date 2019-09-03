@@ -227,7 +227,7 @@ namespace UI.JsonImport
         internal static void CheckCategory(this string @this, ImmutableDictionary<string, string> categories)
         {
             if (!categories.ContainsKey(@this))
-                throw new InvalidOperationException($"Category \"{@this}\" not defined.");
+                throw new InvalidDataException($"Category \"{@this}\" not defined.");
         }
     }
 }

@@ -56,9 +56,6 @@
     <Compile Include="ViewModels\ViewModelBaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{1E5DA1FC-A8C6-4110-93A8-9EBF624F1C9B}</Project>
       <Name>Core</Name>
