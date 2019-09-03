@@ -11,7 +11,7 @@ services:
 platform: Any CPU
 
 configuration:
-  - Debug
+  # - Debug
   - Release
   
 before_build:
