@@ -98,12 +98,12 @@ namespace UI.JsonImport
             }
 
             ImmutableList<Category> GenerateCategories2018() => ImmutableList.Create(
-                new Category { Name = categoryMapping["lauf_10k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = categoryMapping["lauf_3.8k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = categoryMapping["kinder_500m"], PlannedStartTime = new DateTime(2019, 09, 22, 09, 10, 00) },
-                new Category { Name = categoryMapping["kinder_1000m"], PlannedStartTime = new DateTime(2019, 09, 22, 09, 20, 00) },
-                new Category { Name = categoryMapping["walken_10k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) },
-                new Category { Name = categoryMapping["walken_3.8k"], PlannedStartTime = new DateTime(2019, 09, 22, 10, 00, 00) }
+                new Category { Name = categoryMapping["lauf_10k"] },
+                new Category { Name = categoryMapping["lauf_3.8k"] },
+                new Category { Name = categoryMapping["kinder_500m"] },
+                new Category { Name = categoryMapping["kinder_1000m"] },
+                new Category { Name = categoryMapping["walken_10k"] },
+                new Category { Name = categoryMapping["walken_3.8k"] }
             );
         }
 
@@ -147,7 +147,8 @@ namespace UI.JsonImport
             {
                 var categoryRepository = new CategoryRepository(context);
                 var runnerRepository = new RunnerRepository(context);
-                using (var unitOfWork = new UnitOfWork(context, categoryRepository, runnerRepository))
+                var database = new Database(context);
+                using (var unitOfWork = new UnitOfWork(context, categoryRepository, runnerRepository, database))
                 {
                     var mapperConfiguration = GetMapperConfiguration(unitOfWork.Categories);
                     var mapper = new Mapper(mapperConfiguration);

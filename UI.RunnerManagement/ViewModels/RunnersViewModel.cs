@@ -1,5 +1,4 @@
 ﻿using Core;
-using Core.Extensions;
 using Core.Models;
 using System;
 using System.Collections.Generic;
@@ -31,7 +30,9 @@ namespace UI.RunnerManagement.ViewModels
         private bool _areStartnumbersUnic = true;
         private bool _areChipIdsUnic = true;
 
-        public RunnersViewModel(Func<IUnitOfWork> getNewUnitOfWork, IDialogService dialogService, INotificationService notificationService)
+        public RunnersViewModel(Func<IUnitOfWork> getNewUnitOfWork
+            , IDialogService dialogService
+            , INotificationService notificationService)
         {
             _getNewUnitOfWork = getNewUnitOfWork ?? throw new ArgumentNullException(nameof(getNewUnitOfWork), $"{nameof(getNewUnitOfWork)} must not be null.");
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService), $"{nameof(dialogService)} must not be null.");
@@ -152,6 +153,8 @@ namespace UI.RunnerManagement.ViewModels
             _unitOfWork.Runners.Add(runner);
             Runners.Add(runner);
             SelectedRunner = runner;
+
+            throw new InvalidOperationException("rollbar test");
         }
 
         internal void SaveRunners()

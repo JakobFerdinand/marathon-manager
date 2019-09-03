@@ -36,7 +36,7 @@ namespace SampleData
             optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
-            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new Database(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 var r = context.Runners.SingleOrDefault(rx => rx.Startnumber == 193);
                 var category = context.Categories.Single(c => c.Id == 14);
@@ -55,7 +55,7 @@ namespace SampleData
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
-            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new Database(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 var runners = unitOfWork.Runners.GetAll().ToList();
 
@@ -87,7 +87,7 @@ namespace SampleData
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=MarathonManager;Integrated Security=True");
 
             using (var context = new RunnerDbContext(optionsBuilder.Options))
-            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
+            using (var unitOfWork = new UnitOfWork(context, new CategoryRepository(context), new RunnerRepository(context), new Database(context), new EmptyChangesFinder(), new EmptyChangesLogger()))
             {
                 unitOfWork.Categories.AddRange(categories);
                 unitOfWork.Complete();
@@ -119,23 +119,23 @@ namespace SampleData
         }
         private static IEnumerable<Category> GenerateCategories2017() => new List<Category>
         {
-            new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "AK 2005 und jünger, 500m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "AK 2004 - 2001, 1.000m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Walken, 10.000m", PlannedStartTime = DateTime.Now },
-            new Category { Name = "Walken, 3.800m", PlannedStartTime = DateTime.Now }
+            new Category { Name = "Hauptlauf, 10.000m" },
+            new Category { Name = "Hobbylauf, 3.800m" },
+            new Category { Name = "AK 2005 und jünger, 500m" },
+            new Category { Name = "AK 2004 - 2001, 1.000m" },
+            new Category { Name = "Walken, 10.000m" },
+            new Category { Name = "Walken, 3.800m" }
         };
 
         private static IEnumerable<Category> GenerateCategories2018() => new List<Category>
         {
-            new Category { Name = "Hauptlauf, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "U16 Hobbylauf, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "AK 2007 und jünger, 500m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 10, 00) },
-            new Category { Name = "AK 2006 - 2003, 1.000m", PlannedStartTime = new DateTime(2018, 09, 23, 09, 20, 00) },
-            new Category { Name = "Walken, 10.000m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) },
-            new Category { Name = "Walken, 3.800m", PlannedStartTime = new DateTime(2018, 09, 23, 10, 00, 00) }
+            new Category { Name = "Hauptlauf, 10.000m" },
+            new Category { Name = "Hobbylauf, 3.800m" },
+            new Category { Name = "U16 Hobbylauf, 3.800m" },
+            new Category { Name = "AK 2007 und jünger, 500m" },
+            new Category { Name = "AK 2006 - 2003, 1.000m" },
+            new Category { Name = "Walken, 10.000m" },
+            new Category { Name = "Walken, 3.800m" }
         };
 
         private static IEnumerable<Runner> GenerateRunners()

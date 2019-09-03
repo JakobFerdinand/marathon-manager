@@ -3,10 +3,10 @@ branches:
   only:
     - master
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 services:
-  - mssql2014
+  - mssql
 
 platform: Any CPU
 
@@ -19,3 +19,27 @@ before_build:
 
 build:
   project: MarathonManager.sln
+
+test:
+  assemblies:
+      only:
+      - Core.Test.dll
+
+after_test:
+  ps: .\pack_artifacts.ps1 %CONFIGURATION%
+
+artifacts:
+  - path: Publish
+    name: MarathonManager
+
+deploy:
+  release: MarathonManager %APPVEYOR_BUILD_VERSION%
+  description: MarathonManager %CONFIGURATION% %APPVEYOR_BUILD_VERSION%
+  provider: GitHub
+  auth_token:
+    secure: iO5+PhCcDk190CyCB9EBLc+1kD0GWXdJUdQMalcl62xQYSUKLmAJJue1MsAt7WE8
+  artifact: MarathonManager
+  draft: false
+  prerelease: true
+  on:
+    branch: master

@@ -4,6 +4,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                       xmlns:notifications="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
                       xmlns:local="clr-namespace:UI.RunnerManagement.Views"
                       mc:Ignorable="d"
@@ -13,16 +14,14 @@
                       Title="MainWindow" Height="350" Width="825"
                       WindowStartupLocation="CenterScreen"
                       WindowState="Maximized">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
     <Grid>
-        <TabControl Margin="8">
-            <TabItem Header="Läufer">
-                <local:RunnersView />
-            </TabItem>
-
-            <TabItem Header="Kategorien">
-                <local:CategoriesView />
-            </TabItem>
-        </TabControl>
+        <TabControl x:Name="tabControl" Margin="8" />
 
         <notifications:NotificationArea x:Name="NotificationArea" Position="TopRight" MaxItems="3" />
     </Grid>

@@ -54,8 +54,7 @@ namespace Data.Tests.Integration
                     TimeAtDestination = null,
                     Category = new Category
                     {
-                        Name = "The Name of the Category",
-                        PlannedStartTime = new DateTime(2017, 10, 12, 09, 00, 00)
+                        Name = "The Name of the Category"
                     }
                 });
                 await context.SaveChangesAsync();
@@ -73,7 +72,6 @@ namespace Data.Tests.Integration
                 Assert.Equal(Gender.Mann, result.Gender);
                 Assert.Equal(Gender.Mann, result.Gender);
                 Assert.Equal("The Name of the Category", result.Category.Name);
-                Assert.Equal(new DateTime(2017, 10, 12, 09, 00, 00), result.Category.PlannedStartTime);
             }
 
             using (var context = new RunnerDbContext(options))
@@ -103,7 +101,6 @@ namespace Data.Tests.Integration
                     Category = new Category
                     {
                         Name = "The Name of the Category",
-                        PlannedStartTime = new DateTime(2017, 10, 12, 09, 00, 00)
                     }
                 });
                 await context.SaveChangesAsync();

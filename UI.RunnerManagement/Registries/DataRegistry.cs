@@ -22,6 +22,10 @@ namespace UI.RunnerManagement.Registries
                     .Use<Data.Sample.Repositories.RunnerRepository>()
                     .AlwaysUnique();
 
+                For<IDatabase>()
+                    .Use<Data.Sample.Repositories.Database>()
+                    .AlwaysUnique();
+
                 For<IUnitOfWork>()
                     .Use<Data.Sample.UnitOfWork>()
                     .AlwaysUnique();
@@ -37,6 +41,10 @@ namespace UI.RunnerManagement.Registries
 
                 For<IRunnerRepository>()
                     .Use<RunnerRepository>()
+                    .AlwaysUnique();
+
+                For<IDatabase>()
+                    .Use<Database>()
                     .AlwaysUnique();
 
                 For<IChangesFinder>()

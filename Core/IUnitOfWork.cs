@@ -7,7 +7,9 @@ namespace Core
     {
         ICategoryRepository Categories { get; }
         IRunnerRepository Runners { get; }
-        void Attach<T>(T runner) where T : class;
+        IDatabase Database { get; }
+
+        void Attach<T>(T entity) where T : class;
         bool HasChanges();
 
         void Complete();
