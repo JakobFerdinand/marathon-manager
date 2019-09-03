@@ -1,6 +1,4 @@
-param (
-    [string]$configuration = "Release"
-)
+$configuration = $env:CONFIGURATION
 
 Write-Output $configuration
 

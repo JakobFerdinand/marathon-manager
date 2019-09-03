@@ -13,7 +13,7 @@ platform: Any CPU
 configuration:
   # - Debug
   - Release
-  
+
 before_build:
   - nuget restore
 
@@ -26,7 +26,7 @@ test:
       - Core.Test.dll
 
 after_test:
-  ps: .\pack_artifacts.ps1 $(configuration)
+  ps: .\pack_artifacts.ps1
 
 artifacts:
   - path: Publish
