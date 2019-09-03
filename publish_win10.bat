@@ -7,7 +7,7 @@ set outputPath=.\bin\%configurationName%\netcoreapp2.2\win10-x64\
 if exist ".\bin\Any Cpu\" (
     set outputPath=".\bin\Any Cpu\%configurationName%\netcoreapp2.2\win10-x64\"
 )
-robocopy %outputPath% ..\Publish\UI.JsonImport\ /E
+robocopy "%outputPath%" ..\Publish\UI.JsonImport\ /E
 
 cd ..
 
@@ -17,7 +17,7 @@ set outputPath=.\bin\%configurationName%\netcoreapp2.2\win10-x64\
 if exist ".\bin\Any Cpu\" ( 
     set outputPath=".\bin\AnyCpu\%configurationName%\netcoreapp2.2\win10-x64\"
 )
-robocopy %outputPath% ..\Publish\UI.StartRuns\ /E
+robocopy "%outputPath%" ..\Publish\UI.StartRuns\ /E
 
 cd ..
 
@@ -27,7 +27,7 @@ set outputPath=.\bin\%configurationName%\netcoreapp2.2\win10-x64\
 if exist ".\bin\AnyCpu\" ( 
     set outputPath=".\bin\AnyCpu\%configurationName%\netcoreapp2.2\win10-x64\"
 )
-robocopy %outputPath% ..\Publish\UI.TimeRecord\ /E
+robocopy "%outputPath%" ..\Publish\UI.TimeRecord\ /E
 
 cd ..
 
@@ -37,6 +37,6 @@ set outputPath=.\bin\%configurationName%\netcoreapp2.2\win10-x64\
 if exist ".\bin\AnyCpu\" ( 
     set outputPath=".\bin\AnyCpu\%configurationName%\netcoreapp2.2\win10-x64\"
 )
-robocopy %outputPath% ..\Publish\UI.ExportResults\ /E
+robocopy "%outputPath%" ..\Publish\UI.ExportResults\ /E
 
 cd ..
