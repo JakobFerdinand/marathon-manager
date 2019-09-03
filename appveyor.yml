@@ -41,3 +41,5 @@ deploy:
   artifact: MarathonManager
   draft: false
   prerelease: true
+  on:
+    branch: master
