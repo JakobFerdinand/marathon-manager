@@ -26,21 +26,15 @@ test:
       - Core.Test.dll
 
 after_test:
-  cmd: publish_win10.bat
+  cmd: pack_artifacts.bat $(configuration)
 
 artifacts:
-  - path: MarathonManager\bin\$(configuration)
+  - path: Publish
     name: MarathonManager
-
-  - path: Publish\UI.TimeRecord
-    name: TimeRecord
-
-  - path: Publish\UI.StartRuns
-    name: StartRuns
 
 deploy:
   release: MarathonManager %APPVEYOR_BUILD_VERSION%
-  description: MarathonManager release %APPVEYOR_BUILD_VERSION%
+  description: MarathonManager $(configuration) %APPVEYOR_BUILD_VERSION%
   provider: GitHub
   auth_token:
     secure: iO5+PhCcDk190CyCB9EBLc+1kD0GWXdJUdQMalcl62xQYSUKLmAJJue1MsAt7WE8
