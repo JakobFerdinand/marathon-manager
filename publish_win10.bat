@@ -3,9 +3,9 @@ IF "%configurationName%" == "" /p configurationName=Release ConfigurationName: %
 
 cd UI.JsonImport
 dotnet publish -c %configurationName% -r win10-x64
-set outputPath=".\bin\%configurationName%\netcoreapp2.2\win10-x64\"
+set outputPath=.\bin\%configurationName%\netcoreapp2.2\win10-x64\
 if exist ".\bin\AnyCpu\" ( 
-    outputPath=".\bin\AnyCpu\%configurationName%\netcoreapp2.2\win10-x64\"
+    outputPath=.\bin\AnyCpu\%configurationName%\netcoreapp2.2\win10-x64\
 )
 robocopy %outputPath% ..\Publish\UI.JsonImport\ /E
 
