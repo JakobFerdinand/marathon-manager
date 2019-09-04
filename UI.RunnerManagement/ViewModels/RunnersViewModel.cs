@@ -153,8 +153,6 @@ namespace UI.RunnerManagement.ViewModels
             _unitOfWork.Runners.Add(runner);
             Runners.Add(runner);
             SelectedRunner = runner;
-
-            throw new InvalidOperationException("rollbar test");
         }
 
         internal void SaveRunners()
