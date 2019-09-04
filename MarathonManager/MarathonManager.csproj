@@ -82,7 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ControlzEx">
-      <Version>3.0.2.4</Version>
+      <Version>4.0.2</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>1.6.5</Version>
