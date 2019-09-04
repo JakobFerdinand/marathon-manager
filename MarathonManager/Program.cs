@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Rollbar;
 using System;
+using System.Net;
 using UI.RunnerManagement;
 
 namespace MarathonManager
@@ -17,14 +18,20 @@ namespace MarathonManager
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
                 var app = new App(builder.Build());
-                app.InitializeComponent();
+                LogInfo($"{Dns.GetHostName()} is starting MarathonManager.");
                 app.Run();
             }
             catch (Exception e)
             {
-                RollbarLocator.RollbarInstance.Error(e);
+                LogError(e);
             }
             Console.ReadLine();
         }
+
+        private static void LogInfo(string message)
+            => RollbarLocator.RollbarInstance.Info(message);
+
+        private static void LogError(Exception ex)
+            => RollbarLocator.RollbarInstance.Error(ex);
     }
 }
