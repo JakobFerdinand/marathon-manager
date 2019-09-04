@@ -59,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		appsettings.json = appsettings.json
 		appveyor.yml = appveyor.yml
 		azure-pipelines.yml = azure-pipelines.yml
+		categories.json = categories.json
 		pack_artifacts.ps1 = pack_artifacts.ps1
 		publish_win10.ps1 = publish_win10.ps1
 		README.md = README.md

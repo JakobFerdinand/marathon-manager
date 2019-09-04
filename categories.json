@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Hauptlauf, 10.000m",
+    "ShortName": "lauf_10k"
+  },
+  {
+    "Name": "Hobbylauf, 3.800m",
+    "ShortName": "lauf_3.8k"
+  },
+  {
+    "Name": "Walken, 10.000m",
+    "ShortName": "walken_10k"
+  },
+  {
+    "Name": "Walken, 3.800m",
+    "ShortName": "walken_3.8k"
+  },
+  {
+    "Name": "Kinder, 500m",
+    "ShortName": "kinder_500m"
+  },
+  {
+    "Name": "Kinder, 1000m",
+    "ShortName": "kinder_1000m"
+  }
+]

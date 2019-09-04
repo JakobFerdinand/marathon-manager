@@ -5,6 +5,7 @@ using Data;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -84,61 +85,53 @@ namespace UI.JsonImport
 
         private static void InsertCategories()
         {
+            var defaultCategories = ReadCategories();
+
             var options = new DbContextOptionsBuilder<RunnerDbContext>()
                 .UseSqlServer(Configuration.GetConnectionString("Default"))
                 .Options;
             using (var context = new RunnerDbContext(options))
             {
-                var categories = GenerateCategories2018();
+                var categories = defaultCategories.Select(c => new Category { Name = c.Name });
                 context.AddRange(categories);
                 context.SaveChanges();
 
                 WriteLine("Categories were successfully saved:");
                 categories.ForEach(c => WriteLine($"| {c.Name}"));
             }
-
-            ImmutableList<Category> GenerateCategories2018() => ImmutableList.Create(
-                new Category { Name = categoryMapping["lauf_10k"] },
-                new Category { Name = categoryMapping["lauf_3.8k"] },
-                new Category { Name = categoryMapping["kinder_500m"] },
-                new Category { Name = categoryMapping["kinder_1000m"] },
-                new Category { Name = categoryMapping["walken_10k"] },
-                new Category { Name = categoryMapping["walken_3.8k"] }
-            );
         }
 
-        private static readonly ImmutableDictionary<string, string> categoryMapping = new Dictionary<string, string>
+        private static ImmutableArray<Models.Category> ReadCategories()
         {
-            ["lauf_10k"] = "Hauptlauf, 10.000m",
-            ["lauf_3.8k"] = "Hobbylauf, 3.800m",
-            ["walken_10k"] = "Walken, 10.000m",
-            ["walken_3.8k"] = "Walken, 3.800m",
-            ["kinder_500m"] = "Kinder, 500m",
-            ["kinder_1000m"] = "Kinder, 1000m"
+            var path = GetCategoriesFilePath();
+
+            using (var filereader = new StreamReader(path))
+            {
+                var json = filereader.ReadToEndClean();
+                return JsonConvert
+                    .DeserializeObject<IEnumerable<Models.Category>>(json)
+                    .ToImmutableArray();
+            }
         }
-        .ToImmutableDictionary();
+
+        private static string GetCategoriesFilePath()
+        {
+            var path = @".\categories.json";
+            while (!File.Exists(path))
+                path = ReadPath("Categories");
+            return path;
+        }
 
         private static void ImportRunners()
         {
             var path = string.Empty;
             while (!File.Exists(path))
-                path = readPath();
+                path = ReadPath("Runners");
+
+            var categories = ReadCategories();
 
             var filereader = new StreamReader(path);
-            var json = filereader.ReadToEnd()
-                .Replace("&Auml;", "Ä")
-                .Replace("&auml;", "ä")
-                .Replace("&Euml;", "Ë")
-                .Replace("&euml;", "ë")
-                .Replace("&Iuml;", "Ï")
-                .Replace("&iuml;", "ï")
-                .Replace("&Ouml;", "Ö")
-                .Replace("&ouml;", "ö")
-                .Replace("&Uuml;", "Ü")
-                .Replace("&uuml;", "ü")
-                .Replace("&Yuml;", "Ÿ")
-                .Replace("&yuml;", "ÿ")
-                .Replace("&ndash;", "-");
+            var json = filereader.ReadToEndClean();
 
             var options = new DbContextOptionsBuilder<RunnerDbContext>()
                 .UseSqlServer(Configuration.GetConnectionString("Default"))
@@ -150,7 +143,7 @@ namespace UI.JsonImport
                 var database = new Database(context);
                 using (var unitOfWork = new UnitOfWork(context, categoryRepository, runnerRepository, database))
                 {
-                    var mapperConfiguration = GetMapperConfiguration(unitOfWork.Categories);
+                    var mapperConfiguration = GetMapperConfiguration(unitOfWork.Categories, categories.ToImmutableDictionary(c => c.ShortName, c => c.Name));
                     var mapper = new Mapper(mapperConfiguration);
 
                     var deserializer = new JsonDeserializer(mapper);
@@ -163,15 +156,15 @@ namespace UI.JsonImport
                     WriteLine($"{runners.Count()} Runners were successfully saved.");
                 }
             }
-
-            string readPath()
-            {
-                Write("Import File Path: ");
-                return ReadLine();
-            }
         }
 
-        private static AutoMapper.IConfigurationProvider GetMapperConfiguration(ICategoryRepository categoryRepository)
+        private static string ReadPath(string fileToSearch)
+        {
+            Write($"Import {fileToSearch} File Path: ");
+            return ReadLine();
+        }
+
+        private static AutoMapper.IConfigurationProvider GetMapperConfiguration(ICategoryRepository categoryRepository, ImmutableDictionary<string, string> categoryMapping)
         {
             var categories = categoryRepository.GetAll(asNoTracking: true);
 
@@ -229,5 +222,22 @@ namespace UI.JsonImport
             if (!categories.ContainsKey(@this))
                 throw new InvalidDataException($"Category \"{@this}\" not defined.");
         }
+
+        internal static string ReadToEndClean(this StreamReader @this)
+            => @this
+            .ReadToEnd()
+            .Replace("&Auml;", "Ä")
+            .Replace("&auml;", "ä")
+            .Replace("&Euml;", "Ë")
+            .Replace("&euml;", "ë")
+            .Replace("&Iuml;", "Ï")
+            .Replace("&iuml;", "ï")
+            .Replace("&Ouml;", "Ö")
+            .Replace("&ouml;", "ö")
+            .Replace("&Uuml;", "Ü")
+            .Replace("&uuml;", "ü")
+            .Replace("&Yuml;", "Ÿ")
+            .Replace("&yuml;", "ÿ")
+            .Replace("&ndash;", "-");
     }
 }
