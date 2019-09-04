@@ -191,7 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ControlzEx">
-      <Version>4.0.2</Version>
+      <Version>3.0.2.4</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>1.6.5</Version>
