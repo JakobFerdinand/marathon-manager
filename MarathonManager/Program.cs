@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Net;
 using UI.RunnerManagement;
 
@@ -17,18 +20,18 @@ namespace MarathonManager
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
                 var app = new App(builder.Build());
-                LogInfo($"{Dns.GetHostName()} is starting MarathonManager.");
+                LogInfo($"MarathonManager starting", Enumerable.Range(0, 1).ToImmutableDictionary(_ => "DnsName", _ => Dns.GetHostName()));
                 app.Run();
             }
             catch (Exception e)
             {
                 LogError(e);
             }
-            Console.ReadLine();
+            Telemetry.Instance.Flush();
         }
 
-        private static void LogInfo(string message)
-            => Telemetry.Instance.TrackEvent(message);
+        private static void LogInfo(string key, IDictionary<string, string> properties = null)
+            => Telemetry.Instance.TrackEvent(key, properties);
 
         private static void LogError(Exception ex)
             => Telemetry.Instance.TrackException(ex);
