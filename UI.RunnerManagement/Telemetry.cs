@@ -7,20 +7,16 @@ using Microsoft.ApplicationInsights.Extensibility;
 
 namespace UI.RunnerManagement
 {
-    public class Telemetry
+    public static class Telemetry
     {
         private static TelemetryClient _telemetry;
 
         public static bool Enabled { get; set; } = true;
 
-        public static Telemetry Instance { get; private set; }
-
         public static void Initialize(string instrumentationKey)
         {
             if (_telemetry is null)
                 _telemetry = GetAppInsightsClient(instrumentationKey);
-
-            Instance = new Telemetry();
         }
 
         private static TelemetryClient GetAppInsightsClient(string instrumentaionKey)
@@ -46,27 +42,30 @@ namespace UI.RunnerManagement
         }
 
         public static void SetUser(string user)
-            => _telemetry.Context.User.AuthenticatedUserId = user;
-
-        public void TrackEvent(string key)
-            => TrackEvent(key, null);
-        public void TrackEvent(string key, IDictionary<string, string> properties)
         {
-            if (Enabled)
-                _telemetry.TrackEvent(key, properties, metrics: null);
+            if (_telemetry != null)
+                _telemetry.Context.User.AuthenticatedUserId = user;
         }
 
-        public void TrackException(Exception ex)
+        public static void TrackEvent(string key)
+            => TrackEvent(key, null);
+        public static void TrackEvent(string key, IDictionary<string, string> properties)
+        {
+            if (Enabled)
+                _telemetry?.TrackEvent(key, properties, metrics: null);
+        }
+
+        public static void TrackException(Exception ex)
         {
             if (ex != null && Enabled)
             {
                 var telex = new Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry(ex);
-                _telemetry.TrackException(telex);
+                _telemetry?.TrackException(telex);
                 Flush();
             }
         }
 
-        public void Flush()
-            => _telemetry.Flush();
+        public static void Flush()
+            => _telemetry?.Flush();
     }
 }

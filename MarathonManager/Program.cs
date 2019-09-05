@@ -27,13 +27,13 @@ namespace MarathonManager
             {
                 LogError(e);
             }
-            Telemetry.Instance.Flush();
+            Telemetry.Flush();
         }
 
         private static void LogInfo(string key, IDictionary<string, string> properties = null)
-            => Telemetry.Instance.TrackEvent(key, properties);
+            => Telemetry.TrackEvent(key, properties);
 
         private static void LogError(Exception ex)
-            => Telemetry.Instance.TrackException(ex);
+            => Telemetry.TrackException(ex);
     }
 }
