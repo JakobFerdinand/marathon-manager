@@ -20,7 +20,7 @@ namespace MarathonManager
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
                 var app = new App(builder.Build());
-                LogInfo($"MarathonManager starting", Enumerable.Range(0, 1).ToImmutableDictionary(_ => "DnsName", _ => Dns.GetHostName()));
+                LogInfo($"MarathonManager starting", Enumerable.Range(0, 1).ToImmutableDictionary(_ => "DnsHostName", _ => Dns.GetHostName()));
                 app.Run();
             }
             catch (Exception e)
