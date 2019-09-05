@@ -48,10 +48,12 @@ namespace UI.RunnerManagement
         public static void SetUser(string user)
             => _telemetry.Context.User.AuthenticatedUserId = user;
 
-        public void TrackEvent(string key, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
+        public void TrackEvent(string key)
+            => TrackEvent(key, null);
+        public void TrackEvent(string key, IDictionary<string, string> properties)
         {
             if (Enabled)
-                _telemetry.TrackEvent(key, properties, metrics);
+                _telemetry.TrackEvent(key, properties, metrics: null);
         }
 
         public void TrackException(Exception ex)
