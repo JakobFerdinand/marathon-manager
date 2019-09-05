@@ -5,7 +5,6 @@ using Logic.Common.Interfaces;
 using Logic.Common.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Rollbar;
 using StructureMap;
 using System;
 using UI.RunnerManagement.Registries;
@@ -55,17 +54,13 @@ namespace UI.RunnerManagement
             _container.RegisterConcreteTypeAsSingelton<MainWindowViewModel>();
             _container.RegisterConcreteTypeAsSingelton<RunnersViewModel>();
 
-            InitializeRollbar();
+            InitializeApplicationInsights();
         }
 
-        public void InitializeRollbar()
+        public void InitializeApplicationInsights()
         {
-            var (accessToken, environment) = Configuration.GetRoolbarSettings();
-            RollbarLocator.RollbarInstance.Configure(new RollbarConfig
-            {
-                AccessToken = accessToken,
-                Environment = environment
-            });
+            var (instrumentationKey, _) = Configuration.GetRoolbarSettings();
+            Telemetry.Initialize(instrumentationKey);
         }
     }
 }

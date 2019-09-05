@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Rollbar;
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Net;
 using UI.RunnerManagement;
 
@@ -18,20 +20,20 @@ namespace MarathonManager
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
                 var app = new App(builder.Build());
-                LogInfo($"{Dns.GetHostName()} is starting MarathonManager.");
+                LogInfo($"MarathonManager starting", Enumerable.Range(0, 1).ToImmutableDictionary(_ => "DnsHostName", _ => Dns.GetHostName()));
                 app.Run();
             }
             catch (Exception e)
             {
                 LogError(e);
             }
-            Console.ReadLine();
+            Telemetry.Flush();
         }
 
-        private static void LogInfo(string message)
-            => RollbarLocator.RollbarInstance.Info(message);
+        private static void LogInfo(string key, IDictionary<string, string> properties = null)
+            => Telemetry.TrackEvent(key, properties);
 
         private static void LogError(Exception ex)
-            => RollbarLocator.RollbarInstance.Error(ex);
+            => Telemetry.TrackException(ex);
     }
 }
