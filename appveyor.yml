@@ -3,10 +3,6 @@ branches:
   only:
     - master
 
-only_commits:
-  files:
-    - /*
-
 image: Visual Studio 2019
 
 services:
