@@ -2,11 +2,11 @@
 {
     internal static class IConfigurationRootExtensions
     {
-        public static (string accessToken, string environment) GetRoolbarSettings(this IConfigurationRoot @this)
+        public static (string instrumentationKey, string environment) GetRoolbarSettings(this IConfigurationRoot @this)
         {
-            var rollbar = @this.GetSection("Rollbar");
+            var rollbar = @this.GetSection("ApplicationInsights");
             return (
-                rollbar.GetSection("AccessToken").Value,
+                rollbar.GetSection("InstrumentationKey").Value,
                 rollbar.GetSection("Environment").Value
                 );
         }

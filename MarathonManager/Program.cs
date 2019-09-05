@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Rollbar;
 using System;
 using System.Net;
 using UI.RunnerManagement;
@@ -29,9 +28,9 @@ namespace MarathonManager
         }
 
         private static void LogInfo(string message)
-            => RollbarLocator.RollbarInstance.Info(message);
+            => Telemetry.Instance.TrackEvent(message);
 
         private static void LogError(Exception ex)
-            => RollbarLocator.RollbarInstance.Error(ex);
+            => Telemetry.Instance.TrackException(ex);
     }
 }
