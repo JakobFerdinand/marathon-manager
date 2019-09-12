@@ -30,6 +30,10 @@ namespace UI.StartRuns.Registries
             For<IUnitOfWork>()
                 .Use<UnitOfWork>()
                 .AlwaysUnique();
+
+            For<IDatabase>()
+                .Use<Database>()
+                .AlwaysUnique();
         }
     }
 }
