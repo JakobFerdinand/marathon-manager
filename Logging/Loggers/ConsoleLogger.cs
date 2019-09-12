@@ -9,10 +9,11 @@ namespace Logging.Loggers
         public void LogMessage(string message) => Log(message);
         public void LogSuccess(string message) => Log(message, ConsoleColor.Green);
 
-        private void Log(string message, ConsoleColor color = ConsoleColor.Black)
+        private void Log(string message, ConsoleColor? color = null)
         {
             var currentColor = Console.ForegroundColor;
-            Console.ForegroundColor = color;
+            if (color != null)
+                Console.ForegroundColor = color.Value;
 
             Console.WriteLine(message);
 
