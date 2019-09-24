@@ -7,3 +7,6 @@ A small runner data management software with time measurement for the "[Drei Sch
 
 ![SC Mining](/Logos/SC-Mining.png)
 ![ACF](/Logos/ACF.png)
+
+
+Änderung im Branch
