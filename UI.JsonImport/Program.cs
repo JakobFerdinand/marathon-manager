@@ -13,6 +13,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using UI.JsonImport.Services;
 using static System.Console;
 
@@ -224,20 +225,23 @@ namespace UI.JsonImport
         }
 
         internal static string ReadToEndClean(this StreamReader @this)
-            => @this
-            .ReadToEnd()
-            .Replace("&Auml;", "Ä")
-            .Replace("&auml;", "ä")
-            .Replace("&Euml;", "Ë")
-            .Replace("&euml;", "ë")
-            .Replace("&Iuml;", "Ï")
-            .Replace("&iuml;", "ï")
-            .Replace("&Ouml;", "Ö")
-            .Replace("&ouml;", "ö")
-            .Replace("&Uuml;", "Ü")
-            .Replace("&uuml;", "ü")
-            .Replace("&Yuml;", "Ÿ")
-            .Replace("&yuml;", "ÿ")
-            .Replace("&ndash;", "-");
+        {
+            var x = @this
+                       .ReadToEnd();
+            return x
+                       .Replace("&Auml;", "Ä")
+                       .Replace("&auml;", "ä")
+                       .Replace("&Euml;", "Ë")
+                       .Replace("&euml;", "ë")
+                       .Replace("&Iuml;", "Ï")
+                       .Replace("&iuml;", "ï")
+                       .Replace("&Ouml;", "Ö")
+                       .Replace("&ouml;", "ö")
+                       .Replace("&Uuml;", "Ü")
+                       .Replace("&uuml;", "ü")
+                       .Replace("&Yuml;", "Ÿ")
+                       .Replace("&yuml;", "ÿ")
+                       .Replace("&ndash;", "-");
+        }
     }
 }
