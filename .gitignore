@@ -355,3 +355,5 @@ MigrationBackup/
 # custom 
 /TestSqlScripts.sql
 /Publish
+
+.DS_Store
