@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9F83F78A-AE99-4B9F-9F38-AD49C2C19DD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarathonManager", "src\MarathonManager\MarathonManager.csproj", "{A165EE3F-BDB6-497E-B7A2-9E8000DD50AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarathonManager.Shared", "src\MarathonManager.Shared\MarathonManager.Shared.csproj", "{93E24632-53C8-4BBA-BD48-F5EABC8C0059}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A165EE3F-BDB6-497E-B7A2-9E8000DD50AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A165EE3F-BDB6-497E-B7A2-9E8000DD50AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A165EE3F-BDB6-497E-B7A2-9E8000DD50AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A165EE3F-BDB6-497E-B7A2-9E8000DD50AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93E24632-53C8-4BBA-BD48-F5EABC8C0059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93E24632-53C8-4BBA-BD48-F5EABC8C0059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93E24632-53C8-4BBA-BD48-F5EABC8C0059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93E24632-53C8-4BBA-BD48-F5EABC8C0059}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A165EE3F-BDB6-497E-B7A2-9E8000DD50AB} = {9F83F78A-AE99-4B9F-9F38-AD49C2C19DD2}
+		{93E24632-53C8-4BBA-BD48-F5EABC8C0059} = {9F83F78A-AE99-4B9F-9F38-AD49C2C19DD2}
+	EndGlobalSection
+EndGlobal

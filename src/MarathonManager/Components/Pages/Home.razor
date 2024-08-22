@@ -1,0 +1,45 @@
+﻿@page "/"
+@using MarathonManager.Shared
+@using MarathonManager.Services
+@inject IQueueService queue
+
+<PageTitle>Home</PageTitle>
+
+<h1>Marathon Manager</h1>
+
+<EditForm Model="runner" OnValidSubmit="@PublishMessage" FormName="RegisterRunnerForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Firstname">Firstname</label>
+        <InputText id="Firstname" class="form-control" @bind-Value="runner.Firstname" />
+    </div>
+
+    <div class="form-group">
+        <label for="Lastname">Lastname</label>
+        <InputText id="Lastname" class="form-control" @bind-Value="runner.Lastname" />
+    </div>
+
+    <div class="form-group">
+        <label for="yearOfBirth">Year of Birth</label>
+        <InputNumber id="yearOfBirth" class="form-control" @bind-Value="runner.YearOfBirth" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    public Runner runner { get; set; } = new()
+        {
+            Firstname = string.Empty,
+            Lastname = string.Empty,
+            YearOfBirth = 2000
+        };
+
+    async Task PublishMessage()
+    {
+        await queue.SendMessageAsync(runner, "register-runner-queue");
+    }
+}
