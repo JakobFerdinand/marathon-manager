@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Net.Http.Json;
 using System.Text;
+using Shared;
 
 namespace TaggyClient;
 
@@ -20,6 +22,9 @@ public partial class Program(CancellationToken Token)
     {
         try
         {
+            var apiPrefix = Environment.GetEnvironmentVariable("API_Prefix") ?? "http://localhost:7071";
+            using var http = new HttpClient { BaseAddress = new Uri(apiPrefix) };
+
             var taggyIp = await DiscoverTaggyAsync(Token);
             if (taggyIp is null)
             {
@@ -43,6 +48,14 @@ public partial class Program(CancellationToken Token)
                 if (TryParseDetection(line, out var detection))
                 {
                     Console.WriteLine(detection);
+                    try
+                    {
+                        await http.PostAsJsonAsync("api/detections", detection, Token);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to send detection: {ex.Message}");
+                    }
                 }
                 else
                 {
@@ -120,8 +133,3 @@ public partial class Program(CancellationToken Token)
     }
 }
 
-public record Detection(int Id, TimeOnly Time, int TenthSeconds, int ParticipantId, int EventId)
-{
-    public override string ToString() =>
-        $"#{Id} at {Time:HH:mm:ss}.{TenthSeconds} - participant {ParticipantId}, event {EventId}";
-}
