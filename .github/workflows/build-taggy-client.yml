@@ -1,0 +1,27 @@
+name: Build Taggy Client
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/build-taggy-client.yml'
+      - 'src/TaggyClient/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/build-taggy-client.yml'
+      - 'src/TaggyClient/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+      - name: Restore dependencies
+        run: dotnet restore src/TaggyClient/TaggyClient.csproj
+      - name: Build
+        run: dotnet build src/TaggyClient/TaggyClient.csproj --configuration Release --no-restore
