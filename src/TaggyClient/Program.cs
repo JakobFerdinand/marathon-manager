@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Net.Http.Json;
 using System.Text;
+using Shared;
 
 namespace TaggyClient;
 
@@ -8,6 +10,10 @@ public partial class Program(CancellationToken Token)
 {
     private const int TaggyPort = 12555;
     private static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(500);
+    private readonly HttpClient _httpClient = new()
+    {
+        BaseAddress = new Uri(Environment.GetEnvironmentVariable("API_BASE_URL") ?? "http://localhost:5000")
+    };
 
     public static async Task Main(string[] args)
     {
@@ -43,6 +49,7 @@ public partial class Program(CancellationToken Token)
                 if (TryParseDetection(line, out var detection))
                 {
                     Console.WriteLine(detection);
+                    await SendDetectionAsync(detection);
                 }
                 else
                 {
@@ -53,6 +60,19 @@ public partial class Program(CancellationToken Token)
         catch (OperationCanceledException)
         {
             // graceful cancellation
+        }
+    }
+
+    private async Task SendDetectionAsync(Detection detection)
+    {
+        try
+        {
+            using var response = await _httpClient.PostAsJsonAsync("/api/detections", detection, Token);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to send detection to API: {ex.Message}");
         }
     }
 
@@ -120,8 +140,3 @@ public partial class Program(CancellationToken Token)
     }
 }
 
-public record Detection(int Id, TimeOnly Time, int TenthSeconds, int ParticipantId, int EventId)
-{
-    public override string ToString() =>
-        $"#{Id} at {Time:HH:mm:ss}.{TenthSeconds} - participant {ParticipantId}, event {EventId}";
-}
