@@ -16,6 +16,7 @@
   .header button { padding: 8px 14px; font-size: 15px; border: none; border-radius: 6px; background: #ffd166; color: #1f3a5f; font-weight: 600; cursor: pointer; }
   .header button:hover { background: #ffc233; }
   .header button:disabled { cursor: wait; opacity: .65; }
+  .file-name { max-width: 210px; overflow: hidden; color: #dce8f5; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
   #detail { min-height: 0; flex: 1; overflow: auto; padding: 16px 24px; }
   #listWrap { min-height: 0; overflow: auto; padding: 16px 24px; }
   table { border-collapse: collapse; width: 100%; }
@@ -40,6 +41,7 @@
     .header img { height: 32px; }
     .header h1 { flex: 1; }
     .header input { max-width: none; }
+    .file-name { order: 3; max-width: 100%; width: 100%; }
     #detail, #listWrap { padding: 12px 14px; }
     .detail-card { grid-template-columns: 1fr 1fr; }
   }
@@ -53,6 +55,9 @@
       <h1>Anmeldungen 2025</h1>
       <input id="search" type="number" inputmode="numeric" placeholder="Startnummer eingeben" aria-label="Startnummer" autofocus>
       <button id="reload" type="button">Neu laden</button>
+      <button id="selectFile" type="button">Datei auswählen</button>
+      <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+      <span id="fileStatus" class="file-name">Keine Datei ausgewählt</span>
     </header>
     <div id="detail">
       <div id="detailMsg" class="hint">Startnummer eingeben, um alle Daten des Läufers zu sehen.</div>
@@ -82,6 +87,9 @@ const $ = s => document.querySelector(s);
 const tbody = $('#list tbody');
 const search = $('#search');
 const reloadBtn = $('#reload');
+const selectFileBtn = $('#selectFile');
+const fileInput = $('#fileInput');
+const fileStatus = $('#fileStatus');
 const detailMsg = $('#detailMsg'), detailCard = $('#detailCard'), errEl = $('#err');
 
 let list = [];
@@ -195,38 +203,168 @@ function filtered(){
   return prefix.length ? prefix : list;
 }
 
-async function loadData(){
-  reloadBtn.disabled = true;
+function setBusy(busy){
+  reloadBtn.disabled = busy;
+  selectFileBtn.disabled = busy;
+}
+
+function applyData(data){
+  fileStatus.textContent = data.filename || 'Keine Datei ausgewählt';
+  if(data.error) throw new Error(data.error);
+  list = data.runners.slice();
+  list.sort((a,b)=>a.nr - b.nr);
+  detailMsg.textContent = 'Startnummer eingeben, um alle Daten des Läufers zu sehen. (' + list.length + ' Läufer)';
+  detailMsg.style.display = '';
+  detailCard.style.display = 'none';
+  errEl.textContent = '';
+  renderList(list);
+  if(search.value !== '') handleLookup();
+}
+
+function showLoadError(message){
+  detailMsg.style.display = 'none';
+  detailCard.style.display = 'none';
+  errEl.textContent = 'Daten konnten nicht geladen werden: ' + message;
+  tbody.replaceChildren();
+}
+
+function openHandleDatabase(){
+  if(!window.indexedDB) return Promise.resolve(null);
+  return new Promise((resolve, reject)=>{
+    const request = window.indexedDB.open('marathon-manager', 1);
+    request.onupgradeneeded = ()=>request.result.createObjectStore('files');
+    request.onsuccess = ()=>resolve(request.result);
+    request.onerror = ()=>reject(request.error);
+  });
+}
+
+async function readStoredHandle(){
+  const db = await openHandleDatabase();
+  if(!db) return null;
+  return new Promise((resolve, reject)=>{
+    const request = db.transaction('files').objectStore('files').get('selected');
+    request.onsuccess = ()=>resolve(request.result || null);
+    request.onerror = ()=>reject(request.error);
+  });
+}
+
+async function storeHandle(handle){
+  const db = await openHandleDatabase();
+  if(!db) return;
+  return new Promise((resolve, reject)=>{
+    const store = db.transaction('files', 'readwrite').objectStore('files');
+    const request = handle ? store.put(handle, 'selected') : store.delete('selected');
+    request.onsuccess = ()=>resolve();
+    request.onerror = ()=>reject(request.error);
+  });
+}
+
+async function uploadFile(file){
+  const res = await fetch('/upload', {
+    method:'POST',
+    cache:'no-store',
+    headers:{'X-Filename':encodeURIComponent(file.name)},
+    body:file,
+  });
+  const data = await res.json();
+  if(!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  applyData(data);
+}
+
+let retainedHandle = null;
+
+async function selectFile(){
+  if(!window.showOpenFilePicker){
+    fileInput.click();
+    return;
+  }
+  setBusy(true);
+  errEl.textContent = '';
+  detailMsg.textContent = 'Dateiauswahl geöffnet …';
+  detailMsg.style.display = '';
+  detailCard.style.display = 'none';
+  try{
+    const handles = await window.showOpenFilePicker({
+      multiple:false,
+      types:[{description:'Excel-Dateien', accept:{'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':['.xlsx']}}],
+    });
+    retainedHandle = handles[0];
+    try{ await storeHandle(retainedHandle); }catch(e){}
+    await uploadFile(await retainedHandle.getFile());
+  }catch(e){
+    if(e.name === 'SecurityError' || e.name === 'NotAllowedError'){
+      detailMsg.textContent = 'Bitte auf „Datei auswählen“ klicken.';
+    } else if(e.name !== 'AbortError'){
+      showLoadError(e.message);
+    }
+  }finally{
+    setBusy(false);
+  }
+}
+
+async function loadData(requestPermission){
+  setBusy(true);
   errEl.textContent = '';
   detailMsg.textContent = 'Lade Daten …';
   detailMsg.style.display = '';
   detailCard.style.display = 'none';
   try{
+    if(retainedHandle){
+      let permission = await retainedHandle.queryPermission({mode:'read'});
+      if(permission === 'prompt' && requestPermission){
+        permission = await retainedHandle.requestPermission({mode:'read'});
+      }
+      if(permission === 'granted'){
+        await uploadFile(await retainedHandle.getFile());
+        return;
+      }
+    }
     const res = await fetch('/data', {cache:'no-store'});
     const data = await res.json();
-    if(!res.ok || data.error){
-      throw new Error(data.error || ('HTTP ' + res.status));
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    if(data.needsSelection){
+      list = [];
+      fileStatus.textContent = 'Keine Datei ausgewählt';
+      detailMsg.textContent = 'Bitte eine Excel-Datei auswählen.';
+      tbody.replaceChildren();
+      setTimeout(()=>selectFile(), 0);
+      return;
     }
-    list = data.runners.slice();
-    list.sort((a,b)=>a.nr - b.nr);
-    detailMsg.textContent = 'Startnummer eingeben, um alle Daten des Läufers zu sehen. (' + list.length + ' Läufer)';
-    renderList(list);
-    if(search.value !== ''){
-      handleLookup();
-    }
+    applyData(data);
   }catch(e){
-    detailMsg.style.display = 'none';
-    detailCard.style.display = 'none';
-    errEl.textContent = 'Daten konnten nicht geladen werden: ' + e.message;
-    tbody.replaceChildren();
+    showLoadError(e.message);
   }finally{
-    reloadBtn.disabled = false;
+    setBusy(false);
   }
 }
 
-reloadBtn.addEventListener('click', loadData);
+fileInput.addEventListener('change', async ()=>{
+  const file = fileInput.files[0];
+  if(!file) return;
+  setBusy(true);
+  try{
+    retainedHandle = null;
+    try{ await storeHandle(null); }catch(e){}
+    await uploadFile(file);
+  }catch(e){
+    showLoadError(e.message);
+  }finally{
+    fileInput.value = '';
+    setBusy(false);
+  }
+});
+
+reloadBtn.addEventListener('click', ()=>loadData(true));
+selectFileBtn.addEventListener('click', selectFile);
 document.querySelector('th[data-k="nr"]').classList.add('active');
-loadData();
+(async ()=>{
+  try{
+    retainedHandle = await readStoredHandle();
+  }catch(e){
+    retainedHandle = null;
+  }
+  await loadData(false);
+})();
 </script>
 </body>
 </html>

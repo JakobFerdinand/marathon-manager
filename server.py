@@ -1,30 +1,45 @@
 #!/usr/bin/env python3
 """Small dependency-free local web server for the MarathonManager frontend.
 
-Serves src/index.html and parses Anmelder2025.xlsx (fresh on every request)
-using only the Python standard library. Replace the .xlsx file on disk and
-reload the page to see the new data.
+Serves src/index.html and parses an uploaded .xlsx file using only the Python
+standard library. The browser retains a file-system handle and uploads fresh
+bytes on reload, so edits to the original file are reflected immediately.
 
 Run:
     python3 server.py
     # then open http://localhost:8000
 """
 
+import io
 import json
 import sys
+import threading
 import zipfile
 import xml.etree.ElementTree as ET
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 BASE_DIR = Path(__file__).resolve().parent
 SRC_DIR = BASE_DIR / "src"
-XLSX_FILE = BASE_DIR / "Anmelder2025.xlsx"
 HOST = "127.0.0.1"
 PORT = 8000
 
 _NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+_SELECTED_FILE = None
+_STATE_LOCK = threading.Lock()
+_MAX_UPLOAD_SIZE = 100 * 1024 * 1024
+
+
+def _get_selected_file():
+    with _STATE_LOCK:
+        return _SELECTED_FILE
+
+
+def _set_selected_file(filename, content):
+    global _SELECTED_FILE
+    with _STATE_LOCK:
+        _SELECTED_FILE = (filename, content)
 def _cell_text(cell, shared):
     t = cell.get("t")
     if t == "s":
@@ -90,13 +105,25 @@ def _parse_xlsx(path):
 
 
 def _load_data():
-    if not XLSX_FILE.is_file():
-        return {"error": f"{XLSX_FILE.name} not found", "runners": []}
+    selected = _get_selected_file()
+    if selected is None:
+        return {"error": None, "needsSelection": True, "filename": None, "runners": []}
+    filename, content = selected
     try:
-        runners = _parse_xlsx(XLSX_FILE)
+        runners = _parse_xlsx(io.BytesIO(content))
     except (OSError, zipfile.BadZipFile, ET.ParseError, ValueError, IndexError) as exc:
-        return {"error": f"could not parse {XLSX_FILE.name}: {exc}", "runners": []}
-    return {"error": None, "runners": runners}
+        return {
+            "error": f"could not parse {filename}: {exc}",
+            "needsSelection": False,
+            "filename": filename,
+            "runners": [],
+        }
+    return {
+        "error": None,
+        "needsSelection": False,
+        "filename": filename,
+        "runners": runners,
+    }
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -137,6 +164,25 @@ class Handler(BaseHTTPRequestHandler):
             self._serve_file(BASE_DIR / "Logos" / "ACF.png", "image/png")
         else:
             self._send(404, "not found", "text/plain; charset=utf-8")
+
+    def do_POST(self):
+        path = urlparse(self.path).path
+        if path != "/upload":
+            self._send(404, "not found", "text/plain; charset=utf-8")
+            return
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            length = 0
+        if length <= 0 or length > _MAX_UPLOAD_SIZE:
+            self._send(400, json.dumps({"error": "invalid upload size"}), "application/json; charset=utf-8")
+            return
+        filename = unquote(self.headers.get("X-Filename", "selected.xlsx"))
+        if not filename.lower().endswith(".xlsx"):
+            self._send(400, json.dumps({"error": "only .xlsx files are supported"}), "application/json; charset=utf-8")
+            return
+        _set_selected_file(Path(filename).name, self.rfile.read(length))
+        self._send(200, json.dumps(_load_data(), ensure_ascii=False), "application/json; charset=utf-8")
 
 
 def main():
