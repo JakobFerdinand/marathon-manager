@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anmeldung 2025</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f4f6f8; color: #222; }
+  body { display: grid; grid-template-rows: 33% 67%; overflow: hidden; }
+  .top { min-height: 0; display: flex; flex-direction: column; background: #fff; border-bottom: 2px solid #1f3a5f; }
+  .header { min-height: 82px; display: flex; align-items: center; gap: 16px; padding: 12px 24px; background: #1f3a5f; color: #fff; }
+  .header img { height: 42px; }
+  .header h1 { font-size: 20px; margin: 0; }
+  .header input { flex: 1; max-width: 220px; padding: 8px 12px; font-size: 18px; border-radius: 6px; border: none; }
+  .header button { padding: 8px 14px; font-size: 15px; border: none; border-radius: 6px; background: #ffd166; color: #1f3a5f; font-weight: 600; cursor: pointer; }
+  .header button:hover { background: #ffc233; }
+  .header button:disabled { cursor: wait; opacity: .65; }
+  #detail { min-height: 0; flex: 1; overflow: auto; padding: 16px 24px; }
+  #listWrap { min-height: 0; overflow: auto; padding: 16px 24px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { padding: 6px 10px; border-bottom: 1px solid #e0e0e0; text-align: left; font-size: 14px; }
+  th { position: sticky; top: 0; background: #1f3a5f; color: #fff; cursor: pointer; user-select: none; }
+  th.active::after { content: " ▲"; font-size: 10px; }
+  th.active.sort-desc::after { content: " ▼"; font-size: 10px; }
+  tbody tr:hover { background: #eef3fa; }
+  tbody tr.selected { background: #d7e6f7; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+  .b-firm { background: #ffd166; }
+  .b-w { background: #f8b4d4; }
+  .b-m { background: #a7d0f0; }
+  .detail-card { display: grid; grid-template-columns: 180px 1fr 180px 1fr; gap: 6px 16px; max-width: 900px; }
+  .detail-card .label { font-weight: 700; color: #1f3a5f; }
+  .detail-card .big { font-size: 22px; font-weight: 700; color: #1f3a5f; }
+  .hint { color: #888; font-style: italic; }
+  #err { color: #c0392b; font-weight: 700; }
+  @media (max-width: 700px) {
+    body { grid-template-rows: minmax(270px, 42%) minmax(0, 58%); }
+    .header { min-height: 120px; flex-wrap: wrap; gap: 8px; padding: 10px 14px; }
+    .header img { height: 32px; }
+    .header h1 { flex: 1; }
+    .header input { max-width: none; }
+    #detail, #listWrap { padding: 12px 14px; }
+    .detail-card { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+  <section class="top">
+    <header class="header">
+      <img src="/logos/sc-mining.png" alt="SC Mining">
+      <img src="/logos/acf.png" alt="ACF">
+      <h1>Anmeldungen 2025</h1>
+      <input id="search" type="number" inputmode="numeric" placeholder="Startnummer eingeben" aria-label="Startnummer" autofocus>
+      <button id="reload" type="button">Neu laden</button>
+    </header>
+    <div id="detail">
+      <div id="detailMsg" class="hint">Startnummer eingeben, um alle Daten des Läufers zu sehen.</div>
+      <div id="detailCard" class="detail-card" style="display:none"></div>
+      <div id="err"></div>
+    </div>
+  </section>
+  <section id="listWrap">
+    <table id="list">
+      <thead>
+        <tr>
+          <th data-k="nr">Nr.</th>
+          <th data-k="nachname">Nachname</th>
+          <th data-k="vorname">Vorname</th>
+          <th data-k="bewerb">Bewerb</th>
+          <th data-k="team">Team</th>
+          <th data-k="firm">Firmenwertung</th>
+          <th data-k="jahrgang">Jahrgang</th>
+          <th data-k="geschl">Geschl.</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+<script>
+const $ = s => document.querySelector(s);
+const tbody = $('#list tbody');
+const search = $('#search');
+const reloadBtn = $('#reload');
+const detailMsg = $('#detailMsg'), detailCard = $('#detailCard'), errEl = $('#err');
+
+let list = [];
+
+function esc(v){ return v==null||v==='' ? '' : String(v).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function geschlBadge(g){ const map={W:'F',M:'M'}; return `<span class="badge ${g==='W'?'b-w':'b-m'}">${map[g]||esc(g)}</span>`; }
+function firmBadge(){ return `<span class="badge b-firm">Firmenwertung</span>`; }
+function shown(b){ return String(b||'').replace(/^Raiffeisen\s+/,'').replace(/\s+$/,''); }
+function collapseK(v){ return String(v==null?'':v).toLowerCase().replace(/[äöüß]/g,c=>({ä:'a',ö:'o',ü:'u',ß:'s'}[c])); }
+
+function renderList(rows){
+  const frag = document.createDocumentFragment();
+  [...rows].sort((a,b)=>{
+    const numeric = sortK === 'nr' || sortK === 'jahrgang' || sortK === 'firm';
+    const x = numeric ? Number(a[sortK] || 0) : collapseK(a[sortK]);
+    const y = numeric ? Number(b[sortK] || 0) : collapseK(b[sortK]);
+    const c = numeric ? x - y : x.localeCompare(y, 'de');
+    return sortAsc ? c : -c;
+  }).forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.dataset.nr = r.nr;
+    tr.innerHTML =
+      `<td>${esc(r.nr)}</td><td>${esc(r.nachname)}</td><td>${esc(r.vorname)}</td>` +
+      `<td>${esc(shown(r.bewerb))}</td><td>${esc(r.team||'—')}</td>` +
+      `<td>${r.firm ? firmBadge() : ''}</td><td>${esc(r.jahrgang)}</td>` +
+      `<td>${geschlBadge(r.geschl)}</td>`;
+    tr.addEventListener('click', ()=>selectRow(r.nr));
+    frag.appendChild(tr);
+  });
+  tbody.replaceChildren(frag);
+}
+
+function clearSelected(){
+  document.querySelectorAll('tbody tr.selected').forEach(x=>x.classList.remove('selected'));
+}
+
+function renderDetail(r){
+  errEl.textContent = '';
+  detailMsg.style.display = 'none';
+  detailCard.style.display = 'grid';
+  detailCard.innerHTML =
+    `<div class="big">Startnummer #${esc(r.nr)}</div><div>${r.firm ? firmBadge() : ''}</div>` +
+    `<div class="label">Name</div><div class="big">${esc(r.vorname)} ${esc(r.nachname)}</div>` +
+    `<div class="label">Bewerb</div><div>${esc(shown(r.bewerb))}</div>` +
+    `<div class="label">Team</div><div>${esc(r.team||'—')}</div>` +
+    `<div class="label">Jahrgang</div><div>${esc(r.jahrgang)}</div>` +
+    `<div class="label">Geschlecht</div><div>${geschlBadge(r.geschl)}</div>`;
+}
+
+function highlight(nr){
+  clearSelected();
+  const row = tbody.querySelector(`tr[data-nr="${nr}"]`);
+  if(row){ row.classList.add('selected'); row.scrollIntoView({block:'nearest'}); }
+}
+
+function selectRow(nr){
+  search.value = nr;
+  const r = list.find(x=>x.nr === Number(nr));
+  if(!r) return handleLookup();
+  renderDetail(r);
+  highlight(r.nr);
+}
+
+function handleLookup(){
+  const q = search.value.trim();
+  if(q === ''){
+    detailMsg.style.display = '';
+    detailCard.style.display = 'none';
+    errEl.textContent = '';
+    clearSelected();
+    renderList(list);
+    return;
+  }
+  const r = list.find(x=>x.nr === Number(q));
+  if(r){
+    renderDetail(r);
+    highlight(r.nr);
+    return;
+  }
+  detailMsg.style.display = 'none';
+  detailCard.style.display = 'none';
+  const prefix = list.filter(x=>String(x.nr).startsWith(q));
+  if(prefix.length){
+    errEl.textContent = 'Keine Startnummer ' + q + ' – Zeige ähnliche Treffer:';
+    renderList(prefix);
+  } else {
+    errEl.textContent = 'Keine Startnummer ' + q + ' gefunden.';
+    renderList(list);
+  }
+}
+
+search.addEventListener('input', handleLookup);
+
+let sortK = 'nr', sortAsc = true;
+document.querySelectorAll('th').forEach(th=>th.addEventListener('click', ()=>{
+  const k = th.dataset.k;
+  if(sortK === k){ sortAsc = !sortAsc; } else { sortK = k; sortAsc = true; }
+  document.querySelectorAll('th').forEach(t=>{
+    t.classList.toggle('active', t.dataset.k === k);
+    t.classList.toggle('sort-desc', t.dataset.k === k && !sortAsc);
+  });
+  renderList(filtered());
+}));
+
+function filtered(){
+  const q = search.value.trim();
+  if(q === '') return list;
+  const r = list.find(x=>x.nr === Number(q));
+  if(r) return list;
+  const prefix = list.filter(x=>String(x.nr).startsWith(q));
+  return prefix.length ? prefix : list;
+}
+
+async function loadData(){
+  reloadBtn.disabled = true;
+  errEl.textContent = '';
+  detailMsg.textContent = 'Lade Daten …';
+  detailMsg.style.display = '';
+  detailCard.style.display = 'none';
+  try{
+    const res = await fetch('/data', {cache:'no-store'});
+    const data = await res.json();
+    if(!res.ok || data.error){
+      throw new Error(data.error || ('HTTP ' + res.status));
+    }
+    list = data.runners.slice();
+    list.sort((a,b)=>a.nr - b.nr);
+    detailMsg.textContent = 'Startnummer eingeben, um alle Daten des Läufers zu sehen. (' + list.length + ' Läufer)';
+    renderList(list);
+    if(search.value !== ''){
+      handleLookup();
+    }
+  }catch(e){
+    detailMsg.style.display = 'none';
+    detailCard.style.display = 'none';
+    errEl.textContent = 'Daten konnten nicht geladen werden: ' + e.message;
+    tbody.replaceChildren();
+  }finally{
+    reloadBtn.disabled = false;
+  }
+}
+
+reloadBtn.addEventListener('click', loadData);
+document.querySelector('th[data-k="nr"]').classList.add('active');
+loadData();
+</script>
+</body>
+</html>
