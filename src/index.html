@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anmeldung 2025</title>
+<title>Anmeldungen</title>
 <style>
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f4f6f8; color: #222; }
@@ -18,6 +18,8 @@
   .header button:disabled { cursor: wait; opacity: .65; }
   .file-name { max-width: 210px; overflow: hidden; color: #dce8f5; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
   #detail { min-height: 0; flex: 1; overflow: auto; padding: 16px 24px; }
+  #dummyBanner { display: none; padding: 10px 24px; background: #c0392b; color: #fff; font-weight: 700; font-size: 15px; }
+  #dummyBanner .sub { display: block; margin-top: 2px; font-weight: 400; font-size: 13px; }
   #listWrap { min-height: 0; overflow: auto; padding: 16px 24px; }
   table { border-collapse: collapse; width: 100%; }
   th, td { padding: 6px 10px; border-bottom: 1px solid #e0e0e0; text-align: left; font-size: 14px; }
@@ -27,7 +29,10 @@
   tbody tr:hover { background: #eef3fa; }
   tbody tr.selected { background: #d7e6f7; }
   .badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; }
-  .b-firm { background: #ffd166; }
+  .badge.b-firm { background: #ffd166; }
+  .b-dummy { background: #c0392b; color: #fff; }
+  td.nr-dummy { color: #c0392b; font-weight: 700; }
+  .big.dummy-nr { color: #c0392b; }
   .b-w { background: #f8b4d4; }
   .b-m { background: #a7d0f0; }
   .detail-card { display: grid; grid-template-columns: 180px 1fr 180px 1fr; gap: 6px 16px; max-width: 900px; }
@@ -52,13 +57,14 @@
     <header class="header">
       <img src="/logos/sc-mining.png" alt="SC Mining">
       <img src="/logos/acf.png" alt="ACF">
-      <h1>Anmeldungen 2025</h1>
+      <h1>Anmeldungen</h1>
       <input id="search" type="number" inputmode="numeric" placeholder="Startnummer eingeben" aria-label="Startnummer" autofocus>
       <button id="reload" type="button">Neu laden</button>
       <button id="selectFile" type="button">Datei auswählen</button>
       <input id="fileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
       <span id="fileStatus" class="file-name">Keine Datei ausgewählt</span>
     </header>
+    <div id="dummyBanner"></div>
     <div id="detail">
       <div id="detailMsg" class="hint">Startnummer eingeben, um alle Daten des Läufers zu sehen.</div>
       <div id="detailCard" class="detail-card" style="display:none"></div>
@@ -111,8 +117,11 @@ function renderList(rows){
   }).forEach(r=>{
     const tr = document.createElement('tr');
     tr.dataset.nr = r.nr;
+    const nrCell = r.dummy
+      ? `<td class="nr-dummy" title="Platzhalter – keine Startnummer in der Datei">${esc(r.nr)}*</td>`
+      : `<td>${esc(r.nr)}</td>`;
     tr.innerHTML =
-      `<td>${esc(r.nr)}</td><td>${esc(r.nachname)}</td><td>${esc(r.vorname)}</td>` +
+      `${nrCell}<td>${esc(r.nachname)}</td><td>${esc(r.vorname)}</td>` +
       `<td>${esc(shown(r.bewerb))}</td><td>${esc(r.team||'—')}</td>` +
       `<td>${r.firm ? firmBadge() : ''}</td><td>${esc(r.jahrgang)}</td>` +
       `<td>${geschlBadge(r.geschl)}</td>`;
@@ -130,8 +139,12 @@ function renderDetail(r){
   errEl.textContent = '';
   detailMsg.style.display = 'none';
   detailCard.style.display = 'grid';
+  const nrHtml = r.dummy
+    ? `<div class="big dummy-nr" title="Platzhalter – keine Startnummer in der Datei">#${esc(r.nr)}*</div>` +
+      `<div><span class="badge b-dummy">Platzhalter-Startnummer</span></div>`
+    : `<div class="big">Startnummer #${esc(r.nr)}</div><div>${r.firm ? firmBadge() : ''}</div>`;
   detailCard.innerHTML =
-    `<div class="big">Startnummer #${esc(r.nr)}</div><div>${r.firm ? firmBadge() : ''}</div>` +
+    nrHtml +
     `<div class="label">Name</div><div class="big">${esc(r.vorname)} ${esc(r.nachname)}</div>` +
     `<div class="label">Bewerb</div><div>${esc(shown(r.bewerb))}</div>` +
     `<div class="label">Team</div><div>${esc(r.team||'—')}</div>` +
@@ -213,12 +226,29 @@ function applyData(data){
   if(data.error) throw new Error(data.error);
   list = data.runners.slice();
   list.sort((a,b)=>a.nr - b.nr);
+  renderDummyBanner(data);
   detailMsg.textContent = 'Startnummer eingeben, um alle Daten des Läufers zu sehen. (' + list.length + ' Läufer)';
   detailMsg.style.display = '';
   detailCard.style.display = 'none';
   errEl.textContent = '';
   renderList(list);
   if(search.value !== '') handleLookup();
+}
+
+function renderDummyBanner(data){
+  const banner = $('#dummyBanner');
+  const dummies = list.filter(r=>r.dummy);
+  if(!dummies.length){
+    banner.style.display = 'none';
+    banner.innerHTML = '';
+    return;
+  }
+  const first = Math.min(...dummies.map(r=>r.nr));
+  banner.style.display = 'block';
+  banner.innerHTML =
+    `⚠️ ${dummies.length} von ${list.length} Läufern ohne Startnummer in der Datei – Platzhalter-Nummern wurden vergeben!` +
+    `<span class="sub">Die Platzhalter-Startnummern (ab #${first}) sind mit rotem * markiert und nicht offiziell. ` +
+    `Bitte die Startnummern in der Excel-Datei ergänzen und die Datei neu laden.</span>`;
 }
 
 function showLoadError(message){

@@ -56,6 +56,35 @@ def _cell_text(cell, shared):
     return v.text if v is not None else None
 
 
+def _norm(value):
+    return str(value or "").strip().lower()
+
+
+def _row_cells(row, shared):
+    cells = {}
+    for c in row.iter(_NS + "c"):
+        ref = c.get("r") or ""
+        if not ref:
+            continue
+        col = "".join(ch for ch in ref if ch.isalpha())
+        value = _cell_text(c, shared)
+        if value is not None:
+            cells[col] = value
+    return cells
+
+
+def _is_number(text):
+    try:
+        int(float(str(text).strip().replace(",", ".")))
+    except (TypeError, ValueError):
+        return False
+    return True
+
+
+# Placeholder start numbers start here so they cannot clash with real ones.
+_DUMMY_BASE = 9000
+
+
 def _parse_xlsx(path):
     with zipfile.ZipFile(path) as zf:
         names = zf.namelist()
@@ -71,27 +100,43 @@ def _parse_xlsx(path):
         if not sheet_path:
             raise ValueError("no worksheet found")
         sheet = ET.fromstring(zf.read(sheet_path))
+        rows = list(sheet.iter(_NS + "row"))
 
-        runners = []
-        for idx, row in enumerate(sheet.iter(_NS + "row")):
-            if idx == 0:
-                continue
-            cells = {}
-            for c in row.iter(_NS + "c"):
-                ref = c.get("r") or ""
-                if not ref:
-                    continue
-                col = "".join(ch for ch in ref if ch.isalpha())
-                value = _cell_text(c, shared)
-                if value is not None:
-                    cells[col] = value
+    header_cells = _row_cells(rows[0], shared) if rows else {}
+    hmap = {_norm(v): col for col, v in header_cells.items() if v}
+
+    def hcol(*keys):
+        for key in keys:
+            if key in hmap:
+                return hmap[key]
+        return None
+
+    col_nr = hcol("startnummer", "startnr", "start-nr", "nr", "nummer")
+
+    # Probe the first non-empty data row: the legacy layout has the numeric
+    # start number in column A, the 2026 layout has "Vorname" there.
+    probe = None
+    for row in rows[1:]:
+        cells = _row_cells(row, shared)
+        if any(str(v).strip() for v in cells.values()):
+            probe = cells
+            break
+    old_format = col_nr is not None or _is_number(probe and probe.get("A"))
+
+    runners = []
+    if old_format:
+        # Legacy layout: A=Startnummer, B=Bewerb, C=Nachname, D=Vorname,
+        # E=Team, F=Firmenwertung, G=Jahrgang, H=Geschlecht
+        for row in rows[1:]:
+            cells = _row_cells(row, shared)
             nr = cells.get("A")
-            if nr is None:
+            if nr is None or not _is_number(nr):
                 continue
             gc = cells.get("G")
             runners.append(
                 {
-                    "nr": int(float(str(nr))),
+                    "nr": int(float(str(nr).strip().replace(",", "."))),
+                    "dummy": 0,
                     "bewerb": str(cells.get("B") or "").strip(),
                     "nachname": str(cells.get("C") or "").strip(),
                     "vorname": str(cells.get("D") or "").strip(),
@@ -103,11 +148,64 @@ def _parse_xlsx(path):
             )
         return runners
 
+    # 2026 layout: header names in row 1, no Startnummer column.
+    # A=Vorname, B=Nachname, C=Geschlecht, D=Verein/Firma, E=Bewerb,
+    # F=Email, G=Geburtsjahr, H=Team, I=Status
+    col_vor = hcol("vorname") or "A"
+    col_nach = hcol("nachname", "zuname", "familienname") or "B"
+    col_geschl = hcol("geschlecht", "geschl") or "C"
+    col_team = hcol("verein/firma", "verein", "team/verein")
+    col_team2 = hcol("team (klassisch - teamanmeldung)", "team")
+    col_bewerb = hcol("bewerb", "lauf", "wettbewerb")
+    col_jg = hcol("geburtsjahr", "jahrgang")
+    col_status = hcol("status")
+
+    for row in rows[1:]:
+        cells = _row_cells(row, shared)
+        if not any(str(v).strip() for v in cells.values()):
+            continue
+        status = str(cells.get(col_status) or "").strip() if col_status else ""
+        if status and status.lower() not in ("active", "aktiv"):
+            continue
+        vor = str(cells.get(col_vor) or "").strip()
+        nach = str(cells.get(col_nach) or "").strip()
+        if not vor and not nach:
+            continue
+        geschl = str(cells.get(col_geschl) or "").strip().upper()
+        if geschl == "F":
+            geschl = "W"
+        team = str(cells.get(col_team) or "").strip() if col_team else ""
+        if not team and col_team2:
+            team = str(cells.get(col_team2) or "").strip()
+        gc = cells.get(col_jg) if col_jg else None
+        runners.append(
+            {
+                "nr": None,
+                "dummy": 1,
+                "bewerb": str(cells.get(col_bewerb) or "").strip() if col_bewerb else "",
+                "nachname": nach,
+                "vorname": vor,
+                "team": team,
+                "firm": 0,
+                "jahrgang": None if gc in (None, "") else gc,
+                "geschl": geschl,
+            }
+        )
+
+    # Assign placeholder start numbers that cannot clash with real ones.
+    real = [r["nr"] for r in runners if r["nr"] is not None]
+    next_nr = max([_DUMMY_BASE] + [n + 1 for n in real])
+    for r in runners:
+        if r["nr"] is None:
+            r["nr"] = next_nr
+            next_nr += 1
+    return runners
+
 
 def _load_data():
     selected = _get_selected_file()
     if selected is None:
-        return {"error": None, "needsSelection": True, "filename": None, "runners": []}
+        return {"error": None, "needsSelection": True, "filename": None, "runners": [], "dummyCount": 0}
     filename, content = selected
     try:
         runners = _parse_xlsx(io.BytesIO(content))
@@ -117,12 +215,14 @@ def _load_data():
             "needsSelection": False,
             "filename": filename,
             "runners": [],
+            "dummyCount": 0,
         }
     return {
         "error": None,
         "needsSelection": False,
         "filename": filename,
         "runners": runners,
+        "dummyCount": sum(1 for r in runners if r.get("dummy")),
     }
 
 
