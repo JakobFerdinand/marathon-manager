@@ -7,7 +7,7 @@
 <style>
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f4f6f8; color: #222; }
-  body { display: grid; grid-template-rows: minmax(auto, calc(100% - 140px)) minmax(140px, 1fr); overflow: hidden; }
+  body { display: grid; grid-template-rows: minmax(auto, calc(100% - 150px)) auto minmax(140px, 1fr); overflow: hidden; }
   .top { min-height: 0; display: flex; flex-direction: column; background: #fff; border-bottom: 2px solid #1f3a5f; }
   .header { min-height: 82px; display: flex; align-items: center; gap: 16px; padding: 12px 24px; background: #1f3a5f; color: #fff; }
   .header img { height: 42px; }
@@ -43,8 +43,12 @@
   .detail-card .badge { font-size: clamp(.95rem, 2.4vh, 1.25rem); padding: 3px 14px; }
   .hint { color: #888; font-style: italic; }
   #err { color: #c0392b; font-weight: 700; }
+  #dragbar { height: 10px; cursor: row-resize; background: #dde4ee; display: flex; align-items: center; justify-content: center; touch-action: none; }
+  #dragbar::before { content: ""; width: 64px; height: 4px; border-radius: 2px; background: #9fb0c6; }
+  #dragbar:hover, #dragbar.dragging { background: #c3d2e8; }
+  #dragbar:hover::before, #dragbar.dragging::before { background: #1f3a5f; }
   @media (max-width: 700px) {
-    body { grid-template-rows: minmax(auto, calc(100% - 140px)) minmax(140px, 1fr); }
+    body { grid-template-rows: minmax(auto, calc(100% - 150px)) auto minmax(140px, 1fr); }
     .header { min-height: 120px; flex-wrap: wrap; gap: 8px; padding: 10px 14px; }
     .header img { height: 32px; }
     .header h1 { flex: 1; }
@@ -74,6 +78,7 @@
       <div id="err"></div>
     </div>
   </section>
+  <div id="dragbar" title="Ziehen zum Anpassen – Doppelklick setzt zurück"></div>
   <section id="listWrap">
     <table id="list">
       <thead>
@@ -199,6 +204,46 @@ function handleLookup(){
 }
 
 search.addEventListener('input', handleLookup);
+
+const dragbar = $('#dragbar');
+const MIN_TOP = 140, MIN_LIST = 140;
+let dragState = null;
+
+function setSplit(topPx){
+  document.body.style.gridTemplateRows = topPx + 'px auto minmax(' + MIN_LIST + 'px, 1fr)';
+}
+
+dragbar.addEventListener('pointerdown', e=>{
+  dragState = { startY: e.clientY, startTop: document.querySelector('.top').getBoundingClientRect().height };
+  dragbar.setPointerCapture(e.pointerId);
+  dragbar.classList.add('dragging');
+  document.body.style.userSelect = 'none';
+});
+dragbar.addEventListener('pointermove', e=>{
+  if(!dragState) return;
+  const maxTop = window.innerHeight - MIN_LIST - dragbar.offsetHeight;
+  setSplit(Math.round(Math.min(Math.max(dragState.startTop + e.clientY - dragState.startY, MIN_TOP), maxTop)));
+});
+dragbar.addEventListener('pointerup', ()=>{
+  if(!dragState) return;
+  dragState = null;
+  dragbar.classList.remove('dragging');
+  document.body.style.userSelect = '';
+  try{ localStorage.setItem('splitTop', document.querySelector('.top').getBoundingClientRect().height); }catch(e){}
+});
+dragbar.addEventListener('pointercancel', ()=>{
+  dragState = null;
+  dragbar.classList.remove('dragging');
+  document.body.style.userSelect = '';
+});
+dragbar.addEventListener('dblclick', ()=>{
+  document.body.style.gridTemplateRows = '';
+  try{ localStorage.removeItem('splitTop'); }catch(e){}
+});
+try{
+  const saved = Number(localStorage.getItem('splitTop'));
+  if(saved >= MIN_TOP && saved <= window.innerHeight - MIN_LIST) setSplit(saved);
+}catch(e){}
 
 let sortK = 'nr', sortAsc = true;
 document.querySelectorAll('th').forEach(th=>th.addEventListener('click', ()=>{
