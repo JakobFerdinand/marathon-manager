@@ -7,7 +7,7 @@
 <style>
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f4f6f8; color: #222; }
-  body { display: grid; grid-template-rows: 33% 67%; overflow: hidden; }
+  body { display: grid; grid-template-rows: minmax(auto, calc(100% - 140px)) minmax(140px, 1fr); overflow: hidden; }
   .top { min-height: 0; display: flex; flex-direction: column; background: #fff; border-bottom: 2px solid #1f3a5f; }
   .header { min-height: 82px; display: flex; align-items: center; gap: 16px; padding: 12px 24px; background: #1f3a5f; color: #fff; }
   .header img { height: 42px; }
@@ -32,16 +32,19 @@
   .badge.b-firm { background: #ffd166; }
   .b-dummy { background: #c0392b; color: #fff; }
   td.nr-dummy { color: #c0392b; font-weight: 700; }
-  .big.dummy-nr { color: #c0392b; }
   .b-w { background: #f8b4d4; }
   .b-m { background: #a7d0f0; }
-  .detail-card { display: grid; grid-template-columns: 180px 1fr 180px 1fr; gap: 6px 16px; max-width: 900px; }
-  .detail-card .label { font-weight: 700; color: #1f3a5f; }
-  .detail-card .big { font-size: 22px; font-weight: 700; color: #1f3a5f; }
+  .detail-card { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px; max-width: 1100px; }
+  .detail-name { grid-column: 1 / -1; font-size: clamp(2.4rem, 8vh, 4.5rem); font-weight: 800; color: #1f3a5f; line-height: 1.05; letter-spacing: -1px; }
+  .detail-sub { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; font-size: clamp(1.1rem, 3vh, 1.8rem); font-weight: 600; color: #444; }
+  .detail-sub.dummy { color: #c0392b; }
+  .detail-card .label { font-size: clamp(.9rem, 2.2vh, 1.15rem); font-weight: 700; color: #5b7089; text-transform: uppercase; letter-spacing: .5px; align-self: end; }
+  .detail-card .value { font-size: clamp(1.4rem, 4.2vh, 2.4rem); font-weight: 600; color: #222; align-self: start; }
+  .detail-card .badge { font-size: clamp(.95rem, 2.4vh, 1.25rem); padding: 3px 14px; }
   .hint { color: #888; font-style: italic; }
   #err { color: #c0392b; font-weight: 700; }
   @media (max-width: 700px) {
-    body { grid-template-rows: minmax(270px, 42%) minmax(0, 58%); }
+    body { grid-template-rows: minmax(auto, calc(100% - 140px)) minmax(140px, 1fr); }
     .header { min-height: 120px; flex-wrap: wrap; gap: 8px; padding: 10px 14px; }
     .header img { height: 32px; }
     .header h1 { flex: 1; }
@@ -139,17 +142,18 @@ function renderDetail(r){
   errEl.textContent = '';
   detailMsg.style.display = 'none';
   detailCard.style.display = 'grid';
-  const nrHtml = r.dummy
-    ? `<div class="big dummy-nr" title="Platzhalter – keine Startnummer in der Datei">#${esc(r.nr)}*</div>` +
-      `<div><span class="badge b-dummy">Platzhalter-Startnummer</span></div>`
-    : `<div class="big">Startnummer #${esc(r.nr)}</div><div>${r.firm ? firmBadge() : ''}</div>`;
+  const dummy = r.dummy;
+  const subHtml = dummy
+    ? `<span title="Platzhalter – keine Startnummer in der Datei">Startnummer #${esc(r.nr)}*</span>` +
+      `<span class="badge b-dummy">Platzhalter-Startnummer</span>`
+    : `<span>Startnummer #${esc(r.nr)}</span>` + (r.firm ? firmBadge() : '');
   detailCard.innerHTML =
-    nrHtml +
-    `<div class="label">Name</div><div class="big">${esc(r.vorname)} ${esc(r.nachname)}</div>` +
-    `<div class="label">Bewerb</div><div>${esc(shown(r.bewerb))}</div>` +
-    `<div class="label">Team</div><div>${esc(r.team||'—')}</div>` +
-    `<div class="label">Jahrgang</div><div>${esc(r.jahrgang)}</div>` +
-    `<div class="label">Geschlecht</div><div>${geschlBadge(r.geschl)}</div>`;
+    `<div class="detail-name">${esc(r.vorname)} ${esc(r.nachname)}</div>` +
+    `<div class="detail-sub${dummy ? ' dummy' : ''}">${subHtml}</div>` +
+    `<div class="label">Bewerb</div><div class="value">${esc(shown(r.bewerb))}</div>` +
+    `<div class="label">Team</div><div class="value">${esc(r.team||'—')}</div>` +
+    `<div class="label">Jahrgang</div><div class="value">${esc(r.jahrgang)}</div>` +
+    `<div class="label">Geschlecht</div><div class="value">${geschlBadge(r.geschl)}</div>`;
 }
 
 function highlight(nr){
