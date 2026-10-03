@@ -112,6 +112,7 @@ def _parse_xlsx(path):
         return None
 
     col_nr = hcol("startnummer", "startnr", "start-nr", "nr", "nummer")
+    named = "vorname" in hmap and hcol("nachname", "zuname", "familienname") is not None
 
     # Probe the first non-empty data row: the legacy layout has the numeric
     # start number in column A, the 2026 layout has "Vorname" there.
@@ -121,7 +122,9 @@ def _parse_xlsx(path):
         if any(str(v).strip() for v in cells.values()):
             probe = cells
             break
-    old_format = col_nr is not None or _is_number(probe and probe.get("A"))
+    # Named headers win over positions: the 2026 export may carry an added
+    # Startnummer column, which shifts every other column by one.
+    old_format = not named and (col_nr is not None or _is_number(probe and probe.get("A")))
 
     runners = []
     if old_format:
@@ -148,12 +151,13 @@ def _parse_xlsx(path):
             )
         return runners
 
-    # 2026 layout: header names in row 1, no Startnummer column.
-    # A=Vorname, B=Nachname, C=Geschlecht, D=Verein/Firma, E=Bewerb,
-    # F=Email, G=Geburtsjahr, H=Team, I=Status
+    # 2026 layout: header names in row 1, Startnummer column optional.
+    # Vorname, Nachname, Geschlecht, Verein/Firma, Bewerb, Email,
+    # Geburtsjahr, Team, Status
     col_vor = hcol("vorname") or "A"
     col_nach = hcol("nachname", "zuname", "familienname") or "B"
     col_geschl = hcol("geschlecht", "geschl") or "C"
+    col_firm = hcol("firmenwertung")
     col_team = hcol("verein/firma", "verein", "team/verein")
     col_team2 = hcol("team (klassisch - teamanmeldung)", "team")
     col_bewerb = hcol("bewerb", "lauf", "wettbewerb")
@@ -178,15 +182,17 @@ def _parse_xlsx(path):
         if not team and col_team2:
             team = str(cells.get(col_team2) or "").strip()
         gc = cells.get(col_jg) if col_jg else None
+        nr = cells.get(col_nr) if col_nr else None
+        has_nr = nr is not None and _is_number(nr)
         runners.append(
             {
-                "nr": None,
-                "dummy": 1,
+                "nr": int(float(str(nr).strip().replace(",", "."))) if has_nr else None,
+                "dummy": 0 if has_nr else 1,
                 "bewerb": str(cells.get(col_bewerb) or "").strip() if col_bewerb else "",
                 "nachname": nach,
                 "vorname": vor,
                 "team": team,
-                "firm": 0,
+                "firm": 1 if col_firm and str(cells.get(col_firm) or "").strip() else 0,
                 "jahrgang": None if gc in (None, "") else gc,
                 "geschl": geschl,
             }
